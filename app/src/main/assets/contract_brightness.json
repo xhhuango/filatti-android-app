@@ -1,0 +1,16 @@
+{
+  "name": "ContractBrightness",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "contract_brightness",
+      "params": {
+        "contract": 50,
+        "brightness": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Provia",
+  "description": "Fuji Provia",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "curve",
+      "params": {
+        "value": {
+          "in": [0, 255],
+          "out": [0, 255]
+        },
+        "red": {
+          "in": [0, 59, 202, 255],
+          "out": [0, 54, 210, 255]
+        },
+        "green": {
+          "in": [0, 27, 196, 255],
+          "out": [0, 21, 207, 255]
+        },
+        "blue": {
+          "in": [0, 35, 205, 255],
+          "out": [0, 25, 227, 255]
+        }
+      }
+    }
+  ]
+}

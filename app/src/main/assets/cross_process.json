@@ -1,0 +1,30 @@
+{
+  "name": "CrossProcess",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "curve",
+      "params": {
+        "value": {
+          "in": [0, 255],
+          "out": [0, 255]
+        },
+        "red": {
+          "in": [0, 56, 211, 255],
+          "out": [0, 22, 255, 255]
+        },
+        "green": {
+          "in": [0, 56, 208, 255],
+          "out": [0, 39, 226, 255]
+        },
+        "blue": {
+          "in": [0, 255],
+          "out": [20, 235]
+        }
+      }
+    }
+  ]
+}
