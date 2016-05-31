@@ -9,10 +9,10 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
 
-public class ContractBrightnessAdjustment extends Adjustment {
-    static final String NAME = "contract_brightness";
+public class ContrastBrightnessAdjustment extends Adjustment {
+    static final String NAME = "contrast_brightness";
 
-    private static final String CONTRACT = "contract";
+    private static final String CONTRAST = "contrast";
     private static final String BRIGHTNESS = "brightness";
 
     private Mat mLut = null;
@@ -26,10 +26,16 @@ public class ContractBrightnessAdjustment extends Adjustment {
     public void importObject(JSONObject object) throws ImgProcException {
         super.importObject(object);
 
+        /**
+         * TODO: check range
+         * CONTRAST: [-100, 100]
+         * BRIGHTNESS: [-100, 100]
+         */
+
         double contract;
         double brightness;
         try {
-            contract = (getParams(object).getInt(CONTRACT) / 2.0 + 100.0) / 100.0;
+            contract = (getParams(object).getInt(CONTRAST) / 2.0 + 100.0) / 100.0;
             brightness = getParams(object).getInt(BRIGHTNESS);
         } catch (JSONException e) {
             throw new ImgProcException(e);

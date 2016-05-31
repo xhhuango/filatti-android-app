@@ -1,15 +1,14 @@
 {
-  "filter": "ContractBrightness",
+  "filter": "Saturation",
   "description": "",
   "author": "",
   "license": "",
   "version": "",
   "actions": [
     {
-      "adjustment": "contract_brightness",
+      "adjustment": "saturation",
       "params": {
-        "contract": 50,
-        "brightness": 0
+        "saturation": -100
       }
     }
   ]

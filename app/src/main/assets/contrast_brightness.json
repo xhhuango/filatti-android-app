@@ -1,0 +1,16 @@
+{
+  "filter": "ContrastBrightness",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "contrast_brightness",
+      "params": {
+        "contract": 50,
+        "brightness": 0
+      }
+    }
+  ]
+}

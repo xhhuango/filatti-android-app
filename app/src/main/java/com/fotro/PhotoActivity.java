@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.fotro.imgproc.ImgProcException;
 import com.fotro.imgproc.filters.Filter;
+import com.fotro.imgproc.filters.FilterFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ public class PhotoActivity extends Activity {
             Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
             src = tmp;
 
-            Filter filter = createFilter("contract_brightness.json");
+            Filter filter = createFilter("saturation.json");
             Mat dst = new MatOfInt();
             filter.apply(src, dst);
 
@@ -76,10 +77,8 @@ public class PhotoActivity extends Activity {
     }
 
     private Filter createFilter(String filerFileName) throws ImgProcException {
-        JSONObject jsonObject = loadJsonFile(filerFileName);
-        Filter filter = new Filter();
-        filter.importObject(jsonObject);
-        return filter;
+        JSONObject object = loadJsonFile(filerFileName);
+        return new FilterFactory().importFilter(object);
     }
 
     private JSONObject loadJsonFile(String fileName) {

@@ -17,12 +17,13 @@ import org.opencv.core.MatOfInt;
 class CurveAdjustment extends Adjustment {
     static final String NAME = "curve";
 
-    private static final String PARAM_VALUE = "value";
-    private static final String PARAM_RED = "red";
-    private static final String PARAM_GREEN = "green";
-    private static final String PARAM_BLUE = "blue";
-    private static final String PARAM_IN = "in";
-    private static final String PARAM_OUT = "out";
+    private static final String VALUE = "value";
+    private static final String RED = "red";
+    private static final String GREEN = "green";
+    private static final String BLUE = "blue";
+
+    private static final String IN = "in";
+    private static final String OUT = "out";
 
     private final Mat mLut = new MatOfInt();
 
@@ -35,18 +36,24 @@ class CurveAdjustment extends Adjustment {
     public void importObject(JSONObject object) throws ImgProcException {
         super.importObject(object);
 
+        /**
+         * TODO: check range
+         * IN: [0, 255]
+         * OUT: [0, 255]
+         */
+
         UnivariateFunction valueInterpolator =
-                createInterpolator(extractParam(object, PARAM_VALUE, PARAM_IN),
-                                   extractParam(object, PARAM_VALUE, PARAM_OUT));
+                createInterpolator(extractParam(object, VALUE, IN),
+                                   extractParam(object, VALUE, OUT));
         UnivariateFunction redInterpolator =
-                createInterpolator(extractParam(object, PARAM_RED, PARAM_IN),
-                                   extractParam(object, PARAM_RED, PARAM_OUT));
+                createInterpolator(extractParam(object, RED, IN),
+                                   extractParam(object, RED, OUT));
         UnivariateFunction greenInterpolator =
-                createInterpolator(extractParam(object, PARAM_GREEN, PARAM_IN),
-                                   extractParam(object, PARAM_GREEN, PARAM_OUT));
+                createInterpolator(extractParam(object, GREEN, IN),
+                                   extractParam(object, GREEN, OUT));
         UnivariateFunction blueInterpolator =
-                createInterpolator(extractParam(object, PARAM_BLUE, PARAM_IN),
-                                   extractParam(object, PARAM_BLUE, PARAM_OUT));
+                createInterpolator(extractParam(object, BLUE, IN),
+                                   extractParam(object, BLUE, OUT));
 
         mLut.create(256, 1, CvType.CV_8UC3);
         for (int i = 0; i < 256; i++) {

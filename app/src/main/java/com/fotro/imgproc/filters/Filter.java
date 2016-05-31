@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Filter implements ImgProc {
-    private static final String FILTER_KEY = "filter";
-    private static final String ACTIONS_KEY = "actions";
+    private static final String FILTER = "filter";
+    private static final String ACTIONS = "actions";
 
     private String mName;
     private final List<Adjustment> mAdjustmentList = new ArrayList<>();
@@ -31,12 +31,12 @@ public class Filter implements ImgProc {
     public void importObject(JSONObject object) throws ImgProcException {
         Preconditions.checkNotNull(object);
         try {
-            if ((mName = object.getString(FILTER_KEY)) == null)
-                throw new ImgProcException("Field " + FILTER_KEY + " must not be null");
+            if ((mName = object.getString(FILTER)) == null)
+                throw new ImgProcException("Field " + FILTER + " must not be null");
 
             JSONArray actions;
-            if ((actions = object.getJSONArray(ACTIONS_KEY)) == null)
-                throw new ImgProcException("Field " + ACTIONS_KEY + " must not be null");
+            if ((actions = object.getJSONArray(ACTIONS)) == null)
+                throw new ImgProcException("Field " + ACTIONS + " must not be null");
 
             initActions(actions);
         } catch (JSONException e) {
@@ -48,9 +48,7 @@ public class Filter implements ImgProc {
         AdjustmentFactory factory = new AdjustmentFactory();
         for (int i = 0, j = actions.length(); i < j; i++) {
             JSONObject action = actions.getJSONObject(i);
-            Adjustment adjustment = factory.create(action);
-            adjustment.importObject(action);
-            mAdjustmentList.add(adjustment);
+            mAdjustmentList.add(factory.importAdjustment(action));
         }
     }
 
