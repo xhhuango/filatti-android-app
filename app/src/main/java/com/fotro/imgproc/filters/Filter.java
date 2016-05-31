@@ -1,8 +1,8 @@
 package com.fotro.imgproc.filters;
 
-import com.fotro.imgproc.ImageProcessing;
+import com.fotro.imgproc.ImgProc;
+import com.fotro.imgproc.ImgProcException;
 import com.fotro.imgproc.adjustments.Adjustment;
-import com.fotro.imgproc.adjustments.AdjustmentException;
 import com.fotro.imgproc.adjustments.AdjustmentFactory;
 import com.google.common.base.Preconditions;
 
@@ -15,37 +15,12 @@ import org.opencv.core.MatOfInt;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Filter implements ImageProcessing {
-    private static final String NAME_KEY = "name";
+public class Filter implements ImgProc {
+    private static final String FILTER_KEY = "filter";
     private static final String ACTIONS_KEY = "actions";
 
-    private final String mName;
+    private String mName;
     private final List<Adjustment> mAdjustmentList = new ArrayList<>();
-
-    public Filter(JSONObject filterObject) throws FilterException {
-        Preconditions.checkNotNull(filterObject);
-        try {
-            if ((mName = filterObject.getString(NAME_KEY)) == null)
-                throw new FilterException("Field '" + NAME_KEY + "' must not be null");
-
-            JSONArray actions;
-            if ((actions = filterObject.getJSONArray(ACTIONS_KEY)) == null)
-                throw new FilterException("Field '" + ACTIONS_KEY + "' must not be null");
-
-            initActions(actions);
-        } catch (JSONException | AdjustmentException e) {
-            throw new FilterException(e);
-        }
-    }
-
-    private void initActions(JSONArray actions) throws JSONException, AdjustmentException {
-        AdjustmentFactory factory = new AdjustmentFactory();
-        for (int i = 0, j = actions.length(); i < j; i++) {
-            JSONObject action = actions.getJSONObject(i);
-            Adjustment adjustment = factory.create(action);
-            mAdjustmentList.add(adjustment);
-        }
-    }
 
     @Override
     public String getName() {
@@ -53,17 +28,30 @@ public class Filter implements ImageProcessing {
     }
 
     @Override
-    public boolean check() {
-        for (Adjustment adjustment : mAdjustmentList)
-            if (!adjustment.check())
-                return false;
-        return true;
+    public void importObject(JSONObject object) throws ImgProcException {
+        Preconditions.checkNotNull(object);
+        try {
+            if ((mName = object.getString(FILTER_KEY)) == null)
+                throw new ImgProcException("Field " + FILTER_KEY + " must not be null");
+
+            JSONArray actions;
+            if ((actions = object.getJSONArray(ACTIONS_KEY)) == null)
+                throw new ImgProcException("Field " + ACTIONS_KEY + " must not be null");
+
+            initActions(actions);
+        } catch (JSONException e) {
+            throw new ImgProcException(e);
+        }
     }
 
-    @Override
-    public void init() {
-        for (Adjustment adjustment : mAdjustmentList)
-            adjustment.init();
+    private void initActions(JSONArray actions) throws JSONException, ImgProcException {
+        AdjustmentFactory factory = new AdjustmentFactory();
+        for (int i = 0, j = actions.length(); i < j; i++) {
+            JSONObject action = actions.getJSONObject(i);
+            Adjustment adjustment = factory.create(action);
+            adjustment.importObject(action);
+            mAdjustmentList.add(adjustment);
+        }
     }
 
     @Override

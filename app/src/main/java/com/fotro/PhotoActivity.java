@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.fotro.imgproc.ImgProcException;
 import com.fotro.imgproc.filters.Filter;
-import com.fotro.imgproc.filters.FilterException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class PhotoActivity extends Activity {
-    private static final String TAG = PhotoActivity.class.getSimpleName();
-
     static final String EXTRA_PHOTO_URI = "photoUri";
 
     static {
@@ -51,37 +49,37 @@ public class PhotoActivity extends Activity {
     }
 
     private Bitmap applyFilter(Bitmap bitmap) {
-        Mat tmp;
-
-        Mat src = new MatOfInt();
-        Utils.bitmapToMat(bitmap, src);
-        tmp = new MatOfInt();
-        Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
-        src = tmp;
-
-        Filter filter = getFilter("contract_brightness.json");
-        filter.check();
-        filter.init();
-        Mat dst = new MatOfInt();
-        filter.apply(src, dst);
-
-        tmp = new MatOfInt();
-        Imgproc.cvtColor(dst, tmp, Imgproc.COLOR_RGB2RGBA);
-        dst = tmp;
-        Bitmap appliedBitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(dst, appliedBitmap);
-
-        return appliedBitmap;
-    }
-
-    private Filter getFilter(String filerFileName) {
-        JSONObject jsonObject = loadJsonFile(filerFileName);
         try {
-            return new Filter(jsonObject);
-        } catch (FilterException e) {
+            Mat tmp;
+
+            Mat src = new MatOfInt();
+            Utils.bitmapToMat(bitmap, src);
+            tmp = new MatOfInt();
+            Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
+            src = tmp;
+
+            Filter filter = createFilter("contract_brightness.json");
+            Mat dst = new MatOfInt();
+            filter.apply(src, dst);
+
+            tmp = new MatOfInt();
+            Imgproc.cvtColor(dst, tmp, Imgproc.COLOR_RGB2RGBA);
+            dst = tmp;
+            Bitmap appliedBitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(dst, appliedBitmap);
+
+            return appliedBitmap;
+        } catch (ImgProcException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private Filter createFilter(String filerFileName) throws ImgProcException {
+        JSONObject jsonObject = loadJsonFile(filerFileName);
+        Filter filter = new Filter();
+        filter.importObject(jsonObject);
+        return filter;
     }
 
     private JSONObject loadJsonFile(String fileName) {

@@ -1,7 +1,8 @@
 package com.fotro.imgproc.adjustments;
 
-import android.util.Log;
+import com.fotro.imgproc.ImgProcException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -14,13 +15,7 @@ public class ContractBrightnessAdjustment extends Adjustment {
     private static final String CONTRACT = "contract";
     private static final String BRIGHTNESS = "brightness";
 
-    private double mContract = 0;
-    private double mBrightness = 0;
     private Mat mLut = null;
-
-    protected ContractBrightnessAdjustment(JSONObject adjustmentObject) throws AdjustmentException {
-        super(adjustmentObject);
-    }
 
     @Override
     public String getName() {
@@ -28,24 +23,25 @@ public class ContractBrightnessAdjustment extends Adjustment {
     }
 
     @Override
-    public boolean check() {
-        // TODO:
-        return true;
-    }
+    public void importObject(JSONObject object) throws ImgProcException {
+        super.importObject(object);
 
-    @Override
-    public void init() {
-        mContract = (getParams().optInt(CONTRACT) / 4.0 + 100.0) / 100.0;
-        mBrightness = getParams().optInt(BRIGHTNESS);
-        Log.d("wayne", "mContract=" + mContract);
+        double contract;
+        double brightness;
+        try {
+            contract = (getParams(object).getInt(CONTRACT) / 2.0 + 100.0) / 100.0;
+            brightness = getParams(object).getInt(BRIGHTNESS);
+        } catch (JSONException e) {
+            throw new ImgProcException(e);
+        }
 
-        if (mContract == 1 && mBrightness == 0) {
+        if (contract == 1 && brightness == 0) {
             mLut = null;
         } else {
             mLut = new MatOfInt();
             mLut.create(256, 1, CvType.CV_8UC3);
             for (int i = 0; i < 256; i++) {
-                double value = (i - 127.0) * mContract + 127.0 + mBrightness;
+                double value = (i - 127.0) * contract + 127.0 + brightness;
                 mLut.put(i, 0, value, value, value);
             }
         }
