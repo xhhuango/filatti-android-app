@@ -1,0 +1,14 @@
+{
+  "filter": "HistogramEqualization",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "histogram_equalization",
+      "params": {
+      }
+    }
+  ]
+}
