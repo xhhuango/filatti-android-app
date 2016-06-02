@@ -1,0 +1,18 @@
+{
+  "filter": "ColorGradient",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "color_gradient",
+      "params": {
+        "fromColor": [255, 91, 0],
+        "toColor": [255, 173, 0],
+        "type": "vertical",
+        "alpha": 0.3
+      }
+    }
+  ]
+}

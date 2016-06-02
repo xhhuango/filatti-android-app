@@ -28,8 +28,8 @@ public class ContrastBrightnessAdjustment extends Adjustment {
 
         /**
          * TODO: check range
-         * CONTRAST: [-100, 100]
-         * BRIGHTNESS: [-100, 100]
+         * CONTRAST: [-100, 0, 100]
+         * BRIGHTNESS: [-100, 0, 100]
          */
 
         double contract;

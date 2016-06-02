@@ -59,7 +59,7 @@ public class PhotoActivity extends Activity {
             Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
             src = tmp;
 
-            Filter filter = createFilter("histogram_equalization.json");
+            Filter filter = createFilter("color_gradient.json");
             Mat dst = new MatOfInt();
             filter.apply(src, dst);
 

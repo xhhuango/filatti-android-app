@@ -26,7 +26,7 @@ public class SaturationAdjustment extends Adjustment {
 
         /**
          * TODO: check range
-         * SATURATION: [-100, 100]
+         * SATURATION: [-100, 0, 100]
          */
 
         try {
