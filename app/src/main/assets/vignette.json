@@ -1,0 +1,16 @@
+{
+  "filter": "vignette",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "vignette",
+      "params": {
+        "radius": 0.8,
+        "power": 0.8
+      }
+    }
+  ]
+}

@@ -17,6 +17,7 @@ public class AdjustmentFactory {
         ADJUSTMENT_MAP.put(SaturationAdjustment.NAME, SaturationAdjustment.class);
         ADJUSTMENT_MAP.put(HistogramEqualizationAdjustment.NAME, HistogramEqualizationAdjustment.class);
         ADJUSTMENT_MAP.put(ColorGradientAdjustment.NAME, ColorGradientAdjustment.class);
+        ADJUSTMENT_MAP.put(VignetteAdjustment.NAME, VignetteAdjustment.class);
     }
 
     public Adjustment importAdjustment(JSONObject object) throws ImgProcException {

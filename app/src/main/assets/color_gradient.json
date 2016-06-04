@@ -8,10 +8,12 @@
     {
       "adjustment": "color_gradient",
       "params": {
-        "fromColor": [255, 91, 0],
-        "toColor": [255, 173, 0],
-        "type": "vertical",
-        "alpha": 0.3
+        "fromColor": [0, 255, 0],
+        "toColor": [0, 0, 255],
+        "orientation": "radial",
+        "alpha": 0.3,
+        "radius": 1.0,
+        "power": 0.8
       }
     }
   ]
