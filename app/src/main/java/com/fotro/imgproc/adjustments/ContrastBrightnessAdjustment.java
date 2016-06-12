@@ -32,22 +32,29 @@ public class ContrastBrightnessAdjustment extends Adjustment {
          * BRIGHTNESS: [-100, 0, 100]
          */
 
-        double contract;
+        /**
+         * TODO: Maybe to implement contrast automatically adjustment
+         * OpenCV's CLAHE (Contrast Limited Adaptive Histogram Equalization)
+         * http://stackoverflow.com/questions/24341114/simple-illumination-correction-in-images-opencv-c
+         * Then maybe this can replace HistogramEqualizationAdjustment
+         */
+
+        double contrast;
         double brightness;
         try {
-            contract = (getParams(object).getInt(CONTRAST) / 2.0 + 100.0) / 100.0;
+            contrast = (getParams(object).getInt(CONTRAST) / 2.0 + 100.0) / 100.0;
             brightness = getParams(object).getInt(BRIGHTNESS);
         } catch (JSONException e) {
             throw new ImgProcException(e);
         }
 
-        if (contract == 1 && brightness == 0) {
+        if (contrast == 1 && brightness == 0) {
             mLut = null;
         } else {
             mLut = new MatOfInt();
             mLut.create(256, 1, CvType.CV_8UC3);
             for (int i = 0; i < 256; i++) {
-                double value = (i - 127.0) * contract + 127.0 + brightness;
+                double value = (i - 127.0) * contrast + 127.0 + brightness;
                 mLut.put(i, 0, value, value, value);
             }
         }

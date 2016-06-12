@@ -1,15 +1,14 @@
 {
-  "filter": "ContrastBrightness",
+  "filter": "Sharpen",
   "description": "",
   "author": "",
   "license": "",
   "version": "",
   "actions": [
     {
-      "adjustment": "contrast_brightness",
+      "adjustment": "sharpen",
       "params": {
-        "contrast": 50,
-        "brightness": 0
+        "sharpen": 70
       }
     }
   ]
