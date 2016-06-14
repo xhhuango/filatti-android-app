@@ -1,0 +1,26 @@
+{
+  "filter": "Levels",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "level",
+      "params": {
+        "red": {
+          "in": [50, 1.0, 255],
+          "out": [0, 255]
+        },
+        "green": {
+          "in": [50, 1.0, 255],
+          "out": [0, 255]
+        },
+        "blue": {
+          "in": [50, 1.0, 255],
+          "out": [0, 255]
+        }
+      }
+    }
+  ]
+}
