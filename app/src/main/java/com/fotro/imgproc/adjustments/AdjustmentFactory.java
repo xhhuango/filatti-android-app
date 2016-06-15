@@ -20,6 +20,7 @@ public class AdjustmentFactory {
         ADJUSTMENT_MAP.put(VignetteAdjustment.NAME, VignetteAdjustment.class);
         ADJUSTMENT_MAP.put(SharpenAdjustment.NAME, SharpenAdjustment.class);
         ADJUSTMENT_MAP.put(LevelAdjustment.NAME, LevelAdjustment.class);
+        ADJUSTMENT_MAP.put(TemperatureAdjustment.NAME, TemperatureAdjustment.class);
     }
 
     public Adjustment importAdjustment(JSONObject object) throws ImgProcException {

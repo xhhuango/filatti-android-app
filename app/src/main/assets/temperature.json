@@ -1,0 +1,16 @@
+{
+  "filter": "Temperature",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "temperature",
+      "params": {
+        "kelvin": 1600,
+        "strength": 50
+      }
+    }
+  ]
+}
