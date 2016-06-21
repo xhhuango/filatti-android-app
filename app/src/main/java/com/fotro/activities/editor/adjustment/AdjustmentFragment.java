@@ -1,6 +1,6 @@
 package com.fotro.activities.editor.adjustment;
 
-import android.media.Image;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.fotro.PhotoManager;
 import com.fotro.R;
 
 public class AdjustmentFragment extends Fragment {
     private ViewGroup mRootView;
-
     private ImageView mImageView;
+
+    private Bitmap mPhoto;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -35,7 +35,12 @@ public class AdjustmentFragment extends Fragment {
         int size = displayMetrics.widthPixels;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size, size);
         mImageView.setLayoutParams(layoutParams);
+    }
 
-        mImageView.setImageBitmap(PhotoManager.getInstance().getPhoto());
+    public void setPhoto(Bitmap bitmap) {
+        mPhoto = bitmap;
+        if (mImageView != null) {
+            mImageView.setImageBitmap(mPhoto);
+        }
     }
 }

@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/contentFragment"
-        android:name="com.fotro.activities.photography.gallery.GalleryFragment"
+        android:name="com.fotro.activities.photography.GalleryFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/footer"

@@ -4,12 +4,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.fotro.R;
-import com.fotro.activities.photography.gallery.GalleryFragment;
-import com.fotro.utils.BitmapUtils;
+
+import java.util.List;
 
 public class PhotographyActivity extends FragmentActivity {
     private PhotographyPresenter mPresenter;
@@ -22,6 +21,7 @@ public class PhotographyActivity extends FragmentActivity {
         setContentView(R.layout.activity_photography);
 
         initViews();
+
         mPresenter = new PhotographyPresenter(this);
     }
 
@@ -41,8 +41,17 @@ public class PhotographyActivity extends FragmentActivity {
         });
     }
 
-    Bitmap getPhoto() {
-        Bitmap bitmap = mGalleryFragment.crop();
-        return BitmapUtils.resizeBitmap(bitmap, 1080, 1080);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.onResume();
+    }
+
+    void showPhotos(List<Long> photoList) {
+        mGalleryFragment.setPhotoList(photoList);
+    }
+
+    Bitmap getSelectedPhoto() {
+        return mGalleryFragment.crop();
     }
 }

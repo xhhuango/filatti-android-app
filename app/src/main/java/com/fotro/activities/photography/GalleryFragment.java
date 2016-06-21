@@ -1,7 +1,5 @@
-package com.fotro.activities.photography.gallery;
+package com.fotro.activities.photography;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,8 +59,6 @@ public class GalleryFragment extends Fragment {
         gridView.setNumColumns(GRID_COLUMNS);
         final int mImageViewSize = getResources().getDisplayMetrics().widthPixels / GRID_COLUMNS;
         gridView.setColumnWidth(mImageViewSize);
-        gridView.setHorizontalSpacing(2);
-        gridView.setVerticalSpacing(2);
         mGridViewAdapter = new BaseAdapter() {
             private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
                 @Override
@@ -111,38 +107,23 @@ public class GalleryFragment extends Fragment {
             }
         };
         gridView.setAdapter(mGridViewAdapter);
+
+        setPhotoList(mPhotoList);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        mPhotoList = getPhotoList();
-        display(mPhotoList.get(0));
-        mGridViewAdapter.notifyDataSetChanged();
     }
 
-    private List<Long> getPhotoList() {
-        String[] projection = new String[]{MediaStore.Images.Media._ID};
-        ContentResolver contentResolver = getActivity().getContentResolver();
-        Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                              projection,
-                                              "",
-                                              null,
-                                              MediaStore.Images.Media.DATE_ADDED);
-
-        List<Long> photoList = new ArrayList<>();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int idColumn = cursor.getColumnIndex(projection[0]);
-                do {
-                    Long photoId = cursor.getLong(idColumn);
-                    photoList.add(0, photoId);
-                } while (cursor.moveToNext());
+    void setPhotoList(List<Long> photoList) {
+        mPhotoList = photoList;
+        if (mGridViewAdapter != null) {
+            if (photoList != null && photoList.size() > 0) {
+                display(mPhotoList.get(0));
             }
-            cursor.close();
+            mGridViewAdapter.notifyDataSetChanged();
         }
-        return photoList;
     }
 
     private void display(long photoId) {
@@ -157,7 +138,7 @@ public class GalleryFragment extends Fragment {
         return Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI + "/" + photoId);
     }
 
-    public Bitmap crop() {
+    Bitmap crop() {
         return mCropView.crop();
     }
 }

@@ -1,9 +1,15 @@
 package com.fotro.activities.editor;
 
-class EditorPresenter {
-    private final EditorActivity mActivity;
+import com.fotro.PhotoManager;
+import com.fotro.activities.mvp.AbstractPresenter;
 
+class EditorPresenter extends AbstractPresenter<EditorActivity> {
     EditorPresenter(EditorActivity activity) {
-        mActivity = activity;
+        super(activity);
+    }
+
+    @Override
+    protected void onResume() {
+        getActivity().setPhoto(PhotoManager.getInstance().getPhoto());
     }
 }
