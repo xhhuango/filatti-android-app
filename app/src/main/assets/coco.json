@@ -1,0 +1,50 @@
+{
+  "filter": "coco",
+  "description": "",
+  "author": "",
+  "license": "",
+  "version": "",
+  "actions": [
+    {
+      "adjustment": "curve",
+      "params": {
+        "value": {
+          "in": [0, 117, 241, 255],
+          "out": [0, 87, 255, 255]
+        },
+        "red": {
+          "in": [0, 173, 255],
+          "out": [0, 146, 255]
+        },
+        "green": {
+          "in": [0, 255],
+          "out": [0, 255]
+        },
+        "blue": {
+          "in": [0, 60, 231, 255],
+          "out": [0, 71, 203, 255]
+        }
+      }
+    },
+    {
+      "adjustment": "saturation",
+      "params": {
+        "saturation": 15
+      }
+    },
+    {
+      "adjustment": "contrast_brightness",
+      "params": {
+        "contrast": 0,
+        "brightness": 11
+      }
+    },
+    {
+      "adjustment": "vignette",
+      "params": {
+        "radius": 0.9,
+        "power": 0.5
+      }
+    }
+  ]
+}

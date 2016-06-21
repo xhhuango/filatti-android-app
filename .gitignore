@@ -4,6 +4,7 @@
 
 # Files for the ART/Dalvik VM
 *.dex
+*.hprof
 
 # Java class files
 *.class
@@ -27,4 +28,3 @@ local.properties
 
 .DS_Store
 .Trashes
-

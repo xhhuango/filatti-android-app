@@ -1,4 +1,4 @@
-package com.fotro;
+package com.fotro.activities;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.fotro.R;
 import com.fotro.imgproc.ImgProcException;
 import com.fotro.imgproc.filters.Filter;
 import com.fotro.imgproc.filters.FilterFactory;
+import com.fotro.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,8 +23,10 @@ import org.opencv.imgproc.Imgproc;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class PhotoActivity extends Activity {
-    static final String EXTRA_PHOTO_URI = "photoUri";
+public class AdjustmentActivity extends Activity {
+    private static final String TAG = AdjustmentActivity.class.getSimpleName();
+
+    public static final String EXTRA_PHOTO_URI = "photoUri";
 
     static {
         System.loadLibrary("opencv_java3");
@@ -32,42 +36,76 @@ public class PhotoActivity extends Activity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo_activity);
+        setContentView(R.layout.adjustment_activity);
 
         Uri photoUri = getIntent().getParcelableExtra(EXTRA_PHOTO_URI);
         ImageView beforeImageView = (ImageView) findViewById(R.id.beforePhotoImageView);
-        ImageView afterImageView = (ImageView) findViewById(R.id.afterPhotoImageView);
+        final ImageView afterImageView = (ImageView) findViewById(R.id.afterPhotoImageView);
 
         Bitmap bitmap = null;
-        try {
-            bitmap = new UserPicture(photoUri, getContentResolver()).getBitmap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            bitmap = new UserPicture(photoUri, getContentResolver()).getBitmap();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         beforeImageView.setImageBitmap(bitmap);
-        afterImageView.setImageBitmap(applyFilter(bitmap));
+        final Bitmap finalBitmap = bitmap;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Bitmap bitmap1 = applyFilter(finalBitmap);
+
+                AdjustmentActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        afterImageView.setImageBitmap(bitmap1);
+                    }
+                });
+            }
+        }).start();
     }
 
     private Bitmap applyFilter(Bitmap bitmap) {
         try {
             Mat tmp;
 
+            Logger.debug(TAG, "tmp size = " + (bitmap.getRowBytes() / 1000.0));
+
+            long before, after;
+
             Mat src = new MatOfInt();
+
+            before = System.currentTimeMillis();
             Utils.bitmapToMat(bitmap, src);
+            after = System.currentTimeMillis();
+            Logger.debug(TAG, "bitmapToMat(bitmap, src): " + (after - before));
+
             tmp = new MatOfInt();
+            before = System.currentTimeMillis();
             Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
+            after = System.currentTimeMillis();
+            Logger.debug(TAG, "cvtColor(src, tmp, RGBA2RGB): " + (after - before));
             src = tmp;
 
-            Filter filter = createFilter("temperature.json");
+            Filter filter = createFilter("coco.json");
             Mat dst = new MatOfInt();
+            before = System.currentTimeMillis();
             filter.apply(src, dst);
+            after = System.currentTimeMillis();
+            Logger.debug(TAG, "apply(): " + (after - before));
 
             tmp = new MatOfInt();
+            before = System.currentTimeMillis();
             Imgproc.cvtColor(dst, tmp, Imgproc.COLOR_RGB2RGBA);
+            after = System.currentTimeMillis();
+            Logger.debug(TAG, "cvtColor(dst, tmp, RGB2RGBA): " + (after - before));
             dst = tmp;
             Bitmap appliedBitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
+            before = System.currentTimeMillis();
             Utils.matToBitmap(dst, appliedBitmap);
+            after = System.currentTimeMillis();
+            Logger.debug(TAG, "matToBitmap(dst, appliedBitmap): " + (after - before));
 
             return appliedBitmap;
         } catch (ImgProcException e) {

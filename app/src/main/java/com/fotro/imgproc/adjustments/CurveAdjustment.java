@@ -58,6 +58,8 @@ class CurveAdjustment extends Adjustment {
         mLut.create(256, 1, CvType.CV_8UC3);
         for (int i = 0; i < 256; i++) {
             double value = valueInterpolator.value(i);
+            if (value > 255)
+                value = 255;
             double red = redInterpolator.value(value);
             double green = greenInterpolator.value(value);
             double blue = blueInterpolator.value(value);
