@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fotro.R;
-import com.fotro.activities.photography.PhotographyActivity;
+import com.fotro.activities.gallery.GalleryActivity;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         albumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PhotographyActivity.class);
+                Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.fotro;
+package com.fotro.photo;
 
 import android.graphics.Bitmap;
 
@@ -19,11 +19,16 @@ public final class PhotoManager {
     private PhotoManager() {
     }
 
-    public void setPhoto(Bitmap bitmap) {
+    public void clear() {
         if (mBitmap != null) {
             mBitmap.recycle();
+            mBitmap = null;
         }
-        mBitmap = BitmapUtils.resizeBitmap(bitmap, 1080, 1080);
+    }
+
+    public void setPhoto(Bitmap bitmap, AspectRatio aspectRatio) {
+        clear();
+        mBitmap = BitmapUtils.resizeBitmap(bitmap, aspectRatio.getWidth(), aspectRatio.getHeight());
     }
 
     public Bitmap getPhoto() {
