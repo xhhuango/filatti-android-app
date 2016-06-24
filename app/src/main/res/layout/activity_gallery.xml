@@ -41,7 +41,6 @@
         android:id="@+id/previewContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/gridView"
         android:layout_below="@+id/header"
         android:orientation="vertical">
 
@@ -50,32 +49,27 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="1dp"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/aspectRatioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/gridView"
         android:layout_alignParentStart="true"
-        android:background="#FFFFFF"
-        android:text="1:1"/>
+        android:background="#FFFFFF"/>
 
     <Button
         android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/gridView"
         android:layout_alignParentEnd="true"
         android:background="#FFFFFF"
         android:text="Camera"/>
-
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="1dp"/>
 
 </RelativeLayout>

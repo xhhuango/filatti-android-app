@@ -3,20 +3,24 @@ package com.fotro.activities.gallery;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.fotro.activities.editor.EditorActivity;
 import com.fotro.activities.mvp.AbstractPresenter;
 import com.fotro.photo.AspectRatio;
 import com.fotro.photo.PhotoManager;
+import com.fotro.utils.ThreadPool;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
     private List<Long> mPhotoList;
 
-    private AspectRatio mAspectRatio = AspectRatio.RATIO_OF_1_TO_1;
+    private File mPhotographyFile;
+    private Uri mPhotographyFileUri;
 
     GalleryPresenter(GalleryActivity activity) {
         super(activity);
@@ -24,12 +28,28 @@ class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
 
     @Override
     protected void onCreate() {
-        mActivity.setAspectRatio(mAspectRatio);
     }
 
     @Override
     protected void onResume() {
-        mActivity.setPhotoList(getPhotoList());
+        if (mPhotographyFileUri == null) {
+            ThreadPool.run(new Runnable() {
+                @Override
+                public void run() {
+                    mActivity.setPhotoList(getPhotoList());
+                    mActivity.display(mPhotoList.get(0));
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onPause() {
+    }
+
+    @Override
+    protected void onDestroy() {
+        deletePhotographyFileIfExists();
     }
 
     private List<Long> getPhotoList() {
@@ -59,27 +79,51 @@ class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
         return mPhotoList;
     }
 
+    private void deletePhotographyFileIfExists() {
+        if (mPhotographyFileUri != null) {
+            if (mPhotographyFile.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                mPhotographyFile.delete();
+            }
+        }
+    }
+
     void onBackClick() {
         PhotoManager.getInstance().clear();
         mActivity.finish();
     }
 
     void onNextClick() {
-        PhotoManager.getInstance().setPhoto(mActivity.crop(), mAspectRatio);
+        PhotoManager.getInstance().setPhoto(mActivity.crop(), mActivity.getAspectRatio());
 
         Intent intent = new Intent(mActivity, EditorActivity.class);
         mActivity.startActivity(intent);
+        mActivity.finish();
     }
 
     void onAspectRatioClick() {
-        mAspectRatio =
-                (mAspectRatio == AspectRatio.RATIO_OF_16_TO_9)
-                        ? AspectRatio.RATIO_OF_1_TO_1
-                        : AspectRatio.RATIO_OF_16_TO_9;
-        mActivity.setAspectRatio(mAspectRatio);
+        mActivity.setAspectRatio((mActivity.getAspectRatio() == AspectRatio.RATIO_OF_16_TO_9)
+                                         ? AspectRatio.RATIO_OF_1_TO_1
+                                         : AspectRatio.RATIO_OF_16_TO_9);
     }
 
     void onCameraClick() {
+        deletePhotographyFileIfExists();
 
+        mPhotographyFile = PhotoManager.getInstance().createPictureFile();
+        mPhotographyFileUri = Uri.fromFile(mPhotographyFile);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotographyFileUri);
+        mActivity.startActivityForResult(intent, GalleryActivity.IMAGE_CAPTURE_REQUEST_CODE);
+    }
+
+    void onPictureTaken(boolean hasTaken) {
+        if (hasTaken) {
+            mActivity.display(mPhotographyFileUri);
+        } else {
+            mPhotographyFileUri = null;
+            mPhotographyFile = null;
+        }
     }
 }

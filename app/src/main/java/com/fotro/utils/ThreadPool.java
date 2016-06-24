@@ -13,6 +13,10 @@ public final class ThreadPool {
     private ThreadPool() {
     }
 
+    public static boolean checkIfMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
+    }
+
     public static void runOnUiThread(Runnable runnable) {
         if (sUiThreadHandler == null) {
             sUiThreadHandler = new Handler(Looper.getMainLooper());

@@ -1,10 +1,20 @@
 package com.fotro.photo;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.fotro.utils.BitmapUtils;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public final class PhotoManager {
+    private static final String PICTURE_DIRECTORY = "Fotro";
+    private static final String PICTURE_PREFIX = "IMG_";
+    private static final String PICTURE_EXTENSION = ".jpg";
+
     private static PhotoManager sPhotoManager;
 
     public static synchronized PhotoManager getInstance() {
@@ -33,5 +43,22 @@ public final class PhotoManager {
 
     public Bitmap getPhoto() {
         return mBitmap;
+    }
+
+    public File createPictureFile() {
+        File publicPictureDirectory =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File pictureDirectory = new File(publicPictureDirectory, PICTURE_DIRECTORY);
+
+        if (!pictureDirectory.exists()) {
+            if (!pictureDirectory.mkdirs()) {
+                return null;
+            }
+        }
+
+        String timestamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+        return new File(pictureDirectory.getPath() + File.separator
+                                + PICTURE_PREFIX + timestamp + PICTURE_EXTENSION);
     }
 }

@@ -1,4 +1,4 @@
-package com.fotro.activities;
+package com.fotro.activities.editor;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

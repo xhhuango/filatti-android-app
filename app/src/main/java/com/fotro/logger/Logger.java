@@ -21,4 +21,8 @@ public final class Logger {
     public static void error(String tag, String msg, Throwable throwable) {
         Log.e(tag, msg, throwable);
     }
+
+    public static void error(String tag, Throwable throwable) {
+        Log.e(tag, throwable.getMessage(), throwable);
+    }
 }
