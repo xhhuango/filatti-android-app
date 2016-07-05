@@ -8,11 +8,8 @@ import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.fotro.R;
 import com.fotro.photo.AspectRatio;
@@ -32,12 +29,12 @@ public class GalleryActivity extends FragmentActivity {
 
     private GalleryPresenter mPresenter;
 
-    private Button mAspectRatioButton;
+    private ImageButton mAspectRatioButton;
 
     private CropView mCropView;
     private AspectRatio mAspectRatio = AspectRatio.RATIO_OF_1_TO_1;
 
-    private BaseAdapter mPhotoListAdapter;
+    private PhotoListAdapter mPhotoListAdapter;
     private List<Long> mPhotoList = new ArrayList<>();
 
     @Override
@@ -80,7 +77,7 @@ public class GalleryActivity extends FragmentActivity {
     private void initViews() {
         initBackButton();
         initNextButton();
-        initImageViewTouch();
+        initImageView();
         initAspectRatioButton();
         initCameraButton();
         initGridView();
@@ -106,7 +103,7 @@ public class GalleryActivity extends FragmentActivity {
         });
     }
 
-    private void initImageViewTouch() {
+    private void initImageView() {
         mCropView = (CropView) findViewById(R.id.cropView);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) mCropView.getLayoutParams();
@@ -116,7 +113,7 @@ public class GalleryActivity extends FragmentActivity {
     }
 
     private void initAspectRatioButton() {
-        mAspectRatioButton = (Button) findViewById(R.id.aspectRatioButton);
+        mAspectRatioButton = (ImageButton) findViewById(R.id.aspectRatioButton);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) mAspectRatioButton.getLayoutParams();
         layoutParams.topMargin = ScreenUtils.getScreenSize(getResources()).getWidth();
@@ -132,7 +129,7 @@ public class GalleryActivity extends FragmentActivity {
     }
 
     private void initCameraButton() {
-        Button button = (Button) findViewById(R.id.cameraButton);
+        ImageButton button = (ImageButton) findViewById(R.id.cameraButton);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) button.getLayoutParams();
         layoutParams.topMargin = ScreenUtils.getScreenSize(getResources()).getWidth();
@@ -152,7 +149,7 @@ public class GalleryActivity extends FragmentActivity {
         gridView.setNumColumns(GRID_COLUMNS);
         int mImageViewSize = getResources().getDisplayMetrics().widthPixels / GRID_COLUMNS;
         gridView.setColumnWidth(mImageViewSize);
-        mPhotoListAdapter = new PhotoListAdapter(mImageViewSize);
+        mPhotoListAdapter = new PhotoListAdapter(this, mImageViewSize);
         gridView.setAdapter(mPhotoListAdapter);
 
         setPhotoList(mPhotoList);
@@ -164,7 +161,10 @@ public class GalleryActivity extends FragmentActivity {
         mAspectRatio = aspectRatio;
         if (mCropView != null) {
             mCropView.setViewportRatio(aspectRatio.getRatio());
-            mAspectRatioButton.setText(mAspectRatio == AspectRatio.RATIO_OF_1_TO_1 ? "16:9" : "1:1");
+            int res = (mAspectRatio == AspectRatio.RATIO_OF_1_TO_1)
+                    ? R.drawable.aspect_ratio_16_9
+                    : R.drawable.aspect_ratio_1_1;
+            mAspectRatioButton.setImageResource(res);
         }
     }
 
@@ -177,12 +177,7 @@ public class GalleryActivity extends FragmentActivity {
 
         mPhotoList = photoList;
         if (mPhotoListAdapter != null) {
-            ThreadPool.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mPhotoListAdapter.notifyDataSetChanged();
-                }
-            });
+            mPhotoListAdapter.setPhotoList(mPhotoList);
         }
     }
 
@@ -207,80 +202,11 @@ public class GalleryActivity extends FragmentActivity {
         });
     }
 
-    private Uri getPhotoUri(long photoId) {
+    Uri getPhotoUri(long photoId) {
         return Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI + "/" + photoId);
     }
 
     Bitmap crop() {
         return mCropView.crop();
-    }
-
-    private class PhotoListAdapter extends BaseAdapter {
-        private static final int PADDING = 1;
-
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                display(mPhotoList.get((Integer) view.getTag()));
-            }
-        };
-
-        private final int mImageSize;
-
-        private PhotoListAdapter(int imageViewSize) {
-            Preconditions.checkArgument(imageViewSize > 0);
-            mImageSize = imageViewSize - (PADDING * 2);
-        }
-
-        @Override
-        public int getCount() {
-            return mPhotoList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mPhotoList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return mPhotoList.get(position);
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            final ImageButton imageButton;
-
-            if (convertView == null) {
-                imageButton = new ImageButton(GalleryActivity.this);
-                imageButton.setLayoutParams(new GridView.LayoutParams(mImageSize, mImageSize));
-                imageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageButton.setPadding(PADDING, PADDING, PADDING, PADDING);
-            } else {
-                imageButton = (ImageButton) convertView;
-                imageButton.setImageBitmap(null);
-            }
-
-            final Uri photoUri = getPhotoUri(mPhotoList.get(position));
-            ThreadPool.run(new Runnable() {
-                @Override
-                public void run() {
-                    final Bitmap bitmap = DecodeUtils.decode(GalleryActivity.this,
-                                                             photoUri,
-                                                             mImageSize,
-                                                             mImageSize);
-                    ThreadPool.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            imageButton.setImageBitmap(bitmap);
-                        }
-                    });
-                }
-            });
-            imageButton.setTag(position);
-            imageButton.setOnClickListener(mOnClickListener);
-
-            return imageButton;
-        }
     }
 }

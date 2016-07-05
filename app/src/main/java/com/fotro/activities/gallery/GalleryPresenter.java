@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.fotro.activities.editor.EditorActivity;
+import com.fotro.activities.effect.EffectActivity;
 import com.fotro.activities.mvp.AbstractPresenter;
 import com.fotro.photo.AspectRatio;
 import com.fotro.photo.PhotoManager;
@@ -96,7 +96,7 @@ class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
     void onNextClick() {
         PhotoManager.getInstance().setPhoto(mActivity.crop(), mActivity.getAspectRatio());
 
-        Intent intent = new Intent(mActivity, EditorActivity.class);
+        Intent intent = new Intent(mActivity, EffectActivity.class);
         mActivity.startActivity(intent);
         mActivity.finish();
     }

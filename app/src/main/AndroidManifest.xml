@@ -42,7 +42,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".activities.editor.EditorActivity"
+            android:name=".activities.effect.EffectActivity"
             android:screenOrientation="portrait"/>
     </application>
 
