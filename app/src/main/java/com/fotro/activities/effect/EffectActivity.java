@@ -57,6 +57,11 @@ public class EffectActivity extends FragmentActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        mPresenter.onBackPressed();
+    }
+
     private void initViews() {
         initBackButton();
         initNextButton();
@@ -97,7 +102,10 @@ public class EffectActivity extends FragmentActivity {
 
     private void initGridView() {
         GridView gridView = (GridView) findViewById(R.id.gridView);
-        mEffectItemListAdapter = new EffectItemListAdapter();
+        gridView.setNumColumns(4);
+        int mImageViewSize = getResources().getDisplayMetrics().widthPixels / 4;
+        gridView.setColumnWidth(mImageViewSize);
+        mEffectItemListAdapter = new EffectItemListAdapter(this, mImageViewSize);
         gridView.setAdapter(mEffectItemListAdapter);
 
         setEffectItemList(mEffectItemList);

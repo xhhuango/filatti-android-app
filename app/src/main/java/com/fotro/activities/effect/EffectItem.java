@@ -1,17 +1,26 @@
 package com.fotro.activities.effect;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
+
 import com.fotro.effects.Effect;
 import com.google.common.base.Preconditions;
 
-class EffectItem {
-    private final Effect mEffect;
+public abstract class EffectItem {
+    protected final Effect mEffect;
 
-    EffectItem(Effect effect) {
+    protected EffectItem(Effect effect) {
         Preconditions.checkNotNull(effect);
         mEffect = effect;
     }
 
-    String getName() {
+    @StringRes
+    public abstract int getDisplayName();
+
+    @DrawableRes
+    public abstract int getIcon();
+
+    public String getName() {
         return mEffect.getName();
     }
 }

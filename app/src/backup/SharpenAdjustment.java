@@ -1,4 +1,4 @@
-package com.fotro.effects.adjustments;
+package com.fotro.effects.adjusts;
 
 import com.fotro.effects.ImageProcessingException;
 

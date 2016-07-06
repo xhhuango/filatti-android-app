@@ -33,6 +33,7 @@ class PhotoListAdapter extends BaseAdapter {
     PhotoListAdapter(GalleryActivity activity, int imageViewSize) {
         Preconditions.checkNotNull(activity);
         Preconditions.checkArgument(imageViewSize > 0);
+
         mActivity = activity;
         mImageSize = imageViewSize - (PADDING * 2);
     }

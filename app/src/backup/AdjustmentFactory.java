@@ -1,8 +1,8 @@
-package com.fotro.effects.adjustments;
+package com.fotro.effects.adjusts;
 
 import com.fotro.effects.ImageProcessingException;
-import com.fotro.effects.adjustments.core.ContrastBrightnessAdjustment;
-import com.fotro.effects.adjustments.core.NoneAdjustment;
+import com.fotro.effects.adjusts.core.ContrastBrightnessAdjustment;
+import com.fotro.effects.adjusts.core.NoneAdjustment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

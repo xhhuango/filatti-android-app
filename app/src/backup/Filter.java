@@ -2,8 +2,8 @@ package com.fotro.effects.filters;
 
 import com.fotro.effects.ImageProcessing;
 import com.fotro.effects.ImageProcessingException;
-import com.fotro.effects.adjustments.Adjustment;
-import com.fotro.effects.adjustments.AdjustmentFactory;
+import com.fotro.effects.adjusts.Adjustment;
+import com.fotro.effects.adjusts.AdjustmentFactory;
 import com.google.common.base.Preconditions;
 
 import org.json.JSONArray;

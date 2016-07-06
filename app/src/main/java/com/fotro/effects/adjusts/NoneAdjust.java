@@ -1,10 +1,8 @@
-package com.fotro.effects.adjustments.core;
-
-import com.fotro.effects.adjustments.Adjustment;
+package com.fotro.effects.adjusts;
 
 import org.opencv.core.Mat;
 
-public class NoneAdjustment extends Adjustment {
+public class NoneAdjust extends Adjust {
     static final String NAME = "none";
 
     @Override

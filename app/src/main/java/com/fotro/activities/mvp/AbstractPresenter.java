@@ -31,4 +31,7 @@ public abstract class AbstractPresenter<T> {
 
     protected void onDestroy() {
     }
+
+    protected void onBackPressed() {
+    }
 }

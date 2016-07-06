@@ -1,10 +1,9 @@
-package com.fotro.effects.adjustments.simple;
+package com.fotro.effects.adjusts;
 
-import com.fotro.effects.adjustments.IllegalAdjustmentParameter;
-import com.fotro.effects.adjustments.core.ContrastBrightnessAdjustment;
+import com.fotro.effects.EffectException;
 import com.google.common.base.Preconditions;
 
-public class SimpleContrastBrightnessAdjustment extends ContrastBrightnessAdjustment {
+public class SimpleContrastBrightnessAdjust extends ContrastBrightnessAdjust {
     /**
      * CONTRAST: [-100, 0, 100]
      * value == 0: no change
@@ -12,7 +11,7 @@ public class SimpleContrastBrightnessAdjustment extends ContrastBrightnessAdjust
      * 0 < value <= 100: increase contrast
      */
     @Override
-    public void setContrast(double contrast) throws IllegalAdjustmentParameter {
+    public void setContrast(double contrast) throws EffectException {
         Preconditions.checkArgument(contrast >= -100 && contrast <= 100);
         super.setContrast((contrast / 2.0 + 100.0) / 100.0);
 
@@ -25,7 +24,7 @@ public class SimpleContrastBrightnessAdjustment extends ContrastBrightnessAdjust
      * 0 < value <= 100: increase contrast
      */
     @Override
-    public void setBrightness(int brightness) throws IllegalAdjustmentParameter {
+    public void setBrightness(int brightness) throws EffectException {
         Preconditions.checkArgument(brightness >= -100 && brightness <= 100);
         super.setBrightness(brightness);
     }

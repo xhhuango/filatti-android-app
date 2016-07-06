@@ -1,14 +1,13 @@
-package com.fotro.effects.adjustments.core;
+package com.fotro.effects.adjusts;
 
-import com.fotro.effects.adjustments.Adjustment;
-import com.fotro.effects.adjustments.IllegalAdjustmentParameter;
+import com.fotro.effects.EffectException;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
 
-public class ContrastBrightnessAdjustment extends Adjustment {
+public class ContrastBrightnessAdjust extends Adjust {
     static final String NAME = "contrast_brightness";
 
     private static final String CONTRAST = "contrast";
@@ -28,9 +27,9 @@ public class ContrastBrightnessAdjustment extends Adjustment {
      * 0 <= value < 1: decrease the contrast
      * 1 < value <= 3: increase
      */
-    public void setContrast(double contrast) throws IllegalAdjustmentParameter {
+    public void setContrast(double contrast) throws EffectException {
         if (contrast < 0 || contrast > 3)
-            throw new IllegalAdjustmentParameter(getName(), CONTRAST, "[0, 3]", contrast);
+            throw new EffectException(CONTRAST + " " + contrast + " should be in [0, 3]");
         mContrast = contrast;
     }
 
@@ -40,9 +39,9 @@ public class ContrastBrightnessAdjustment extends Adjustment {
      * -255 <= value < 0: decease the brightness
      * 0 < value <= 255: increase the brightness
      */
-    public void setBrightness(int brightness) throws IllegalAdjustmentParameter {
+    public void setBrightness(int brightness) throws EffectException {
         if (brightness < -255 || brightness > 255)
-            throw new IllegalAdjustmentParameter(getName(), BRIGHTNESS, "[-255, 255]", brightness);
+            throw new EffectException(BRIGHTNESS + " " + brightness + "should be in [-255, 255]");
         mBrightness = brightness;
     }
 
