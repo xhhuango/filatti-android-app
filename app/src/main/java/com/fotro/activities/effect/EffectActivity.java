@@ -31,7 +31,7 @@ public class EffectActivity extends FragmentActivity {
     private TextView mEffectNameTextView;
 
     private FrameLayout mEffectContainer;
-    private View mAdjustView;
+    private View mEffectSettingView;
 
     private List<EffectItem> mEffectItemList = new ArrayList<>();
     private Bitmap mPhotoBitmap;
@@ -82,6 +82,7 @@ public class EffectActivity extends FragmentActivity {
 
         initEffectHeader();
         initNoButton();
+        initResetButton();
         initOkButton();
         initEffectContainer();
 
@@ -153,7 +154,17 @@ public class EffectActivity extends FragmentActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mPresenter.onCancelEffectItem();
+            }
+        });
+    }
 
+    private void initResetButton() {
+        ImageButton button = (ImageButton) findViewById(R.id.resetButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.onResetEffectItem();
             }
         });
     }
@@ -163,7 +174,7 @@ public class EffectActivity extends FragmentActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mPresenter.onApplyEffectItem();
             }
         });
     }
@@ -197,14 +208,16 @@ public class EffectActivity extends FragmentActivity {
         }
     }
 
-    void showAdjustView(View adjustView, String title) {
-        Preconditions.checkNotNull(adjustView);
+    void showEffectSettingView(View effectSettingView, String title) {
+        Preconditions.checkNotNull(effectSettingView);
         Preconditions.checkNotNull(title);
 
-        if (mAdjustView != null) {
-            dismissAdjustView();
+        if (mEffectSettingView != null) {
+            dismissEffectSettingView();
         }
-        mEffectContainer.addView(adjustView);
+        mEffectSettingView = effectSettingView;
+        mEffectContainer.addView(effectSettingView);
+
         mGridView.setVisibility(View.GONE);
 
         mHeader.setVisibility(View.GONE);
@@ -212,10 +225,10 @@ public class EffectActivity extends FragmentActivity {
         mEffectHeader.setVisibility(View.VISIBLE);
     }
 
-    void dismissAdjustView() {
-        if (mAdjustView != null) {
-            mEffectContainer.removeView(mAdjustView);
-            mAdjustView = null;
+    void dismissEffectSettingView() {
+        if (mEffectSettingView != null) {
+            mEffectContainer.removeView(mEffectSettingView);
+            mEffectSettingView = null;
         }
         mGridView.setVisibility(View.VISIBLE);
 

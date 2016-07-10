@@ -24,14 +24,23 @@ public class ContrastAdjustItem extends EffectItem<ContrastBrightnessAdjust> {
     }
 
     @Override
+    public void apply() {
+
+    }
+
+    @Override
+    public void cancel() {
+
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
     public View getView(Context context) {
         ValueBar valueBar = new ValueBar(context);
-        valueBar.setOnValueChangeListener(new ValueBar.OnValueChangeListener() {
-            @Override
-            public void onValueChanged(int value) {
-
-            }
-        });
         return valueBar;
     }
 }

@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.fotro.R;
+import com.google.common.base.Preconditions;
 
 public class ValueBar extends LinearLayout {
     private LinearLayout mRoot;
@@ -43,7 +44,7 @@ public class ValueBar extends LinearLayout {
 
         initProgressBar();
 
-        setValueRange(mMaxValue, mMinValue, mValue);
+        initialize(mMaxValue, mMinValue, mValue, mOnValueChangeListener);
     }
 
     private void initProgressBar() {
@@ -67,18 +68,30 @@ public class ValueBar extends LinearLayout {
         });
     }
 
-    public void setValueRange(int maxValue, int minValue, int initValue) {
+    public void initialize(int maxValue,
+                           int minValue,
+                           int initValue,
+                           OnValueChangeListener listener) {
+        Preconditions.checkArgument(minValue < maxValue);
+
         mMaxValue = maxValue;
         mMinValue = minValue;
-        mValue = initValue;
+        mOnValueChangeListener = listener;
         if (mSeekBar != null) {
             mSeekBar.setMax(maxValue - minValue);
             mSeekBar.setProgress(initValue - minValue);
+            setValue(initValue);
         }
     }
 
-    public void setOnValueChangeListener(OnValueChangeListener listener) {
-        mOnValueChangeListener = listener;
+    public void setValue(int value) {
+        Preconditions.checkArgument(value >= mMinValue);
+        Preconditions.checkArgument(value <= mMaxValue);
+
+        mValue = value;
+        if (mSeekBar != null) {
+            mSeekBar.setProgress(value - mMinValue);
+        }
     }
 
     public interface OnValueChangeListener {

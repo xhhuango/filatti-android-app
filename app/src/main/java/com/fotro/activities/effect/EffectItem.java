@@ -26,6 +26,12 @@ public abstract class EffectItem<T extends Effect> {
     @DrawableRes
     public abstract int getIcon();
 
+    public abstract void apply();
+
+    public abstract void cancel();
+
+    public abstract void reset();
+
     public abstract View getView(Context context);
 
     public String getName() {

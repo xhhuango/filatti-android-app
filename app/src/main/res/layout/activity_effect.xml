@@ -26,6 +26,17 @@
             tools:ignore="ContentDescription"/>
 
         <ImageButton
+            android:id="@+id/resetButton"
+            android:layout_toEndOf="@+id/noButton"
+            android:layout_width="@dimen/header_icon_width"
+            android:layout_height="@dimen/header_icon_height"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/reset"
+            tools:ignore="ContentDescription"/>
+
+        <ImageButton
             android:id="@+id/okButton"
             android:layout_width="@dimen/header_icon_width"
             android:layout_height="@dimen/header_icon_height"
@@ -42,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/noButton"
+            android:layout_toEndOf="@+id/resetButton"
             android:layout_toStartOf="@id/okButton"/>
 
     </RelativeLayout>

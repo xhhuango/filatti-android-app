@@ -57,12 +57,15 @@ public class ContrastBrightnessAdjust extends Adjust {
     }
 
     @Override
-    public boolean apply(Mat srcRgba, Mat dstRgba) {
+    public Mat apply(Mat src) {
         if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT) {
-            return false;
+            return src;
         } else {
-            Core.LUT(srcRgba, getLut(mContrast, mBrightness), dstRgba);
-            return true;
+            Mat dst = new MatOfInt();
+            Mat lut = getLut(mContrast, mBrightness);
+            Core.LUT(src, lut, dst);
+            lut.release();
+            return dst;
         }
     }
 
