@@ -1,14 +1,15 @@
 package com.fotro.activities.effect;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 
-import com.fotro.activities.effect.adjusts.AdjustItem;
 import com.fotro.activities.effect.adjusts.BrightnessAdjustItem;
 import com.fotro.activities.effect.adjusts.ContrastAdjustItem;
 import com.fotro.activities.gallery.GalleryActivity;
 import com.fotro.activities.share.ShareActivity;
 import com.fotro.effects.Effect;
 import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
+import com.fotro.logger.Logger;
 import com.fotro.photo.PhotoManager;
 import com.fotro.activities.mvp.AbstractPresenter;
 
@@ -16,10 +17,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 class EffectPresenter extends AbstractPresenter<EffectActivity> {
+    private static final String TAG = EffectPresenter.class.getSimpleName();
+
+    private List<Effect> mAdjustList;
     private List<EffectItem> mAdjustItemList;
+    private Bitmap mPhoto;
 
     EffectPresenter(EffectActivity activity) {
         super(activity);
+        mPhoto = PhotoManager.getInstance().getPhoto();
+    }
+
+    @Override
+    protected EffectActivity getActivity() {
+        return super.getActivity();
     }
 
     @Override
@@ -28,7 +39,7 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
 
     @Override
     protected void onResume() {
-        mActivity.setPhoto(PhotoManager.getInstance().getPhoto());
+        mActivity.setPhoto(mPhoto);
         mActivity.setEffectItemList(getAdjustItemList());
     }
 
@@ -68,13 +79,39 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     }
 
     private synchronized List<EffectItem> getAdjustItemList() {
-        if (mAdjustItemList == null) {
+        if (mAdjustList == null || mAdjustItemList == null) {
+            mAdjustList = new ArrayList<>();
             mAdjustItemList = new ArrayList<>();
 
+            EffectItem.OnEffectChangeListener listener = new EffectItem.OnEffectChangeListener() {
+                @Override
+                public void onEffectChanged() {
+                    onChangeEffect();
+                }
+            };
+
             ContrastBrightnessAdjust contrastBrightnessAdjust = new ContrastBrightnessAdjust();
-            mAdjustItemList.add(new BrightnessAdjustItem(contrastBrightnessAdjust));
-            mAdjustItemList.add(new ContrastAdjustItem(contrastBrightnessAdjust));
+            mAdjustList.add(contrastBrightnessAdjust);
+            mAdjustItemList.add(new BrightnessAdjustItem(contrastBrightnessAdjust, listener));
+            mAdjustItemList.add(new ContrastAdjustItem(contrastBrightnessAdjust, listener));
         }
         return mAdjustItemList;
+    }
+
+    void onCancelEffectItem() {
+        // TODO
+    }
+
+    void onApplyEffectItem() {
+        // TODO
+    }
+
+    private void onChangeEffect() {
+        Logger.debug(TAG, "Changed");
+    }
+
+    void onSelectEffectItem(EffectItem effectItem) {
+        mActivity.showAdjustView(effectItem.getView(mActivity),
+                                 mActivity.getString(effectItem.getDisplayName()));
     }
 }

@@ -1,11 +1,16 @@
 package com.fotro.activities.effect.adjusts;
 
-import com.fotro.R;
-import com.fotro.effects.Effect;
+import android.content.Context;
+import android.view.View;
 
-public class ContrastAdjustItem extends AdjustItem {
-    public ContrastAdjustItem(Effect effect) {
-        super(effect);
+import com.fotro.R;
+import com.fotro.activities.effect.EffectItem;
+import com.fotro.activities.effect.ui.ValueBar;
+import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
+
+public class ContrastAdjustItem extends EffectItem<ContrastBrightnessAdjust> {
+    public ContrastAdjustItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
+        super(effect, listener);
     }
 
     @Override
@@ -16,5 +21,17 @@ public class ContrastAdjustItem extends AdjustItem {
     @Override
     public int getIcon() {
         return R.drawable.contrast;
+    }
+
+    @Override
+    public View getView(Context context) {
+        ValueBar valueBar = new ValueBar(context);
+        valueBar.setOnValueChangeListener(new ValueBar.OnValueChangeListener() {
+            @Override
+            public void onValueChanged(int value) {
+
+            }
+        });
+        return valueBar;
     }
 }

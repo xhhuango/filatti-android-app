@@ -11,7 +11,7 @@ public class NoneAdjust extends Adjust {
     }
 
     @Override
-    public void apply(Mat srcRgb, Mat dstRgb) {
-        srcRgb.assignTo(dstRgb);
+    public boolean apply(Mat srcRgb, Mat dstRgb) {
+        return false;
     }
 }

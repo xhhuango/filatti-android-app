@@ -13,8 +13,11 @@ public class ContrastBrightnessAdjust extends Adjust {
     private static final String CONTRAST = "contrast";
     private static final String BRIGHTNESS = "brightness";
 
-    private double mContrast = 1;
-    private int mBrightness = 0;
+    private static final double CONTRACT_NO_EFFECT = 1;
+    private static final int BRIGHTNESS_NO_EFFECT = 0;
+
+    private double mContrast = CONTRACT_NO_EFFECT;
+    private int mBrightness = BRIGHTNESS_NO_EFFECT;
 
     @Override
     public String getName() {
@@ -33,6 +36,10 @@ public class ContrastBrightnessAdjust extends Adjust {
         mContrast = contrast;
     }
 
+    public double getContrast() {
+        return mContrast;
+    }
+
     /**
      * BRIGHTNESS as integer: [-255, 0, 255]
      * value == 0: no change
@@ -45,20 +52,26 @@ public class ContrastBrightnessAdjust extends Adjust {
         mBrightness = brightness;
     }
 
+    public int getBrightness() {
+        return mBrightness;
+    }
+
     @Override
-    public void apply(Mat srcRgb, Mat dstRgb) {
-        if (mContrast == 1 && mBrightness == 0)
-            srcRgb.convertTo(dstRgb, -1);
-        else
-            Core.LUT(srcRgb, getLut(mContrast, mBrightness), dstRgb);
+    public boolean apply(Mat srcRgba, Mat dstRgba) {
+        if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT) {
+            return false;
+        } else {
+            Core.LUT(srcRgba, getLut(mContrast, mBrightness), dstRgba);
+            return true;
+        }
     }
 
     private Mat getLut(double contrast, int brightness) {
         Mat lut = new MatOfInt();
-        lut.create(256, 1, CvType.CV_8UC3);
+        lut.create(256, 1, CvType.CV_8UC4);
         for (int i = 0; i < 256; i++) {
             double value = (i - 127.0) * contrast + 127.0 + brightness;
-            lut.put(i, 0, value, value, value);
+            lut.put(i, 0, value, value, value, i);
         }
         return lut;
     }

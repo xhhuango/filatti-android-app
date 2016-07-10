@@ -16,14 +16,14 @@ class EffectItemListAdapter extends BaseAdapter {
 
     private List<EffectItem> mEffectItemList = new ArrayList<>();
 
-    private final EffectActivity mActivity;
+    private final EffectPresenter mPresenter;
     private final int mItemWidth;
 
-    EffectItemListAdapter(EffectActivity activity, int itemViewWidth) {
-        Preconditions.checkNotNull(activity);
+    EffectItemListAdapter(EffectPresenter presenter, int itemViewWidth) {
+        Preconditions.checkNotNull(presenter);
         Preconditions.checkArgument(itemViewWidth > 0);
 
-        mActivity = activity;
+        mPresenter = presenter;
         mItemWidth = itemViewWidth - (PADDING * 2);
     }
 
@@ -59,7 +59,7 @@ class EffectItemListAdapter extends BaseAdapter {
         EffectItemView effectItemView;
 
         if (convertView == null) {
-            effectItemView = new EffectItemView(mActivity);
+            effectItemView = new EffectItemView(mPresenter.getActivity());
             effectItemView.setLayoutParams(new GridView.LayoutParams(mItemWidth, mItemWidth));
             effectItemView.setPadding(PADDING, PADDING, PADDING, PADDING);
         } else {
@@ -68,9 +68,15 @@ class EffectItemListAdapter extends BaseAdapter {
             effectItemView.setIcon(0);
         }
 
-        EffectItem effectItem = mEffectItemList.get(position);
+        final EffectItem effectItem = mEffectItemList.get(position);
         effectItemView.setName(effectItem.getDisplayName());
         effectItemView.setIcon(effectItem.getIcon());
+        effectItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.onSelectEffectItem(effectItem);
+            }
+        });
 
         return effectItemView;
     }

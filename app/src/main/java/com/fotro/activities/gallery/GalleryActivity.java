@@ -41,11 +41,11 @@ public class GalleryActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+        mPresenter = new GalleryPresenter(this);
 
         initViews();
         setAspectRatio(mAspectRatio);
 
-        mPresenter = new GalleryPresenter(this);
         mPresenter.onCreate();
     }
 
