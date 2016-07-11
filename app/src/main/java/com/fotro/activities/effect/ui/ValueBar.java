@@ -44,7 +44,7 @@ public class ValueBar extends LinearLayout {
 
         initProgressBar();
 
-        initialize(mMaxValue, mMinValue, mValue, mOnValueChangeListener);
+        initialize(mMinValue, mMaxValue, mValue, mOnValueChangeListener);
     }
 
     private void initProgressBar() {
@@ -68,8 +68,8 @@ public class ValueBar extends LinearLayout {
         });
     }
 
-    public void initialize(int maxValue,
-                           int minValue,
+    public void initialize(int minValue,
+                           int maxValue,
                            int initValue,
                            OnValueChangeListener listener) {
         Preconditions.checkArgument(minValue < maxValue);

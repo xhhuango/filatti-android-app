@@ -1,4 +1,4 @@
-package com.fotro.activities.effect;
+package com.fotro.activities.effect.items;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;

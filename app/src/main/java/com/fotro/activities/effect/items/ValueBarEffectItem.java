@@ -1,38 +1,30 @@
-package com.fotro.activities.effect.adjusts;
+package com.fotro.activities.effect.items;
 
 import android.content.Context;
 import android.view.View;
 
-import com.fotro.R;
-import com.fotro.activities.effect.EffectItem;
 import com.fotro.activities.effect.ui.ValueBar;
-import com.fotro.effects.EffectException;
 import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
-import com.fotro.logger.Logger;
 
-public class BrightnessAdjustItem extends EffectItem<ContrastBrightnessAdjust> {
-    private static final String TAG = BrightnessAdjustItem.class.getSimpleName();
-
+public abstract class ValueBarEffectItem<T> extends EffectItem<ContrastBrightnessAdjust> {
     private int mOriginalValue;
     private int mAppliedValue;
     private int mTemporaryValue;
     private ValueBar mValueBar;
 
-    public BrightnessAdjustItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
+    protected abstract T getEffectValue();
+
+    protected abstract void setEffectValue(T effectValue);
+
+    protected abstract T toEffectValue(int barValue);
+
+    protected abstract int fromEffectValue(T effectValue);
+
+    protected ValueBarEffectItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
         super(effect, listener);
-        mOriginalValue = effect.getBrightness();
+        mOriginalValue = fromEffectValue(getEffectValue());
         mAppliedValue = mOriginalValue;
         mTemporaryValue = mOriginalValue;
-    }
-
-    @Override
-    public int getDisplayName() {
-        return R.string.brightness;
-    }
-
-    @Override
-    public int getIcon() {
-        return R.drawable.brightness;
     }
 
     @Override
@@ -60,7 +52,7 @@ public class BrightnessAdjustItem extends EffectItem<ContrastBrightnessAdjust> {
     @Override
     public View getView(Context context) {
         mValueBar = new ValueBar(context);
-        mValueBar.initialize(100, -100, mAppliedValue, new ValueBar.OnValueChangeListener() {
+        mValueBar.initialize(-100, 100, mAppliedValue, new ValueBar.OnValueChangeListener() {
             @Override
             public void onValueChanged(int value) {
                 mTemporaryValue = value;
@@ -70,12 +62,8 @@ public class BrightnessAdjustItem extends EffectItem<ContrastBrightnessAdjust> {
         return mValueBar;
     }
 
-    private void show() {
-        try {
-            mEffect.setBrightness(mTemporaryValue);
-            mOnEffectChangeListener.onEffectChanged();
-        } catch (EffectException e) {
-            Logger.error(TAG, e);
-        }
+    protected void show() {
+        setEffectValue(toEffectValue(mTemporaryValue));
+        mOnEffectChangeListener.onEffectChanged();
     }
 }

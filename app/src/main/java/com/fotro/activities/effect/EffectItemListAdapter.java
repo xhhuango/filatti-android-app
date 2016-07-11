@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
+import com.fotro.activities.effect.items.EffectItem;
 import com.fotro.utils.ThreadPool;
 import com.google.common.base.Preconditions;
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fotro.R;
+import com.fotro.activities.effect.items.EffectItem;
 import com.fotro.utils.ScreenUtils;
 import com.google.common.base.Preconditions;
 

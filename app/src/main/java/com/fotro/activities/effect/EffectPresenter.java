@@ -3,8 +3,9 @@ package com.fotro.activities.effect;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-import com.fotro.activities.effect.adjusts.BrightnessAdjustItem;
-import com.fotro.activities.effect.adjusts.ContrastAdjustItem;
+import com.fotro.activities.effect.items.adjusts.BrightnessAdjustItem;
+import com.fotro.activities.effect.items.adjusts.ContrastAdjustItem;
+import com.fotro.activities.effect.items.EffectItem;
 import com.fotro.activities.gallery.GalleryActivity;
 import com.fotro.activities.share.ShareActivity;
 import com.fotro.effects.Effect;
