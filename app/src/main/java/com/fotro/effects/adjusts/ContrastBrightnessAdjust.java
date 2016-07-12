@@ -5,7 +5,6 @@ import com.fotro.effects.EffectException;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfInt;
 
 public class ContrastBrightnessAdjust extends Adjust {
     static final String NAME = "contrast_brightness";
@@ -18,6 +17,7 @@ public class ContrastBrightnessAdjust extends Adjust {
 
     private double mContrast = CONTRACT_NO_EFFECT;
     private int mBrightness = BRIGHTNESS_NO_EFFECT;
+    private Mat mLut;
 
     @Override
     public String getName() {
@@ -34,6 +34,7 @@ public class ContrastBrightnessAdjust extends Adjust {
         if (contrast < 0 || contrast > 3)
             throw new EffectException(CONTRAST + " " + contrast + " should be in [0, 3]");
         mContrast = contrast;
+        buildLut();
     }
 
     public double getContrast() {
@@ -50,6 +51,7 @@ public class ContrastBrightnessAdjust extends Adjust {
         if (brightness < -255 || brightness > 255)
             throw new EffectException(BRIGHTNESS + " " + brightness + " should be in [-255, 255]");
         mBrightness = brightness;
+        buildLut();
     }
 
     public int getBrightness() {
@@ -58,22 +60,34 @@ public class ContrastBrightnessAdjust extends Adjust {
 
     @Override
     public Mat apply(Mat src) {
-        if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT) {
+        if (mLut == null) {
             return src;
         } else {
             Mat dst = new Mat();
-            Core.LUT(src, getLut(mContrast, mBrightness), dst);
+            Core.LUT(src, mLut, dst);
             return dst;
         }
     }
 
-    private Mat getLut(double contrast, int brightness) {
+    private void buildLut() {
+        if (mLut != null) {
+            mLut.release();
+            mLut = null;
+        }
+
+        if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT) {
+            return;
+        }
+
+        double contrast = mContrast;
+        int brightness = mBrightness;
         Mat lut = new Mat();
         lut.create(256, 1, CvType.CV_8UC3);
         for (int i = 0; i < 256; i++) {
             double value = (i - 127.0) * contrast + 127.0 + brightness;
             lut.put(i, 0, value, value, value);
         }
-        return lut;
+
+        mLut = lut;
     }
 }
