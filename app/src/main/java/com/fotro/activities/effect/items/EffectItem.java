@@ -34,10 +34,6 @@ public abstract class EffectItem<T extends Effect> {
 
     public abstract View getView(Context context);
 
-    public String getName() {
-        return mEffect.getName();
-    }
-
     public interface OnEffectChangeListener {
         void onEffectChanged();
     }

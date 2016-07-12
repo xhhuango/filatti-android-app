@@ -6,18 +6,22 @@ import android.graphics.Bitmap;
 import com.fotro.activities.effect.items.adjusts.BrightnessAdjustItem;
 import com.fotro.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.fotro.activities.effect.items.EffectItem;
+import com.fotro.activities.effect.items.adjusts.SaturationAdjustItem;
 import com.fotro.activities.gallery.GalleryActivity;
 import com.fotro.activities.share.ShareActivity;
 import com.fotro.effects.Effect;
 import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
+import com.fotro.effects.adjusts.SaturationAdjust;
 import com.fotro.logger.Logger;
 import com.fotro.photo.PhotoManager;
 import com.fotro.activities.mvp.AbstractPresenter;
 import com.google.common.base.Preconditions;
 
 import org.opencv.android.Utils;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfInt;
+import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +105,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             mAdjustList.add(contrastBrightnessAdjust);
             mAdjustItemList.add(new BrightnessAdjustItem(contrastBrightnessAdjust, listener));
             mAdjustItemList.add(new ContrastAdjustItem(contrastBrightnessAdjust, listener));
+
+            SaturationAdjust saturationAdjust = new SaturationAdjust();
+            mAdjustList.add(saturationAdjust);
+            mAdjustItemList.add(new SaturationAdjustItem(saturationAdjust, listener));
         }
         return mAdjustItemList;
     }
@@ -142,8 +150,15 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     }
 
     private void applyEffects() {
-        Mat src = new MatOfInt();
+        Mat src = new Mat();
         Utils.bitmapToMat(mPhoto, src);
+
+        if (src.channels() == 4) {
+            Mat tmp = new Mat();
+            Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
+            src.release();
+            src = tmp;
+        }
 
         for (Effect effect : mAdjustList) {
             Mat dst = effect.apply(src);

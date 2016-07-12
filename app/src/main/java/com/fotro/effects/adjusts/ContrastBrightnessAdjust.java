@@ -43,12 +43,12 @@ public class ContrastBrightnessAdjust extends Adjust {
     /**
      * BRIGHTNESS as integer: [-255, 0, 255]
      * value == 0: no change
-     * -255 <= value < 0: decease the brightness
+     * -255 <= value < 0: decrease the brightness
      * 0 < value <= 255: increase the brightness
      */
     public void setBrightness(int brightness) throws EffectException {
         if (brightness < -255 || brightness > 255)
-            throw new EffectException(BRIGHTNESS + " " + brightness + "should be in [-255, 255]");
+            throw new EffectException(BRIGHTNESS + " " + brightness + " should be in [-255, 255]");
         mBrightness = brightness;
     }
 
@@ -61,20 +61,18 @@ public class ContrastBrightnessAdjust extends Adjust {
         if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT) {
             return src;
         } else {
-            Mat dst = new MatOfInt();
-            Mat lut = getLut(mContrast, mBrightness);
-            Core.LUT(src, lut, dst);
-            lut.release();
+            Mat dst = new Mat();
+            Core.LUT(src, getLut(mContrast, mBrightness), dst);
             return dst;
         }
     }
 
     private Mat getLut(double contrast, int brightness) {
-        Mat lut = new MatOfInt();
-        lut.create(256, 1, CvType.CV_8UC4);
+        Mat lut = new Mat();
+        lut.create(256, 1, CvType.CV_8UC3);
         for (int i = 0; i < 256; i++) {
             double value = (i - 127.0) * contrast + 127.0 + brightness;
-            lut.put(i, 0, value, value, value, i);
+            lut.put(i, 0, value, value, value);
         }
         return lut;
     }

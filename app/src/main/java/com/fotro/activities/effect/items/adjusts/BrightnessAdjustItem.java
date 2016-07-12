@@ -6,7 +6,7 @@ import com.fotro.effects.EffectException;
 import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
 import com.fotro.logger.Logger;
 
-public class BrightnessAdjustItem extends ValueBarEffectItem<Integer> {
+public class BrightnessAdjustItem extends ValueBarEffectItem<ContrastBrightnessAdjust, Integer> {
     private static final String TAG = BrightnessAdjustItem.class.getSimpleName();
 
     public BrightnessAdjustItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {

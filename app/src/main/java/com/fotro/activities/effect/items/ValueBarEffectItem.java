@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.View;
 
 import com.fotro.activities.effect.ui.ValueBar;
-import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
+import com.fotro.effects.Effect;
 
-public abstract class ValueBarEffectItem<T> extends EffectItem<ContrastBrightnessAdjust> {
+public abstract class ValueBarEffectItem<E extends Effect, T> extends EffectItem<E> {
     private int mOriginalValue;
     private int mAppliedValue;
     private int mTemporaryValue;
@@ -20,7 +20,7 @@ public abstract class ValueBarEffectItem<T> extends EffectItem<ContrastBrightnes
 
     protected abstract int fromEffectValue(T effectValue);
 
-    protected ValueBarEffectItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
+    protected ValueBarEffectItem(E effect, OnEffectChangeListener listener) {
         super(effect, listener);
         mOriginalValue = fromEffectValue(getEffectValue());
         mAppliedValue = mOriginalValue;
