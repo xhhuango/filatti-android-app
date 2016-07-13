@@ -7,7 +7,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
 public class ContrastBrightnessAdjust extends Adjust {
-    static final String NAME = "contrast_brightness";
+    static final String NAME = "ContrastBrightness";
 
     private static final String CONTRAST = "contrast";
     private static final String BRIGHTNESS = "brightness";
@@ -32,7 +32,8 @@ public class ContrastBrightnessAdjust extends Adjust {
      */
     public void setContrast(double contrast) throws EffectException {
         if (contrast < 0 || contrast > 3)
-            throw new EffectException(CONTRAST + " " + contrast + " should be in [0, 3]");
+            throw new EffectException(NAME + "." + CONTRAST + " " + contrast
+                                              + " should be in [0, 3]");
         mContrast = contrast;
         buildLut();
     }
@@ -49,7 +50,8 @@ public class ContrastBrightnessAdjust extends Adjust {
      */
     public void setBrightness(int brightness) throws EffectException {
         if (brightness < -255 || brightness > 255)
-            throw new EffectException(BRIGHTNESS + " " + brightness + " should be in [-255, 255]");
+            throw new EffectException(NAME + "." + BRIGHTNESS + " " + brightness
+                                              + " should be in [-255, 255]");
         mBrightness = brightness;
         buildLut();
     }
@@ -75,9 +77,8 @@ public class ContrastBrightnessAdjust extends Adjust {
             mLut = null;
         }
 
-        if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT) {
+        if (mContrast == CONTRACT_NO_EFFECT && mBrightness == BRIGHTNESS_NO_EFFECT)
             return;
-        }
 
         double contrast = mContrast;
         int brightness = mBrightness;

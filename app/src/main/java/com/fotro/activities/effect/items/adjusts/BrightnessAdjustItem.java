@@ -10,7 +10,7 @@ public class BrightnessAdjustItem extends ValueBarEffectItem<ContrastBrightnessA
     private static final String TAG = BrightnessAdjustItem.class.getSimpleName();
 
     public BrightnessAdjustItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+        super(effect, -100, 100, listener);
     }
 
     @Override

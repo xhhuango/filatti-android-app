@@ -7,11 +7,13 @@ import com.fotro.activities.effect.items.adjusts.BrightnessAdjustItem;
 import com.fotro.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.fotro.activities.effect.items.EffectItem;
 import com.fotro.activities.effect.items.adjusts.SaturationAdjustItem;
+import com.fotro.activities.effect.items.adjusts.SharpenAdjustItem;
 import com.fotro.activities.gallery.GalleryActivity;
 import com.fotro.activities.share.ShareActivity;
 import com.fotro.effects.Effect;
 import com.fotro.effects.adjusts.ContrastBrightnessAdjust;
 import com.fotro.effects.adjusts.SaturationAdjust;
+import com.fotro.effects.adjusts.SharpenAdjust;
 import com.fotro.logger.Logger;
 import com.fotro.photo.PhotoManager;
 import com.fotro.activities.mvp.AbstractPresenter;
@@ -33,6 +35,8 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private List<Effect> mAdjustList;
     private List<EffectItem> mAdjustItemList;
     private EffectItem mSelectedEffectItem;
+
+    private Bitmap mAppliedBitmap;
 
     EffectPresenter(EffectActivity activity) {
         super(activity);
@@ -109,6 +113,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             SaturationAdjust saturationAdjust = new SaturationAdjust();
             mAdjustList.add(saturationAdjust);
             mAdjustItemList.add(new SaturationAdjustItem(saturationAdjust, listener));
+
+            SharpenAdjust sharpenAdjust = new SharpenAdjust();
+            mAdjustList.add(sharpenAdjust);
+            mAdjustItemList.add(new SharpenAdjustItem(sharpenAdjust, listener));
         }
         return mAdjustItemList;
     }
@@ -168,8 +176,9 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             src = dst;
         }
 
-        Bitmap appliedBitmap = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(src, appliedBitmap);
-        mActivity.setPhoto(appliedBitmap);
+        if (mAppliedBitmap == null)
+            mAppliedBitmap = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(src, mAppliedBitmap);
+        mActivity.setPhoto(mAppliedBitmap);
     }
 }

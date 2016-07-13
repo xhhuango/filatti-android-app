@@ -10,7 +10,7 @@ public class SaturationAdjustItem extends ValueBarEffectItem<SaturationAdjust, D
     private static final String TAG = SaturationAdjustItem.class.getSimpleName();
 
     public SaturationAdjustItem(SaturationAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+        super(effect, -100, 100, listener);
     }
 
     @Override

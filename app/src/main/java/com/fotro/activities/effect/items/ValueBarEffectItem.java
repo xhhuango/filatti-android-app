@@ -5,8 +5,12 @@ import android.view.View;
 
 import com.fotro.activities.effect.ui.ValueBar;
 import com.fotro.effects.Effect;
+import com.google.common.base.Preconditions;
 
 public abstract class ValueBarEffectItem<E extends Effect, T> extends EffectItem<E> {
+    private final int mMinValue;
+    private final int mMaxValue;
+
     private int mOriginalValue;
     private int mAppliedValue;
     private int mTemporaryValue;
@@ -20,8 +24,16 @@ public abstract class ValueBarEffectItem<E extends Effect, T> extends EffectItem
 
     protected abstract int fromEffectValue(T effectValue);
 
-    protected ValueBarEffectItem(E effect, OnEffectChangeListener listener) {
+    protected ValueBarEffectItem(E effect,
+                                 int minValue,
+                                 int maxValue,
+                                 OnEffectChangeListener listener) {
         super(effect, listener);
+
+        Preconditions.checkArgument(minValue < maxValue);
+        mMinValue = minValue;
+        mMaxValue = maxValue;
+
         mOriginalValue = fromEffectValue(getEffectValue());
         mAppliedValue = mOriginalValue;
         mTemporaryValue = mOriginalValue;
@@ -52,7 +64,7 @@ public abstract class ValueBarEffectItem<E extends Effect, T> extends EffectItem
     @Override
     public View getView(Context context) {
         mValueBar = new ValueBar(context);
-        mValueBar.initialize(-100, 100, mAppliedValue, new ValueBar.OnValueChangeListener() {
+        mValueBar.initialize(mMinValue, mMaxValue, mAppliedValue, new ValueBar.OnValueChangeListener() {
             @Override
             public void onValueChanged(int value) {
                 mTemporaryValue = value;

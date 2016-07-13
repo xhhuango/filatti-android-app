@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaturationAdjust extends Adjust {
-    static final String NAME = "saturation";
+    static final String NAME = "Saturation";
 
     private static final String SATURATION = "saturation";
 
@@ -33,7 +33,8 @@ public class SaturationAdjust extends Adjust {
      */
     public void setSaturation(double saturation) throws EffectException {
         if (saturation < -1 || saturation > 1)
-            throw new EffectException(SATURATION + " " + saturation + " should be in [-1, 1]");
+            throw new EffectException(NAME + "." + SATURATION + " " + saturation
+                                              + " should be in [-1, 1]");
         mSaturation = saturation;
         buildLut();
     }
@@ -67,16 +68,14 @@ public class SaturationAdjust extends Adjust {
             mLut = null;
         }
 
-        if (mSaturation == SATURATION_NO_EFFECT) {
+        if (mSaturation == SATURATION_NO_EFFECT)
             return;
-        }
 
         double saturation = mSaturation;
         Mat lut = new Mat();
         lut.create(256, 1, CvType.CV_8UC1);
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 256; i++)
             lut.put(i, 0, i + (i * saturation));
-        }
         mLut = lut;
     }
 }
