@@ -16,6 +16,8 @@ public class SharpenAdjust extends Adjust {
 
     private double mSharpen = SHARPEN_NO_EFFECT;
 
+    private Mat mBlurred;
+
     @Override
     public String getName() {
         return NAME;
@@ -31,6 +33,10 @@ public class SharpenAdjust extends Adjust {
             throw new EffectException(NAME + "." + SHARPEN + " " + sharpen
                                               + " should be in [0, 1]");
         mSharpen = sharpen;
+        if (mSharpen == SHARPEN_NO_EFFECT && mBlurred != null) {
+            mBlurred.release();
+            mBlurred = null;
+        }
     }
 
     public double getSharpen() {
@@ -42,9 +48,12 @@ public class SharpenAdjust extends Adjust {
         if (mSharpen == SHARPEN_NO_EFFECT) {
             return src;
         } else {
+            if (mBlurred == null) {
+                mBlurred = new Mat();
+                Imgproc.GaussianBlur(src, mBlurred, new Size(0, 0), 3);
+            }
             Mat dst = new Mat();
-            Imgproc.GaussianBlur(src, dst, new Size(0, 0), 3);
-            Core.addWeighted(src, 1.0 + mSharpen, dst, -mSharpen, 0, dst);
+            Core.addWeighted(src, 1.0 + mSharpen, mBlurred, -mSharpen, 0, dst);
             return dst;
         }
     }

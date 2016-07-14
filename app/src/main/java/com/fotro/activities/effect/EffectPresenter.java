@@ -105,6 +105,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                 }
             };
 
+            SharpenAdjust sharpenAdjust = new SharpenAdjust();
+            mAdjustList.add(sharpenAdjust);
+            mAdjustItemList.add(new SharpenAdjustItem(sharpenAdjust, listener));
+
             ContrastBrightnessAdjust contrastBrightnessAdjust = new ContrastBrightnessAdjust();
             mAdjustList.add(contrastBrightnessAdjust);
             mAdjustItemList.add(new BrightnessAdjustItem(contrastBrightnessAdjust, listener));
@@ -113,10 +117,6 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             SaturationAdjust saturationAdjust = new SaturationAdjust();
             mAdjustList.add(saturationAdjust);
             mAdjustItemList.add(new SaturationAdjustItem(saturationAdjust, listener));
-
-            SharpenAdjust sharpenAdjust = new SharpenAdjust();
-            mAdjustList.add(sharpenAdjust);
-            mAdjustItemList.add(new SharpenAdjustItem(sharpenAdjust, listener));
         }
         return mAdjustItemList;
     }
