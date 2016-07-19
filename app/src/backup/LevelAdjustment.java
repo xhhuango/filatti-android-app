@@ -1,6 +1,6 @@
-package com.fotro.effects.adjusts;
+package com.filatti.effects.adjusts;
 
-import com.fotro.effects.ImageProcessingException;
+import com.filatti.effects.ImageProcessingException;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;

@@ -1,4 +1,4 @@
-package com.fotro.effects.adjusts;
+package com.filatti.effects.adjusts;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

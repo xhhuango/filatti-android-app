@@ -1,6 +1,6 @@
-package com.fotro.effects.filters;
+package com.filatti.effects.filters;
 
-import com.fotro.effects.ImageProcessingException;
+import com.filatti.effects.ImageProcessingException;
 
 import org.json.JSONObject;
 

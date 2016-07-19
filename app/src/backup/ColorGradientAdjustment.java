@@ -1,6 +1,6 @@
-package com.fotro.effects.adjusts;
+package com.filatti.effects.adjusts;
 
-import com.fotro.effects.ImageProcessingException;
+import com.filatti.effects.ImageProcessingException;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.fotro">
+          package="com.filatti">
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.main.MainActivity"
+            android:name="com.filatti.activities.main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -38,11 +38,11 @@
         </activity>
 
         <activity
-            android:name=".activities.gallery.GalleryActivity"
+            android:name="com.filatti.activities.gallery.GalleryActivity"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".activities.effect.EffectActivity"
+            android:name="com.filatti.activities.effect.EffectActivity"
             android:screenOrientation="portrait"/>
     </application>
 

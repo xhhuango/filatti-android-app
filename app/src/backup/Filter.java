@@ -1,9 +1,9 @@
-package com.fotro.effects.filters;
+package com.filatti.effects.filters;
 
-import com.fotro.effects.ImageProcessing;
-import com.fotro.effects.ImageProcessingException;
-import com.fotro.effects.adjusts.Adjustment;
-import com.fotro.effects.adjusts.AdjustmentFactory;
+import com.filatti.effects.ImageProcessing;
+import com.filatti.effects.ImageProcessingException;
+import com.filatti.effects.adjusts.Adjustment;
+import com.filatti.effects.adjusts.AdjustmentFactory;
 import com.google.common.base.Preconditions;
 
 import org.json.JSONArray;

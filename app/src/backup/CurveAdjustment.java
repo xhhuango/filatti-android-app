@@ -1,8 +1,8 @@
-package com.fotro.effects.adjusts.core;
+package com.filatti.effects.adjusts.core;
 
-import com.fotro.effects.ImageProcessingException;
-import com.fotro.effects.adjusts.Adjustment;
-import com.fotro.effects.adjusts.IllegalAdjustmentParameter;
+import com.filatti.effects.ImageProcessingException;
+import com.filatti.effects.adjusts.Adjustment;
+import com.filatti.effects.adjusts.IllegalAdjustmentParameter;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
