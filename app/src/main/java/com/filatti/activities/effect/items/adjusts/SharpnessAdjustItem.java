@@ -3,25 +3,25 @@ package com.filatti.activities.effect.items.adjusts;
 import com.filatti.R;
 import com.filatti.activities.effect.items.ValueBarEffectItem;
 import com.filatti.effects.EffectException;
-import com.filatti.effects.adjusts.SharpenAdjust;
+import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.logger.Logger;
 
-public class SharpenAdjustItem extends ValueBarEffectItem<SharpenAdjust, Double> {
-    private static final String TAG = SharpenAdjustItem.class.getSimpleName();
+public class SharpnessAdjustItem extends ValueBarEffectItem<SharpnessAdjust, Double> {
+    private static final String TAG = SharpnessAdjustItem.class.getSimpleName();
 
-    public SharpenAdjustItem(SharpenAdjust effect, OnEffectChangeListener listener) {
+    public SharpnessAdjustItem(SharpnessAdjust effect, OnEffectChangeListener listener) {
         super(effect, 0, 100, listener);
     }
 
     @Override
     protected Double getEffectValue() {
-        return mEffect.getSharpen();
+        return mEffect.getSharpness();
     }
 
     @Override
     protected void setEffectValue(Double effectValue) {
         try {
-            mEffect.setSharpe(effectValue);
+            mEffect.setSharpness(effectValue);
         } catch (EffectException e) {
             Logger.error(TAG, e);
         }

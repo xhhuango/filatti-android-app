@@ -7,13 +7,13 @@ import com.filatti.activities.effect.items.adjusts.BrightnessAdjustItem;
 import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.items.adjusts.SaturationAdjustItem;
-import com.filatti.activities.effect.items.adjusts.SharpenAdjustItem;
+import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
 import com.filatti.effects.adjusts.ContrastBrightnessAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
-import com.filatti.effects.adjusts.SharpenAdjust;
+import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.logger.Logger;
 import com.filatti.photo.PhotoManager;
 import com.filatti.activities.mvp.AbstractPresenter;
@@ -103,9 +103,9 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                 }
             };
 
-            SharpenAdjust sharpenAdjust = new SharpenAdjust();
-            mAdjustList.add(sharpenAdjust);
-            mAdjustItemList.add(new SharpenAdjustItem(sharpenAdjust, listener));
+            SharpnessAdjust sharpnessAdjust = new SharpnessAdjust();
+            mAdjustList.add(sharpnessAdjust);
+            mAdjustItemList.add(new SharpnessAdjustItem(sharpnessAdjust, listener));
 
             ContrastBrightnessAdjust contrastBrightnessAdjust = new ContrastBrightnessAdjust();
             mAdjustList.add(contrastBrightnessAdjust);
@@ -158,10 +158,9 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private void applyEffects() {
         Mat src = new Mat();
         Utils.bitmapToMat(mPhoto, src);
-
         if (src.channels() == 4) {
             Mat tmp = new Mat();
-            Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2RGB);
+            Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2BGR);
             src.release();
             src = tmp;
         }
@@ -176,7 +175,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
 
         if (mAppliedBitmap == null)
             mAppliedBitmap = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
+        Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
         Utils.matToBitmap(src, mAppliedBitmap);
+        src.release();
+
         mActivity.setPhoto(mAppliedBitmap);
     }
 }

@@ -19,11 +19,6 @@ public class ContrastBrightnessAdjust extends Adjust {
     private int mBrightness = BRIGHTNESS_NO_EFFECT;
     private Mat mLut;
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
     /**
      * CONTRAST as double: [0, 1, 3]
      * value == 1: no change

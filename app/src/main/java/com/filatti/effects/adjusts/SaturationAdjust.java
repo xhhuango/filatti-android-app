@@ -20,11 +20,6 @@ public class SaturationAdjust extends Adjust {
     private double mSaturation = SATURATION_NO_EFFECT;
     private Mat mLut;
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
     /**
      * SATURATION as double: [-1, 0, 1]
      * value == 0: no change

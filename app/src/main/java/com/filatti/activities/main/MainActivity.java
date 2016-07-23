@@ -8,8 +8,6 @@ import android.widget.Button;
 
 import com.filatti.R;
 import com.filatti.activities.gallery.GalleryActivity;
-import com.filatti.effects.adjusts.SaturationNativeAdjust;
-import com.filatti.logger.Logger;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -27,9 +25,6 @@ public class MainActivity extends Activity {
         albumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaturationNativeAdjust saturationNativeAdjust = new SaturationNativeAdjust();
-                Logger.debug(TAG, "native = " + saturationNativeAdjust.setSaturation());
-
                 Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
                 startActivity(intent);
             }
