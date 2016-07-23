@@ -11,10 +11,10 @@ import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
+import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.ContrastBrightnessAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
-import com.filatti.logger.Logger;
 import com.filatti.photo.PhotoManager;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.google.common.base.Preconditions;
@@ -25,6 +25,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private static final String TAG = EffectPresenter.class.getSimpleName();
@@ -35,6 +36,8 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private EffectItem mSelectedEffectItem;
 
     private Bitmap mAppliedBitmap;
+
+    private AtomicBoolean mLock = new AtomicBoolean(false);
 
     EffectPresenter(EffectActivity activity) {
         super(activity);
@@ -110,7 +113,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             ContrastBrightnessAdjust contrastBrightnessAdjust = new ContrastBrightnessAdjust();
             mAdjustList.add(contrastBrightnessAdjust);
             mAdjustItemList.add(new BrightnessAdjustItem(contrastBrightnessAdjust, listener));
-            mAdjustItemList.add(new ContrastAdjustItem(contrastBrightnessAdjust, listener));
+
+            ContrastAdjust contrastAdjust = new ContrastAdjust();
+            mAdjustList.add(contrastAdjust);
+            mAdjustItemList.add(new ContrastAdjustItem(contrastAdjust, listener));
 
             SaturationAdjust saturationAdjust = new SaturationAdjust();
             mAdjustList.add(saturationAdjust);
@@ -151,34 +157,37 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     }
 
     private void onChangeEffect() {
-        Logger.debug(TAG, "Changed");
         applyEffects();
     }
 
     private void applyEffects() {
-        Mat src = new Mat();
-        Utils.bitmapToMat(mPhoto, src);
-        if (src.channels() == 4) {
-            Mat tmp = new Mat();
-            Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2BGR);
-            src.release();
-            src = tmp;
-        }
-
-        for (Effect effect : mAdjustList) {
-            Mat dst = effect.apply(src);
-            if (src != dst) {
+        if (mLock.compareAndSet(false, true)) {
+            Mat src = new Mat();
+            Utils.bitmapToMat(mPhoto, src);
+            if (src.channels() == 4) {
+                Mat tmp = new Mat();
+                Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2BGR);
                 src.release();
+                src = tmp;
             }
-            src = dst;
+
+            for (Effect effect : mAdjustList) {
+                Mat dst = effect.apply(src);
+                if (src != dst)
+                    src.release();
+                src = dst;
+            }
+
+            if (mAppliedBitmap == null)
+                mAppliedBitmap =
+                        Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
+            Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
+            Utils.matToBitmap(src, mAppliedBitmap);
+            src.release();
+
+            mActivity.setPhoto(mAppliedBitmap);
+
+            mLock.set(false);
         }
-
-        if (mAppliedBitmap == null)
-            mAppliedBitmap = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
-        Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
-        Utils.matToBitmap(src, mAppliedBitmap);
-        src.release();
-
-        mActivity.setPhoto(mAppliedBitmap);
     }
 }

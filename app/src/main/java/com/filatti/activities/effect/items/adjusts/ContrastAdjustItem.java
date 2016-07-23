@@ -3,13 +3,13 @@ package com.filatti.activities.effect.items.adjusts;
 import com.filatti.R;
 import com.filatti.activities.effect.items.ValueBarEffectItem;
 import com.filatti.effects.EffectException;
-import com.filatti.effects.adjusts.ContrastBrightnessAdjust;
+import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.logger.Logger;
 
-public class ContrastAdjustItem extends ValueBarEffectItem<ContrastBrightnessAdjust, Double> {
+public class ContrastAdjustItem extends ValueBarEffectItem<ContrastAdjust, Double> {
     private static final String TAG = ContrastAdjustItem.class.getSimpleName();
 
-    public ContrastAdjustItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
+    public ContrastAdjustItem(ContrastAdjust effect, OnEffectChangeListener listener) {
         super(effect, -100, 100, listener);
     }
 
@@ -29,7 +29,7 @@ public class ContrastAdjustItem extends ValueBarEffectItem<ContrastBrightnessAdj
 
     @Override
     protected Double toEffectValue(int barValue) {
-        return (barValue / 2.0 + 100) / 100.0;
+        return (barValue / 2.0 + 100.0) / 100.0;
     }
 
     @Override
