@@ -3,23 +3,23 @@ package com.filatti.activities.effect.items.adjusts;
 import com.filatti.R;
 import com.filatti.activities.effect.items.ValueBarEffectItem;
 import com.filatti.effects.EffectException;
-import com.filatti.effects.adjusts.ContrastBrightnessAdjust;
+import com.filatti.effects.adjusts.BrightnessAdjust;
 import com.filatti.logger.Logger;
 
-public class BrightnessAdjustItem extends ValueBarEffectItem<ContrastBrightnessAdjust, Integer> {
+public class BrightnessAdjustItem extends ValueBarEffectItem<BrightnessAdjust, Double> {
     private static final String TAG = BrightnessAdjustItem.class.getSimpleName();
 
-    public BrightnessAdjustItem(ContrastBrightnessAdjust effect, OnEffectChangeListener listener) {
+    public BrightnessAdjustItem(BrightnessAdjust effect, OnEffectChangeListener listener) {
         super(effect, -100, 100, listener);
     }
 
     @Override
-    protected Integer getEffectValue() {
+    protected Double getEffectValue() {
         return mEffect.getBrightness();
     }
 
     @Override
-    protected void setEffectValue(Integer effectValue) {
+    protected void setEffectValue(Double effectValue) {
         try {
             mEffect.setBrightness(effectValue);
         } catch (EffectException e) {
@@ -28,13 +28,13 @@ public class BrightnessAdjustItem extends ValueBarEffectItem<ContrastBrightnessA
     }
 
     @Override
-    protected Integer toEffectValue(int barValue) {
-        return barValue;
+    protected Double toEffectValue(int barValue) {
+        return barValue / 200.0;
     }
 
     @Override
-    protected int fromEffectValue(Integer effectValue) {
-        return effectValue;
+    protected int fromEffectValue(Double effectValue) {
+        return (int) (effectValue * 200);
     }
 
     @Override

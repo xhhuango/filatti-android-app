@@ -12,7 +12,7 @@ import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
 import com.filatti.effects.adjusts.ContrastAdjust;
-import com.filatti.effects.adjusts.ContrastBrightnessAdjust;
+import com.filatti.effects.adjusts.BrightnessAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.photo.PhotoManager;
@@ -110,9 +110,9 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             mAdjustList.add(sharpnessAdjust);
             mAdjustItemList.add(new SharpnessAdjustItem(sharpnessAdjust, listener));
 
-            ContrastBrightnessAdjust contrastBrightnessAdjust = new ContrastBrightnessAdjust();
-            mAdjustList.add(contrastBrightnessAdjust);
-            mAdjustItemList.add(new BrightnessAdjustItem(contrastBrightnessAdjust, listener));
+            BrightnessAdjust brightnessAdjust = new BrightnessAdjust();
+            mAdjustList.add(brightnessAdjust);
+            mAdjustItemList.add(new BrightnessAdjustItem(brightnessAdjust, listener));
 
             ContrastAdjust contrastAdjust = new ContrastAdjust();
             mAdjustList.add(contrastAdjust);
