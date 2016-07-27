@@ -1,6 +1,7 @@
 package com.filatti.activities.effect.ui;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -40,11 +41,17 @@ public class ValueBar extends LinearLayout {
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mRoot = (LinearLayout) inflater.inflate(R.layout.view_value_bar, this, true);
         mValueTextView = (TextView) mRoot.findViewById(R.id.valueBarValue);
-        mSeekBar = (SeekBar) mRoot.findViewById(R.id.valueBarBar);
 
+        mSeekBar = (SeekBar) mRoot.findViewById(R.id.valueBarBar);
+        tintProgressBar();
         initProgressBar();
 
         initialize(mMinValue, mMaxValue, mValue, mOnValueChangeListener);
+    }
+
+    private void tintProgressBar() {
+        mSeekBar.getProgressDrawable().setColorFilter(0xFF000000, PorterDuff.Mode.MULTIPLY);
+        mSeekBar.getThumb().setColorFilter(0xFF000000, PorterDuff.Mode.MULTIPLY);
     }
 
     private void initProgressBar() {

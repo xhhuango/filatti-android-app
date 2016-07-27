@@ -16,4 +16,10 @@
     <dimen name="floating_icon_height">35dp</dimen>
     <dimen name="floating_icon_margin_start">15dp</dimen>
     <dimen name="floating_icon_margin_end">15dp</dimen>
+
+    <dimen name="value_bar_margin_start">20dp</dimen>
+    <dimen name="value_bar_margin_end">20dp</dimen>
+    <dimen name="value_bar_margin_value">10dp</dimen>
+    <dimen name="value_bar_value_width">28dp</dimen>
+    <dimen name="value_bar_value_text_size">14sp</dimen>
 </resources>
