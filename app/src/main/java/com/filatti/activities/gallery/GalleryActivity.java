@@ -40,7 +40,7 @@ public class GalleryActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+        setContentView(R.layout.gallery_activity);
         mPresenter = new GalleryPresenter(this);
 
         initViews();

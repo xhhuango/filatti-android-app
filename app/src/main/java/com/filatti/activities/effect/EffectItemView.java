@@ -40,7 +40,7 @@ public class EffectItemView extends LinearLayout {
     private void initViews(Context context) {
         LayoutInflater inflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mRoot = (LinearLayout) inflater.inflate(R.layout.view_effect_item, this, true);
+        mRoot = (LinearLayout) inflater.inflate(R.layout.effect_item_view, this, true);
         mNameTextView = (TextView) mRoot.findViewById(R.id.effectItemName);
         mIconImageView = (ImageView) mRoot.findViewById(R.id.effectItemIcon);
 

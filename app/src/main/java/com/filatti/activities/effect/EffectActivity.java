@@ -31,7 +31,7 @@ public class EffectActivity extends FragmentActivity {
     private View mEffectHeader;
     private TextView mEffectNameTextView;
 
-    private FrameLayout mEffectContainer;
+    FrameLayout mEffectContainer;
     private View mEffectSettingView;
 
     private List<EffectItem> mEffectItemList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class EffectActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_effect);
+        setContentView(R.layout.effect_activity);
         mPresenter = new EffectPresenter(this);
 
         initViews();
@@ -209,6 +209,10 @@ public class EffectActivity extends FragmentActivity {
         }
     }
 
+    ViewGroup getEffectSettingViewContainer() {
+        return mEffectContainer;
+    }
+
     void showEffectSettingView(View effectSettingView, String title) {
         Preconditions.checkNotNull(effectSettingView);
         Preconditions.checkNotNull(title);
@@ -217,10 +221,11 @@ public class EffectActivity extends FragmentActivity {
             dismissEffectSettingView();
         }
         mEffectSettingView = effectSettingView;
-        mEffectContainer.addView(effectSettingView);
 
+        ViewGroup effectSettingViewContainer = getEffectSettingViewContainer();
+        effectSettingViewContainer.addView(effectSettingView);
         ViewGroup.LayoutParams layoutParams = effectSettingView.getLayoutParams();
-        layoutParams.height = mEffectContainer.getHeight();
+        layoutParams.height = effectSettingViewContainer.getHeight();
         effectSettingView.setLayoutParams(layoutParams);
 
         mGridView.setVisibility(View.GONE);

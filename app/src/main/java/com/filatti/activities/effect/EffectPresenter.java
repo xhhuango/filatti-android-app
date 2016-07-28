@@ -4,21 +4,23 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.filatti.activities.effect.items.adjusts.BrightnessAdjustItem;
-import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.filatti.activities.effect.items.EffectItem;
+import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SaturationAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
 import com.filatti.activities.effect.items.adjusts.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
-import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.BrightnessAdjust;
+import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
+import com.filatti.logger.Logger;
 import com.filatti.photo.PhotoManager;
 import com.filatti.activities.mvp.AbstractPresenter;
+import com.filatti.utils.Millis;
 import com.google.common.base.Preconditions;
 
 import org.opencv.android.Utils;
@@ -108,10 +110,6 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                 }
             };
 
-            SharpnessAdjust sharpnessAdjust = new SharpnessAdjust();
-            mAdjustList.add(sharpnessAdjust);
-            mAdjustItemList.add(new SharpnessAdjustItem(sharpnessAdjust, listener));
-
             BrightnessAdjust brightnessAdjust = new BrightnessAdjust();
             mAdjustList.add(brightnessAdjust);
             mAdjustItemList.add(new BrightnessAdjustItem(brightnessAdjust, listener));
@@ -123,6 +121,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             SaturationAdjust saturationAdjust = new SaturationAdjust();
             mAdjustList.add(saturationAdjust);
             mAdjustItemList.add(new SaturationAdjustItem(saturationAdjust, listener));
+
+            SharpnessAdjust sharpnessAdjust = new SharpnessAdjust();
+            mAdjustList.add(sharpnessAdjust);
+            mAdjustItemList.add(new SharpnessAdjustItem(sharpnessAdjust, listener));
 
             VignetteAdjust vignetteAdjust = new VignetteAdjust();
             mAdjustList.add(vignetteAdjust);
@@ -158,8 +160,9 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
         Preconditions.checkState(mSelectedEffectItem == null);
 
         mSelectedEffectItem = effectItem;
-        mActivity.showEffectSettingView(effectItem.getView(mActivity),
-                                        mActivity.getString(effectItem.getDisplayName()));
+        mActivity.showEffectSettingView(
+                effectItem.getView(mActivity, mActivity.getEffectSettingViewContainer()),
+                mActivity.getString(effectItem.getDisplayName()));
     }
 
     private void onChangeEffect() {
@@ -178,7 +181,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             }
 
             for (Effect effect : mAdjustList) {
+                long before = Millis.now();
                 Mat dst = effect.apply(src);
+                long after = Millis.now();
+                Logger.debug(TAG, effect.getClass().getSimpleName() + " spent " + (after - before) + " ms");
                 if (src != dst)
                     src.release();
                 src = dst;
