@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.filatti.R;
 import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.logger.Logger;
 import com.filatti.utils.ScreenUtils;
 import com.google.common.base.Preconditions;
 
@@ -218,12 +217,11 @@ public class EffectActivity extends FragmentActivity {
             dismissEffectSettingView();
         }
         mEffectSettingView = effectSettingView;
+        mEffectContainer.addView(effectSettingView);
 
         ViewGroup.LayoutParams layoutParams = effectSettingView.getLayoutParams();
         layoutParams.height = mEffectContainer.getHeight();
         effectSettingView.setLayoutParams(layoutParams);
-
-        mEffectContainer.addView(effectSettingView);
 
         mGridView.setVisibility(View.GONE);
 
