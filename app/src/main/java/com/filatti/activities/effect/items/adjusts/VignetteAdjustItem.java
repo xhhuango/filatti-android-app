@@ -10,11 +10,10 @@ import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.VignetteAdjust;
-import com.filatti.logger.Logger;
+
+import timber.log.Timber;
 
 public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
-    private static final String TAG = VignetteAdjustItem.class.getSimpleName();
-
     private ViewGroup mViewGroup;
     private ValueBarView mStrengthValueBarView;
     private ValueBarView mFeatheringValueBarView;
@@ -103,10 +102,12 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
     }
 
     private void setStrengthToEffect(int barValue) {
+        double strength = barValue / 100.0;
+        Timber.d("Set barValue=" + barValue + " -> strength=" + strength);
         try {
-            mEffect.setStrength(barValue / 100.0);
+            mEffect.setStrength(strength);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set strength " + strength);
         }
     }
 
@@ -125,10 +126,12 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
     }
 
     private void setFeatheringToEffect(int barValue) {
+        double feathering = barValue / 100.0;
+        Timber.d("Set barValue=" + barValue + " -> feathering=" + feathering);
         try {
-            mEffect.setFeathering(barValue / 100.0);
+            mEffect.setFeathering(feathering);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set feathering " + feathering);
         }
     }
 
@@ -147,10 +150,12 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
     }
 
     private void setRadiusToEffect(int barValue) {
+        double radius = barValue / 100.0;
+        Timber.d("Set barValue=" + barValue + " -> radius=" + radius);
         try {
-            mEffect.setRadius(barValue / 100.0);
+            mEffect.setRadius(radius);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set radius " + radius);
         }
     }
 

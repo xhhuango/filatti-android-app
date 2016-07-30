@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
 import com.filatti.R;
+import com.filatti.activities.FilattiActivity;
 import com.filatti.photo.AspectRatio;
 import com.filatti.utils.DecodeUtils;
 import com.filatti.utils.ScreenUtils;
@@ -22,7 +22,7 @@ import com.lyft.android.scissors.CropView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryActivity extends FragmentActivity {
+public class GalleryActivity extends FilattiActivity {
     static final int IMAGE_CAPTURE_REQUEST_CODE = 100;
 
     private static final int GRID_COLUMNS = 4;

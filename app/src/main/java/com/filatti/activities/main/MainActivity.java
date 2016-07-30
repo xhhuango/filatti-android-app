@@ -1,15 +1,15 @@
 package com.filatti.activities.main;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.filatti.R;
+import com.filatti.activities.FilattiActivity;
 import com.filatti.activities.gallery.GalleryActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FilattiActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override

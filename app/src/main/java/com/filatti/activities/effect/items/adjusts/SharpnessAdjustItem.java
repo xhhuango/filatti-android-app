@@ -10,11 +10,10 @@ import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.SharpnessAdjust;
-import com.filatti.logger.Logger;
+
+import timber.log.Timber;
 
 public class SharpnessAdjustItem extends EffectItem<SharpnessAdjust> {
-    private static final String TAG = SharpnessAdjustItem.class.getSimpleName();
-
     private ViewGroup mViewGroup;
     private ValueBarView mValueBarView;
 
@@ -64,7 +63,6 @@ public class SharpnessAdjustItem extends EffectItem<SharpnessAdjust> {
 
     private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
         return new ValueBarView.OnValueChangeListener() {
-
             @Override
             public void onValueChanged(int value) {
                 setToEffect(value);
@@ -74,10 +72,12 @@ public class SharpnessAdjustItem extends EffectItem<SharpnessAdjust> {
     }
 
     private void setToEffect(int barValue) {
+        double sharpness = barValue / 100.0;
+        Timber.d("Set barValue=" + barValue + " -> sharpness=" + sharpness);
         try {
-            mEffect.setSharpness(barValue / 100.0);
+            mEffect.setSharpness(sharpness);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set sharpness " + sharpness);
         }
     }
 

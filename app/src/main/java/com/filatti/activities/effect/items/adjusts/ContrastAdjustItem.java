@@ -10,11 +10,10 @@ import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.ContrastAdjust;
-import com.filatti.logger.Logger;
+
+import timber.log.Timber;
 
 public class ContrastAdjustItem extends EffectItem<ContrastAdjust> {
-    private static final String TAG = ContrastAdjustItem.class.getSimpleName();
-
     private ViewGroup mViewGroup;
     private ValueBarView mValueBarView;
 
@@ -67,9 +66,7 @@ public class ContrastAdjustItem extends EffectItem<ContrastAdjust> {
     }
 
     private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
-
         return new ValueBarView.OnValueChangeListener() {
-
             @Override
             public void onValueChanged(int value) {
                 setToEffect(value);
@@ -79,10 +76,12 @@ public class ContrastAdjustItem extends EffectItem<ContrastAdjust> {
     }
 
     private void setToEffect(int barValue) {
+        double contrast = (barValue / 2.0 + 100.0) / 100.0;
+        Timber.d("Set barValue=" + barValue + " -> contrast=" + contrast);
         try {
-            mEffect.setContrast((barValue / 2.0 + 100.0) / 100.0);
+            mEffect.setContrast(contrast);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set contrast " + contrast);
         }
     }
 

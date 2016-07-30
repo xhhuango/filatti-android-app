@@ -5,6 +5,7 @@
 # Files for the ART/Dalvik VM
 *.dex
 *.hprof
+*.alloc
 
 # Java class files
 *.class

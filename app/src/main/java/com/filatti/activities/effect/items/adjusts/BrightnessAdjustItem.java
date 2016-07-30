@@ -10,11 +10,10 @@ import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.BrightnessAdjust;
-import com.filatti.logger.Logger;
+
+import timber.log.Timber;
 
 public class BrightnessAdjustItem extends EffectItem<BrightnessAdjust> {
-    private static final String TAG = BrightnessAdjustItem.class.getSimpleName();
-
     private ViewGroup mViewGroup;
     private ValueBarView mValueBarView;
 
@@ -76,10 +75,12 @@ public class BrightnessAdjustItem extends EffectItem<BrightnessAdjust> {
     }
 
     private void setToEffect(int barValue) {
+        double brightness = barValue / 200.0;
+        Timber.d("Set barValue=" + barValue + " -> brightness=" + brightness);
         try {
-            mEffect.setBrightness(barValue / 200.0);
+            mEffect.setBrightness(brightness);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set brightness " + brightness);
         }
     }
 

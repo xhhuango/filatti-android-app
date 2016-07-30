@@ -2,7 +2,6 @@ package com.filatti.activities.effect;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.filatti.R;
+import com.filatti.activities.FilattiActivity;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.utils.ScreenUtils;
 import com.google.common.base.Preconditions;
@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EffectActivity extends FragmentActivity {
+public class EffectActivity extends FilattiActivity {
     private EffectPresenter mPresenter;
 
     private View mHeader;

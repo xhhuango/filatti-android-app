@@ -17,7 +17,6 @@ import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
-import com.filatti.logger.Logger;
 import com.filatti.photo.PhotoManager;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.filatti.utils.Millis;
@@ -31,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class EffectPresenter extends AbstractPresenter<EffectActivity> {
-    private static final String TAG = EffectPresenter.class.getSimpleName();
+import timber.log.Timber;
 
+class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private Bitmap mPhoto;
     private List<Effect> mAdjustList;
     private List<EffectItem> mAdjustItemList;
@@ -184,7 +183,7 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                 long before = Millis.now();
                 Mat dst = effect.apply(src);
                 long after = Millis.now();
-                Logger.debug(TAG, effect.getClass().getSimpleName() + " spent " + (after - before) + " ms");
+                Timber.d(effect.getClass().getSimpleName() + " spent " + (after - before) + " ms");
                 if (src != dst)
                     src.release();
                 src = dst;

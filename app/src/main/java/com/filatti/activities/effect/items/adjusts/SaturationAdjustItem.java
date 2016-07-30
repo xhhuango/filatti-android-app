@@ -10,11 +10,10 @@ import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.SaturationAdjust;
-import com.filatti.logger.Logger;
+
+import timber.log.Timber;
 
 public class SaturationAdjustItem extends EffectItem<SaturationAdjust> {
-    private static final String TAG = SaturationAdjustItem.class.getSimpleName();
-
     private ViewGroup mViewGroup;
     private ValueBarView mValueBarView;
 
@@ -68,7 +67,6 @@ public class SaturationAdjustItem extends EffectItem<SaturationAdjust> {
 
     private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
         return new ValueBarView.OnValueChangeListener() {
-
             @Override
             public void onValueChanged(int value) {
                 setToEffect(value);
@@ -78,10 +76,12 @@ public class SaturationAdjustItem extends EffectItem<SaturationAdjust> {
     }
 
     private void setToEffect(int barValue) {
+        double saturation = barValue / 100.0;
+        Timber.d("Set barValue=" + barValue + " -> saturation=" + saturation);
         try {
-            mEffect.setSaturation(barValue / 100.0);
+            mEffect.setSaturation(saturation);
         } catch (EffectException e) {
-            Logger.error(TAG, e);
+            Timber.e(e, "Failed to set saturation " + saturation);
         }
     }
 
