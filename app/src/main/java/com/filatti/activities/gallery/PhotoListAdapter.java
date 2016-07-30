@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.filatti.utils.DecodeUtils;
@@ -17,11 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class PhotoListAdapter extends BaseAdapter {
-    private static final int PADDING = 1;
-
     private final GalleryActivity mActivity;
     private List<Long> mPhotoList = new ArrayList<>();
-    private final int mImageSize;
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
@@ -30,12 +26,9 @@ class PhotoListAdapter extends BaseAdapter {
         }
     };
 
-    PhotoListAdapter(GalleryActivity activity, int imageViewSize) {
+    PhotoListAdapter(GalleryActivity activity) {
         Preconditions.checkNotNull(activity);
-        Preconditions.checkArgument(imageViewSize > 0);
-
         mActivity = activity;
-        mImageSize = imageViewSize - (PADDING * 2);
     }
 
     void setPhotoList(List<Long> photoList) {
@@ -67,37 +60,37 @@ class PhotoListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ImageButton imageButton;
+        GridView gridView = (GridView) parent;
+        final int columnSize = gridView.getColumnWidth();
+        final ImageView imageView;
 
         if (convertView == null) {
-            imageButton = new ImageButton(mActivity);
-            imageButton.setLayoutParams(new GridView.LayoutParams(mImageSize, mImageSize));
-            imageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageButton.setPadding(PADDING, PADDING, PADDING, PADDING);
+            imageView = new ImageView(gridView.getContext());
+            GridView.LayoutParams layoutParams = new GridView.LayoutParams(columnSize, columnSize);
+            imageView.setLayoutParams(layoutParams);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
-            imageButton = (ImageButton) convertView;
-            imageButton.setImageBitmap(null);
+            imageView = (ImageView) convertView;
+            imageView.setImageBitmap(null);
         }
 
         final Uri photoUri = mActivity.getPhotoUri(mPhotoList.get(position));
         ThreadPool.run(new Runnable() {
             @Override
             public void run() {
-                final Bitmap bitmap = DecodeUtils.decode(mActivity,
-                                                         photoUri,
-                                                         mImageSize,
-                                                         mImageSize);
+                final Bitmap bitmap =
+                        DecodeUtils.decode(mActivity, photoUri, columnSize, columnSize);
                 ThreadPool.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        imageButton.setImageBitmap(bitmap);
+                        imageView.setImageBitmap(bitmap);
                     }
                 });
             }
         });
-        imageButton.setTag(position);
-        imageButton.setOnClickListener(mOnClickListener);
+        imageView.setTag(position);
+        imageView.setOnClickListener(mOnClickListener);
 
-        return imageButton;
+        return imageView;
     }
 }

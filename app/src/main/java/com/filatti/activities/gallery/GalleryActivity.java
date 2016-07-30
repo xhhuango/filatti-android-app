@@ -25,8 +25,6 @@ import java.util.List;
 public class GalleryActivity extends FilattiActivity {
     static final int IMAGE_CAPTURE_REQUEST_CODE = 100;
 
-    private static final int GRID_COLUMNS = 4;
-
     private GalleryPresenter mPresenter;
 
     private ImageButton mAspectRatioButton;
@@ -146,10 +144,7 @@ public class GalleryActivity extends FilattiActivity {
 
     private void initGridView() {
         GridView gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setNumColumns(GRID_COLUMNS);
-        int mImageViewSize = getResources().getDisplayMetrics().widthPixels / GRID_COLUMNS;
-        gridView.setColumnWidth(mImageViewSize);
-        mPhotoListAdapter = new PhotoListAdapter(this, mImageViewSize);
+        mPhotoListAdapter = new PhotoListAdapter(this);
         gridView.setAdapter(mPhotoListAdapter);
 
         setPhotoList(mPhotoList);

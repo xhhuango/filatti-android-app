@@ -5,7 +5,6 @@ LOCAL_MODULE := libfilatti
 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
 LOCAL_LDLIBS := -lstdc++
-LOCAL_LDLIBS := -llog
 LOCAL_SHARED_LIBRARIES += opencv_java3
 
 LIB_FILATTI_FILES := $(wildcard $(LOCAL_PATH)/libfilatti/*.cpp)
