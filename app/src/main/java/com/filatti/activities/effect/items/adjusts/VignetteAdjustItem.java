@@ -43,8 +43,8 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
     @Override
     public void cancel() {
         mStrengthValueBarView.cancel();
-        mFeatheringValueBarView.apply();
-        mRadiusValueBarView.apply();
+        mFeatheringValueBarView.cancel();
+        mRadiusValueBarView.cancel();
         mOnEffectChangeListener.onEffectChanged();
     }
 
@@ -65,7 +65,7 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
 
             mStrengthValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.strengthValueBar);
             mStrengthValueBarView.initialize(true,
-                                             R.string.strength_title,
+                                             R.string.vignette_strength_title,
                                              0,
                                              100,
                                              getStrengthFromEffect(),
@@ -74,7 +74,7 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
             mFeatheringValueBarView =
                     (ValueBarView) mViewGroup.findViewById(R.id.featheringValueBar);
             mFeatheringValueBarView.initialize(true,
-                                               R.string.feathering_title,
+                                               R.string.vignette_feathering_title,
                                                0,
                                                100,
                                                getFeatheringFromEffect(),
@@ -82,7 +82,7 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
 
             mRadiusValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.radiusValueBar);
             mRadiusValueBarView.initialize(true,
-                                           R.string.radius_title,
+                                           R.string.vignette_radius_title,
                                            0,
                                            100,
                                            getRadiusFromEffect(),

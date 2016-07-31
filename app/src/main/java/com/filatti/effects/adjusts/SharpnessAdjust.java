@@ -1,6 +1,7 @@
 package com.filatti.effects.adjusts;
 
 import com.filatti.effects.EffectException;
+import com.google.common.base.Preconditions;
 
 import org.opencv.core.Mat;
 
@@ -29,6 +30,8 @@ public class SharpnessAdjust extends Adjust {
 
     @Override
     public Mat apply(Mat src) {
+        Preconditions.checkNotNull(src);
+
         Mat dst = new Mat();
         return (nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr()))
                 ? dst

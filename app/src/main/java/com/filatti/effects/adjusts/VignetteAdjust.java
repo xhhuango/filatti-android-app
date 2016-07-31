@@ -4,8 +4,11 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 
 import com.filatti.effects.EffectException;
+import com.google.common.base.Preconditions;
 
 import org.opencv.core.Mat;
+
+import timber.log.Timber;
 
 @SuppressWarnings("JniMissingFunction")
 public class VignetteAdjust extends Adjust {
@@ -21,7 +24,7 @@ public class VignetteAdjust extends Adjust {
             setCenter(0.5, 0.5);
             setColor(Color.BLACK);
         } catch (EffectException e) {
-            e.printStackTrace();
+            Timber.e(e, "Failed to initialize Vignette");
         }
     }
 
@@ -83,6 +86,8 @@ public class VignetteAdjust extends Adjust {
 
     @Override
     public Mat apply(Mat src) {
+        Preconditions.checkNotNull(src);
+
         Mat dst = new Mat();
         return (nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr()))
                 ? dst

@@ -7,7 +7,11 @@
     <string name="sharpen">Sharpen</string>
 
     <string name="vignette">Vignette</string>
-    <string name="strength_title">Strength</string>
-    <string name="feathering_title">Feathering</string>
-    <string name="radius_title">Radius</string>
+    <string name="vignette_strength_title">Strength</string>
+    <string name="vignette_feathering_title">Feathering</string>
+    <string name="vignette_radius_title">Radius</string>
+
+    <string name="temperature">Temperature</string>
+    <string name="temperature_temperature_title">Temperature</string>
+    <string name="temperature_strength_title">Strength</string>
 </resources>

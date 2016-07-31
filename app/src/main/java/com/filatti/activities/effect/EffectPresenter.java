@@ -8,6 +8,7 @@ import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SaturationAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
+import com.filatti.activities.effect.items.adjusts.TemperatureAdjustItem;
 import com.filatti.activities.effect.items.adjusts.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
@@ -16,6 +17,7 @@ import com.filatti.effects.adjusts.BrightnessAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
+import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.photo.PhotoManager;
 import com.filatti.activities.mvp.AbstractPresenter;
@@ -120,6 +122,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             SaturationAdjust saturationAdjust = new SaturationAdjust();
             mAdjustList.add(saturationAdjust);
             mAdjustItemList.add(new SaturationAdjustItem(saturationAdjust, listener));
+
+            TemperatureAdjust temperatureAdjust = new TemperatureAdjust();
+            mAdjustList.add(temperatureAdjust);
+            mAdjustItemList.add(new TemperatureAdjustItem(temperatureAdjust, listener));
 
             SharpnessAdjust sharpnessAdjust = new SharpnessAdjust();
             mAdjustList.add(sharpnessAdjust);
