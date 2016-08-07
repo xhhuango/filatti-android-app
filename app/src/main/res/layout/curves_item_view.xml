@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <com.filatti.activities.effect.ui.XyPlotView
+        android:id="@+id/xyPlotView"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"/>
+
+    <LinearLayout
+        android:id="@+id/rgb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/xyPlotView"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/redButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="#FF0000"/>
+
+        <ImageButton
+            android:id="@+id/greenButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="#00FF00"/>
+
+        <ImageButton
+            android:id="@+id/blueButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="#0000FF"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/rgb"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/valueButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="#AAAAAA"
+            android:contentDescription=""/>
+
+        <ImageButton
+            android:id="@+id/pointButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="?android:attr/colorBackground"
+            android:contentDescription=""
+            android:scaleType="fitCenter"
+            android:src="@drawable/point"/>
+
+        <ImageButton
+            android:id="@+id/removeButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="?android:attr/colorBackground"
+            android:contentDescription=""
+            android:scaleType="fitCenter"
+            android:src="@drawable/remove"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

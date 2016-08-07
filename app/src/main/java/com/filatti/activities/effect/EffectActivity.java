@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.filatti.R;
 import com.filatti.activities.FilattiActivity;
 import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.utils.ScreenUtils;
+import com.filatti.utils.DisplayUtils;
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
@@ -188,7 +188,7 @@ public class EffectActivity extends FilattiActivity {
         mImageView = (ImageView) findViewById(R.id.imageView);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) mImageView.getLayoutParams();
-        layoutParams.height = ScreenUtils.getScreenSize(getResources()).getWidth();
+        layoutParams.height = DisplayUtils.getScreenSize(getResources()).getWidth();
         mImageView.setLayoutParams(layoutParams);
         mImageView.requestLayout();
     }

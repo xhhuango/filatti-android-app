@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import com.filatti.activities.effect.items.adjusts.BrightnessAdjustItem;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
+import com.filatti.activities.effect.items.adjusts.CurvesAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SaturationAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
 import com.filatti.activities.effect.items.adjusts.TemperatureAdjustItem;
@@ -15,6 +16,7 @@ import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
 import com.filatti.effects.adjusts.BrightnessAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
+import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
@@ -110,6 +112,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                     onChangeEffect();
                 }
             };
+
+            CurvesAdjust curvesAdjust = new CurvesAdjust();
+            mAdjustList.add(curvesAdjust);
+            mAdjustItemList.add(new CurvesAdjustItem(curvesAdjust, listener));
 
             BrightnessAdjust brightnessAdjust = new BrightnessAdjust();
             mAdjustList.add(brightnessAdjust);

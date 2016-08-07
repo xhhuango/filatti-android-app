@@ -14,7 +14,7 @@ import com.filatti.R;
 import com.filatti.activities.FilattiActivity;
 import com.filatti.photo.AspectRatio;
 import com.filatti.utils.DecodeUtils;
-import com.filatti.utils.ScreenUtils;
+import com.filatti.utils.DisplayUtils;
 import com.filatti.utils.ThreadPool;
 import com.google.common.base.Preconditions;
 import com.lyft.android.scissors.CropView;
@@ -105,7 +105,7 @@ public class GalleryActivity extends FilattiActivity {
         mCropView = (CropView) findViewById(R.id.cropView);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) mCropView.getLayoutParams();
-        layoutParams.height = ScreenUtils.getScreenSize(getResources()).getWidth();
+        layoutParams.height = DisplayUtils.getScreenSize(getResources()).getWidth();
         mCropView.setLayoutParams(layoutParams);
         mCropView.requestLayout();
     }
@@ -114,7 +114,7 @@ public class GalleryActivity extends FilattiActivity {
         mAspectRatioButton = (ImageButton) findViewById(R.id.aspectRatioButton);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) mAspectRatioButton.getLayoutParams();
-        layoutParams.topMargin = ScreenUtils.getScreenSize(getResources()).getWidth();
+        layoutParams.topMargin = DisplayUtils.getScreenSize(getResources()).getWidth();
         mAspectRatioButton.setLayoutParams(layoutParams);
         mAspectRatioButton.requestLayout();
 
@@ -130,7 +130,7 @@ public class GalleryActivity extends FilattiActivity {
         ImageButton button = (ImageButton) findViewById(R.id.cameraButton);
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) button.getLayoutParams();
-        layoutParams.topMargin = ScreenUtils.getScreenSize(getResources()).getWidth();
+        layoutParams.topMargin = DisplayUtils.getScreenSize(getResources()).getWidth();
         button.setLayoutParams(layoutParams);
         button.requestLayout();
 
@@ -181,7 +181,7 @@ public class GalleryActivity extends FilattiActivity {
     }
 
     void display(Uri photoUri) {
-        ScreenUtils.Size screenSize = ScreenUtils.getScreenSize(getResources());
+        DisplayUtils.Size screenSize = DisplayUtils.getScreenSize(getResources());
         int size = Math.min(screenSize.getWidth(), screenSize.getHeight()) * 2;
         final Bitmap bitmap = DecodeUtils.decode(this, photoUri, size, size);
         ThreadPool.runOnUiThread(new Runnable() {

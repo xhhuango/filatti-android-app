@@ -55,11 +55,8 @@ public class BrightnessAdjustItem extends EffectItem<BrightnessAdjust> {
             mViewGroup =
                     (ViewGroup) inflater.inflate(R.layout.brightness_item_view, rootView, false);
             mValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.valueBar);
-            mValueBarView.initialize(false,
-                                     0,
-                                     -100,
-                                     100,
-                                     getFromEffect(), createOnValueChangeListener());
+            mValueBarView
+                    .initialize(false, 0, -100, 100, getFromEffect(), createOnValueChangeListener());
         }
         return mViewGroup;
     }

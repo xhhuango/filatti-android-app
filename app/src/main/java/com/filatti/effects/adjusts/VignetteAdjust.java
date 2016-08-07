@@ -114,7 +114,7 @@ public class VignetteAdjust extends Adjust {
 
     private native boolean nativeSetFeathering(long self, double feathering);
 
-    private native double nativeGetColor(long self, int[] color);
+    private native void nativeGetColor(long self, int[] color);
 
     private native boolean nativeSetColor(long self, int b, int g, int r);
 

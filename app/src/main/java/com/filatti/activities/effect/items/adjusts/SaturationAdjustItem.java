@@ -55,12 +55,8 @@ public class SaturationAdjustItem extends EffectItem<SaturationAdjust> {
             mViewGroup =
                     (ViewGroup) inflater.inflate(R.layout.saturation_item_view, rootView, false);
             mValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.valueBar);
-            mValueBarView.initialize(false,
-                                     0,
-                                     -100,
-                                     100,
-                                     getFromEffect(),
-                                     createOnValueChangeListener());
+            mValueBarView
+                    .initialize(false, 0, -100, 100, getFromEffect(), createOnValueChangeListener());
         }
         return mViewGroup;
     }
