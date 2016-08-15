@@ -14,10 +14,9 @@ import com.filatti.activities.effect.items.adjusts.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
-import com.filatti.effects.adjusts.BrightnessAdjust;
+import com.filatti.effects.adjusts.HsvAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
-import com.filatti.effects.adjusts.SaturationAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
@@ -117,17 +116,14 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             mAdjustList.add(curvesAdjust);
             mAdjustItemList.add(new CurvesAdjustItem(curvesAdjust, listener));
 
-            BrightnessAdjust brightnessAdjust = new BrightnessAdjust();
-            mAdjustList.add(brightnessAdjust);
-            mAdjustItemList.add(new BrightnessAdjustItem(brightnessAdjust, listener));
-
             ContrastAdjust contrastAdjust = new ContrastAdjust();
             mAdjustList.add(contrastAdjust);
             mAdjustItemList.add(new ContrastAdjustItem(contrastAdjust, listener));
 
-            SaturationAdjust saturationAdjust = new SaturationAdjust();
-            mAdjustList.add(saturationAdjust);
-            mAdjustItemList.add(new SaturationAdjustItem(saturationAdjust, listener));
+            HsvAdjust hsvAdjust = new HsvAdjust();
+            mAdjustList.add(hsvAdjust);
+            mAdjustItemList.add(new BrightnessAdjustItem(hsvAdjust, listener));
+            mAdjustItemList.add(new SaturationAdjustItem(hsvAdjust, listener));
 
             TemperatureAdjust temperatureAdjust = new TemperatureAdjust();
             mAdjustList.add(temperatureAdjust);

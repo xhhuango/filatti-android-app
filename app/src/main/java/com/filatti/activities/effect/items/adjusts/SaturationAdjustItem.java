@@ -9,15 +9,15 @@ import com.filatti.R;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
-import com.filatti.effects.adjusts.SaturationAdjust;
+import com.filatti.effects.adjusts.HsvAdjust;
 
 import timber.log.Timber;
 
-public class SaturationAdjustItem extends EffectItem<SaturationAdjust> {
+public class SaturationAdjustItem extends EffectItem<HsvAdjust> {
     private ViewGroup mViewGroup;
     private ValueBarView mValueBarView;
 
-    public SaturationAdjustItem(SaturationAdjust effect, OnEffectChangeListener listener) {
+    public SaturationAdjustItem(HsvAdjust effect, OnEffectChangeListener listener) {
         super(effect, listener);
     }
 

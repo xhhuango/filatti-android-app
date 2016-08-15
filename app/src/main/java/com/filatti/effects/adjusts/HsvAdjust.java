@@ -6,10 +6,10 @@ import com.google.common.base.Preconditions;
 import org.opencv.core.Mat;
 
 @SuppressWarnings("JniMissingFunction")
-public class SaturationAdjust extends Adjust {
+public class HsvAdjust extends Adjust {
     private final long mNativeObj;
 
-    public SaturationAdjust() {
+    public HsvAdjust() {
         mNativeObj = nativeCreateObject();
     }
 
@@ -17,6 +17,15 @@ public class SaturationAdjust extends Adjust {
     protected void finalize() throws Throwable {
         nativeDestroyObject(mNativeObj);
         super.finalize();
+    }
+
+    public void setBrightness(double brightness) throws EffectException {
+        if (!nativeSetBrightness(mNativeObj, brightness))
+            throw new EffectException("Brightness isn't within range: " + brightness);
+    }
+
+    public double getBrightness() {
+        return nativeGetBrightness(mNativeObj);
     }
 
     public void setSaturation(double saturation) throws EffectException {
@@ -33,7 +42,7 @@ public class SaturationAdjust extends Adjust {
         Preconditions.checkNotNull(src);
 
         Mat dst = new Mat();
-        return (nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr()))
+        return nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr())
                 ? dst
                 : src;
     }
@@ -41,6 +50,10 @@ public class SaturationAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native double nativeGetBrightness(long self);
+
+    private native boolean nativeSetBrightness(long self, double brightness);
 
     private native double nativeGetSaturation(long self);
 

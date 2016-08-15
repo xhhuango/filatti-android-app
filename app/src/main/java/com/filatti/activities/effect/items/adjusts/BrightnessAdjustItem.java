@@ -9,15 +9,15 @@ import com.filatti.R;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.ValueBarView;
 import com.filatti.effects.EffectException;
-import com.filatti.effects.adjusts.BrightnessAdjust;
+import com.filatti.effects.adjusts.HsvAdjust;
 
 import timber.log.Timber;
 
-public class BrightnessAdjustItem extends EffectItem<BrightnessAdjust> {
+public class BrightnessAdjustItem extends EffectItem<HsvAdjust> {
     private ViewGroup mViewGroup;
     private ValueBarView mValueBarView;
 
-    public BrightnessAdjustItem(BrightnessAdjust effect, OnEffectChangeListener listener) {
+    public BrightnessAdjustItem(HsvAdjust effect, OnEffectChangeListener listener) {
         super(effect, listener);
     }
 
