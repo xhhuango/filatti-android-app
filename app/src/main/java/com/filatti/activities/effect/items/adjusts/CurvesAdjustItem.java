@@ -45,6 +45,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
 
     private View.OnClickListener mButtonOnClickListener;
 
+    private int[] mCurvesBuffer = new int[256];
+
     public CurvesAdjustItem(CurvesAdjust effect, OnEffectChangeListener listener) {
         super(effect, listener);
     }
@@ -149,7 +151,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mValueCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
-                return mEffect.getValueCurves();
+                mEffect.getValueCurves(mCurvesBuffer);
+                return mCurvesBuffer;
             }
 
             @Override
@@ -177,7 +180,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mBlueCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
-                return mEffect.getBlueCurves();
+                mEffect.getBlueCurves(mCurvesBuffer);
+                return mCurvesBuffer;
             }
 
             @Override
@@ -205,7 +209,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mGreenCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
-                return mEffect.getGreenCurves();
+                mEffect.getGreenCurves(mCurvesBuffer);
+                return mCurvesBuffer;
             }
 
             @Override
@@ -233,7 +238,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mRedCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
-                return mEffect.getRedCurves();
+                mEffect.getRedCurves(mCurvesBuffer);
+                return mCurvesBuffer;
             }
 
             @Override

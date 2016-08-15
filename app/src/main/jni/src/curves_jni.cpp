@@ -31,14 +31,12 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeA
     return (jboolean) obj->apply(*src_mat, *dst_mat);
 }
 
-jintArray get_curves(JNIEnv* env, const std::vector<uchar>& curves)
+void get_curves(JNIEnv* env, jintArray arr, const std::vector<uchar>& curves)
 {
-    jintArray arr = env->NewIntArray(curves.size());
     jint* curves_arr = env->GetIntArrayElements(arr, NULL);
     for (int i = 0, j = curves.size(); i < j; ++i)
         curves_arr[i] = (int) curves[i];
     env->ReleaseIntArrayElements(arr, curves_arr, 0);
-    return arr;
 }
 
 jintArray get_points(JNIEnv* env, const std::pair<std::vector<uchar>, std::vector<uchar>>& points)
@@ -69,10 +67,10 @@ void set_points(JNIEnv* env, jintArray arr, std::vector<uchar>& from, std::vecto
  * Value
  */
 
-JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetValueCurves
-(JNIEnv *env, jclass clazz, jlong thiz)
+JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetValueCurves
+(JNIEnv *env, jclass clazz, jlong thiz, jintArray arr)
 {
-    return get_curves(env, ((Curves*) thiz)->get_value_curves());
+    get_curves(env, arr, ((Curves*) thiz)->get_value_curves());
 }
 
 JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetValuePoints
@@ -94,10 +92,10 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
  * Blue
  */
 
-JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetBlueCurves
-(JNIEnv *env, jclass clazz, jlong thiz)
+JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetBlueCurves
+(JNIEnv *env, jclass clazz, jlong thiz, jintArray arr)
 {
-    return get_curves(env, ((Curves*) thiz)->get_blue_curves());
+    get_curves(env, arr, ((Curves*) thiz)->get_blue_curves());
 }
 
 JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetBluePoints
@@ -119,10 +117,10 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
  * Green
  */
 
-JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetGreenCurves
-(JNIEnv *env, jclass clazz, jlong thiz)
+JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetGreenCurves
+(JNIEnv *env, jclass clazz, jlong thiz, jintArray arr)
 {
-    return get_curves(env, ((Curves*) thiz)->get_green_curves());
+    get_curves(env, arr, ((Curves*) thiz)->get_green_curves());
 }
 
 JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetGreenPoints
@@ -144,10 +142,10 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
  * Red
  */
 
-JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetRedCurves
-(JNIEnv *env, jclass clazz, jlong thiz)
+JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetRedCurves
+(JNIEnv *env, jclass clazz, jlong thiz, jintArray arr)
 {
-    return get_curves(env, ((Curves*) thiz)->get_red_curves());
+    get_curves(env, arr, ((Curves*) thiz)->get_red_curves());
 }
 
 JNIEXPORT jintArray JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeGetRedPoints

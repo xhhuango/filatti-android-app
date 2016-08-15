@@ -22,8 +22,10 @@ public class CurvesAdjust extends Adjust {
      * Value
      */
 
-    public int[] getValueCurves() {
-        return nativeGetValueCurves(mNativeObj);
+    public void getValueCurves(int[] curves) {
+        Preconditions.checkNotNull(curves);
+        Preconditions.checkArgument(curves.length == 256);
+        nativeGetValueCurves(mNativeObj, curves);
     }
 
     public int[] getValuePoints() {
@@ -38,8 +40,10 @@ public class CurvesAdjust extends Adjust {
      * Blue
      */
 
-    public int[] getBlueCurves() {
-        return nativeGetBlueCurves(mNativeObj);
+    public void getBlueCurves(int[] curves) {
+        Preconditions.checkNotNull(curves);
+        Preconditions.checkArgument(curves.length == 256);
+        nativeGetBlueCurves(mNativeObj, curves);
     }
 
     public int[] getBluePoints() {
@@ -54,8 +58,10 @@ public class CurvesAdjust extends Adjust {
      * Green
      */
 
-    public int[] getGreenCurves() {
-        return nativeGetGreenCurves(mNativeObj);
+    public void getGreenCurves(int[] curves) {
+        Preconditions.checkNotNull(curves);
+        Preconditions.checkArgument(curves.length == 256);
+        nativeGetGreenCurves(mNativeObj, curves);
     }
 
     public int[] getGreenPoints() {
@@ -70,8 +76,10 @@ public class CurvesAdjust extends Adjust {
      * Red
      */
 
-    public int[] getRedCurves() {
-        return nativeGetRedCurves(mNativeObj);
+    public void getRedCurves(int[] curves) {
+        Preconditions.checkNotNull(curves);
+        Preconditions.checkArgument(curves.length == 256);
+        nativeGetRedCurves(mNativeObj, curves);
     }
 
     public int[] getRedPoints() {
@@ -102,7 +110,7 @@ public class CurvesAdjust extends Adjust {
      * Value native
      */
 
-    private native int[] nativeGetValueCurves(long self);
+    private native void nativeGetValueCurves(long self, int[] arr);
 
     private native int[] nativeGetValuePoints(long self);
 
@@ -112,7 +120,7 @@ public class CurvesAdjust extends Adjust {
      * Blue native
      */
 
-    private native int[] nativeGetBlueCurves(long self);
+    private native void nativeGetBlueCurves(long self, int[] arr);
 
     private native int[] nativeGetBluePoints(long self);
 
@@ -122,7 +130,7 @@ public class CurvesAdjust extends Adjust {
      * Green native
      */
 
-    private native int[] nativeGetGreenCurves(long self);
+    private native void nativeGetGreenCurves(long self, int[] arr);
 
     private native int[] nativeGetGreenPoints(long self);
 
@@ -132,7 +140,7 @@ public class CurvesAdjust extends Adjust {
      * Red native
      */
 
-    private native int[] nativeGetRedCurves(long self);
+    private native void nativeGetRedCurves(long self, int[] arr);
 
     private native int[] nativeGetRedPoints(long self);
 
