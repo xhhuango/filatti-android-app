@@ -3,18 +3,17 @@ package com.filatti.activities.effect;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-import com.filatti.activities.effect.items.adjusts.BrightnessAdjustItem;
+import com.filatti.activities.effect.items.adjusts.HlsAdjustItem;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.filatti.activities.effect.items.adjusts.CurvesAdjustItem;
-import com.filatti.activities.effect.items.adjusts.SaturationAdjustItem;
 import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
 import com.filatti.activities.effect.items.adjusts.TemperatureAdjustItem;
 import com.filatti.activities.effect.items.adjusts.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
-import com.filatti.effects.adjusts.HsvAdjust;
+import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
@@ -120,10 +119,9 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             mAdjustList.add(contrastAdjust);
             mAdjustItemList.add(new ContrastAdjustItem(contrastAdjust, listener));
 
-            HsvAdjust hsvAdjust = new HsvAdjust();
-            mAdjustList.add(hsvAdjust);
-            mAdjustItemList.add(new BrightnessAdjustItem(hsvAdjust, listener));
-            mAdjustItemList.add(new SaturationAdjustItem(hsvAdjust, listener));
+            HlsAdjust hlsAdjust = new HlsAdjust();
+            mAdjustList.add(hlsAdjust);
+            mAdjustItemList.add(new HlsAdjustItem(hlsAdjust, listener));
 
             TemperatureAdjust temperatureAdjust = new TemperatureAdjust();
             mAdjustList.add(temperatureAdjust);

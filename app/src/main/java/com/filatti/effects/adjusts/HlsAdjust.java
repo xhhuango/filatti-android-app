@@ -6,10 +6,10 @@ import com.google.common.base.Preconditions;
 import org.opencv.core.Mat;
 
 @SuppressWarnings("JniMissingFunction")
-public class HsvAdjust extends Adjust {
+public class HlsAdjust extends Adjust {
     private final long mNativeObj;
 
-    public HsvAdjust() {
+    public HlsAdjust() {
         mNativeObj = nativeCreateObject();
     }
 
@@ -19,13 +19,22 @@ public class HsvAdjust extends Adjust {
         super.finalize();
     }
 
-    public void setBrightness(double brightness) throws EffectException {
-        if (!nativeSetBrightness(mNativeObj, brightness))
-            throw new EffectException("Brightness isn't within range: " + brightness);
+    public void setHue(int hue) throws EffectException {
+        if (!nativeSetHue(mNativeObj, hue))
+            throw new EffectException("Hue isn't within range: " + hue);
     }
 
-    public double getBrightness() {
-        return nativeGetBrightness(mNativeObj);
+    public int getHue() {
+        return nativeGetHue(mNativeObj);
+    }
+
+    public void setLightness(double lightness) throws EffectException {
+        if (!nativeSetLightness(mNativeObj, lightness))
+            throw new EffectException("Lightness isn't within range: " + lightness);
+    }
+
+    public double getLightness() {
+        return nativeGetLightness(mNativeObj);
     }
 
     public void setSaturation(double saturation) throws EffectException {
@@ -51,9 +60,13 @@ public class HsvAdjust extends Adjust {
 
     private native void nativeDestroyObject(long self);
 
-    private native double nativeGetBrightness(long self);
+    private native int nativeGetHue(long self);
 
-    private native boolean nativeSetBrightness(long self, double brightness);
+    private native boolean nativeSetHue(long self, int hue);
+
+    private native double nativeGetLightness(long self);
+
+    private native boolean nativeSetLightness(long self, double lightness);
 
     private native double nativeGetSaturation(long self);
 

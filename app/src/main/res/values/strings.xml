@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Filatti</string>
 
-    <string name="brightness">Brightness</string>
     <string name="contrast">Contrast</string>
-    <string name="saturation">Saturation</string>
     <string name="sharpen">Sharpen</string>
+
+    <string name="hls">HLS</string>
+    <string name="hls_hue">Hue</string>
+    <string name="hls_lightness">Lightness</string>
+    <string name="hls_saturation">Saturation</string>
 
     <string name="vignette">Vignette</string>
     <string name="vignette_strength_title">Strength</string>
