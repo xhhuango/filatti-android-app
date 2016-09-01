@@ -2,23 +2,18 @@ package com.filatti.activities.effect;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Debug;
 
-import com.filatti.activities.effect.items.adjusts.HlsAdjustItem;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.items.adjusts.ContrastAdjustItem;
 import com.filatti.activities.effect.items.adjusts.CurvesAdjustItem;
-import com.filatti.activities.effect.items.adjusts.SharpnessAdjustItem;
-import com.filatti.activities.effect.items.adjusts.TemperatureAdjustItem;
-import com.filatti.activities.effect.items.adjusts.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.Effect;
-import com.filatti.effects.adjusts.HlsAdjust;
+import com.filatti.effects.EffectManager;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
-import com.filatti.effects.adjusts.SharpnessAdjust;
-import com.filatti.effects.adjusts.TemperatureAdjust;
-import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.photo.PhotoManager;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.filatti.utils.Millis;
@@ -36,7 +31,7 @@ import timber.log.Timber;
 
 class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private Bitmap mPhoto;
-    private List<Effect> mAdjustList;
+    private EffectManager mEffectManager = new EffectManager();
     private List<EffectItem> mAdjustItemList;
     private EffectItem mSelectedEffectItem;
 
@@ -100,8 +95,7 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     }
 
     private synchronized List<EffectItem> getAdjustItemList() {
-        if (mAdjustList == null || mAdjustItemList == null) {
-            mAdjustList = new ArrayList<>();
+        if (mAdjustItemList == null) {
             mAdjustItemList = new ArrayList<>();
 
             EffectItem.OnEffectChangeListener listener = new EffectItem.OnEffectChangeListener() {
@@ -111,29 +105,18 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                 }
             };
 
-            CurvesAdjust curvesAdjust = new CurvesAdjust();
-            mAdjustList.add(curvesAdjust);
-            mAdjustItemList.add(new CurvesAdjustItem(curvesAdjust, listener));
+            CurvesAdjustItem curvesAdjustItem =
+                    new CurvesAdjustItem(mEffectManager.getEffect(CurvesAdjust.class), listener);
+            mAdjustItemList.add(curvesAdjustItem);
 
-            ContrastAdjust contrastAdjust = new ContrastAdjust();
-            mAdjustList.add(contrastAdjust);
-            mAdjustItemList.add(new ContrastAdjustItem(contrastAdjust, listener));
+            ContrastAdjustItem contrastAdjustItem =
+                    new ContrastAdjustItem(mEffectManager.getEffect(ContrastAdjust.class), listener);
+            mAdjustItemList.add(contrastAdjustItem);
 
-            HlsAdjust hlsAdjust = new HlsAdjust();
-            mAdjustList.add(hlsAdjust);
-            mAdjustItemList.add(new HlsAdjustItem(hlsAdjust, listener));
-
-            TemperatureAdjust temperatureAdjust = new TemperatureAdjust();
-            mAdjustList.add(temperatureAdjust);
-            mAdjustItemList.add(new TemperatureAdjustItem(temperatureAdjust, listener));
-
-            SharpnessAdjust sharpnessAdjust = new SharpnessAdjust();
-            mAdjustList.add(sharpnessAdjust);
-            mAdjustItemList.add(new SharpnessAdjustItem(sharpnessAdjust, listener));
-
-            VignetteAdjust vignetteAdjust = new VignetteAdjust();
-            mAdjustList.add(vignetteAdjust);
-            mAdjustItemList.add(new VignetteAdjustItem(vignetteAdjust, listener));
+//            mAdjustItemList.add(new HlsAdjustItem(hlsAdjust, listener));
+//            mAdjustItemList.add(new TemperatureAdjustItem(temperatureAdjust, listener));
+//            mAdjustItemList.add(new SharpnessAdjustItem(sharpnessAdjust, listener));
+//            mAdjustItemList.add(new VignetteAdjustItem(vignetteAdjust, listener));
         }
         return mAdjustItemList;
     }
@@ -176,35 +159,52 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
 
     private void applyEffects() {
         if (mLock.compareAndSet(false, true)) {
-            Mat src = new Mat();
-            Utils.bitmapToMat(mPhoto, src);
-            if (src.channels() == 4) {
-                Mat tmp = new Mat();
-                Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2BGR);
-                src.release();
-                src = tmp;
-            }
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Mat src = new Mat();
+                    Utils.bitmapToMat(mPhoto, src);
+                    if (src.channels() == 4) {
+                        Mat tmp = new Mat();
+                        Imgproc.cvtColor(src, tmp, Imgproc.COLOR_RGBA2BGR);
+                        src.release();
+                        src = tmp;
+                    }
 
-            for (Effect effect : mAdjustList) {
-                long before = Millis.now();
-                Mat dst = effect.apply(src);
-                long after = Millis.now();
-                Timber.d(effect.getClass().getSimpleName() + " spent " + (after - before) + " ms");
-                if (src != dst)
+                    for (Effect effect : mEffectManager.list()) {
+                        long before = Millis.now();
+                        Mat dst = effect.apply(src);
+                        long after = Millis.now();
+                        Timber.d("Spent %d ms, native heap=%d KB",
+                                 after - before,
+                                 Debug.getNativeHeapAllocatedSize() / 1000);
+                        Timber.d(effect.toString());
+                        if (src != dst) {
+                            src.release();
+                            src = dst;
+                        }
+                    }
+
+                    if (mAppliedBitmap == null) {
+                        mAppliedBitmap = Bitmap.createBitmap(src.cols(),
+                                                             src.rows(),
+                                                             Bitmap.Config.ARGB_8888);
+                    }
+                    Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
+                    Utils.matToBitmap(src, mAppliedBitmap);
                     src.release();
-                src = dst;
-            }
 
-            if (mAppliedBitmap == null)
-                mAppliedBitmap =
-                        Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_8888);
-            Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
-            Utils.matToBitmap(src, mAppliedBitmap);
-            src.release();
+                    return null;
+                }
 
-            mActivity.setPhoto(mAppliedBitmap);
-
-            mLock.set(false);
+                @Override
+                protected void onPostExecute(Void result) {
+                    mActivity.setPhoto(mAppliedBitmap);
+                    mLock.set(false);
+                }
+            }.execute();
+        } else {
+            Timber.d("Skip");
         }
     }
 }

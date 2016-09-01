@@ -1,12 +1,17 @@
 #include <jni.h>
 
-#include <opencv2/core.hpp>
+#include "log.hpp"
+
 #include <filatti/curves.hpp>
+#include <filatti/exception.hpp>
 
 extern "C" {
 
 using namespace cv;
 using namespace filatti;
+using libException = filatti::Exception;
+
+static const char* TAG = __FILE__;
 
 JNIEXPORT jlong JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeCreateObject
 (JNIEnv* env, jclass clazz)
@@ -85,7 +90,13 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
     std::vector<uchar> from;
     std::vector<uchar> to;
     set_points(env, arr, from, to);
-    return (jboolean) ((Curves*) thiz)->set_value_points(from, to);
+    try {
+        ((Curves*) thiz)->set_value_points(from, to);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 /**
@@ -110,7 +121,13 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
     std::vector<uchar> from;
     std::vector<uchar> to;
     set_points(env, arr, from, to);
-    return (jboolean) ((Curves*) thiz)->set_blue_points(from, to);
+    try {
+        ((Curves*) thiz)->set_blue_points(from, to);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 /**
@@ -135,7 +152,13 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
     std::vector<uchar> from;
     std::vector<uchar> to;
     set_points(env, arr, from, to);
-    return (jboolean) ((Curves*) thiz)->set_green_points(from, to);
+    try {
+        ((Curves*) thiz)->set_green_points(from, to);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 /**
@@ -160,7 +183,13 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeS
     std::vector<uchar> from;
     std::vector<uchar> to;
     set_points(env, arr, from, to);
-    return (jboolean) ((Curves*) thiz)->set_red_points(from, to);
+    try {
+        ((Curves*) thiz)->set_red_points(from, to);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 } // extern "C"

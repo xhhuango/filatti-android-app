@@ -1,12 +1,17 @@
 #include <jni.h>
 
-#include <opencv2/core.hpp>
+#include "log.hpp"
+
 #include <filatti/contrast.hpp>
+#include <filatti/exception.hpp>
 
 extern "C" {
 
 using namespace cv;
 using namespace filatti;
+using libException = filatti::Exception;
+
+static const char* TAG = __FILE__;
 
 JNIEXPORT jlong JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeCreateObject
 (JNIEnv* env, jclass clazz)
@@ -32,8 +37,13 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_native
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeSetContrast
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble contrast)
 {
-    Contrast* obj = (Contrast*) thiz;
-    return (jboolean) obj->set_contrast(contrast);
+    try {
+        ((Contrast*) thiz)->set_contrast(contrast);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeApply

@@ -19,6 +19,11 @@ public class HlsAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public Adjust copy() throws EffectException {
+        return null;
+    }
+
     public void setHue(int hue) throws EffectException {
         if (!nativeSetHue(mNativeObj, hue))
             throw new EffectException("Hue isn't within range: " + hue);

@@ -1,8 +1,11 @@
 package com.filatti.effects.adjusts;
 
+import com.filatti.effects.EffectException;
 import com.google.common.base.Preconditions;
 
 import org.opencv.core.Mat;
+
+import java.util.Arrays;
 
 @SuppressWarnings("JniMissingFunction")
 public class CurvesAdjust extends Adjust {
@@ -16,6 +19,16 @@ public class CurvesAdjust extends Adjust {
     protected void finalize() throws Throwable {
         nativeDestroyObject(mNativeObj);
         super.finalize();
+    }
+
+    @Override
+    public Adjust copy() throws EffectException {
+        CurvesAdjust copied = new CurvesAdjust();
+        copied.setValuePoints(getValuePoints());
+        copied.setBluePoints(getBluePoints());
+        copied.setGreenPoints(getGreenPoints());
+        copied.setRedPoints(getRedPoints());
+        return copied;
     }
 
     /**
@@ -32,8 +45,10 @@ public class CurvesAdjust extends Adjust {
         return nativeGetValuePoints(mNativeObj);
     }
 
-    public void setValuePoints(int[] points) {
-        nativeSetValuePoints(mNativeObj, points);
+    public void setValuePoints(int[] points) throws EffectException {
+        if (!nativeSetValuePoints(mNativeObj, points)) {
+            throw new EffectException("Setting illegal value points: " + Arrays.toString(points));
+        }
     }
 
     /**
@@ -50,8 +65,10 @@ public class CurvesAdjust extends Adjust {
         return nativeGetBluePoints(mNativeObj);
     }
 
-    public void setBluePoints(int[] points) {
-        nativeSetBluePoints(mNativeObj, points);
+    public void setBluePoints(int[] points) throws EffectException {
+        if (!nativeSetBluePoints(mNativeObj, points)) {
+            throw new EffectException("Setting illegal blue points: " + Arrays.toString(points));
+        }
     }
 
     /**
@@ -68,8 +85,10 @@ public class CurvesAdjust extends Adjust {
         return nativeGetGreenPoints(mNativeObj);
     }
 
-    public void setGreenPoints(int[] points) {
-        nativeSetGreenPoints(mNativeObj, points);
+    public void setGreenPoints(int[] points) throws EffectException {
+        if (!nativeSetGreenPoints(mNativeObj, points)) {
+            throw new EffectException("Setting illegal green points: " + Arrays.toString(points));
+        }
     }
 
     /**
@@ -86,8 +105,10 @@ public class CurvesAdjust extends Adjust {
         return nativeGetRedPoints(mNativeObj);
     }
 
-    public void setRedPoints(int[] points) {
-        nativeSetRedPoints(mNativeObj, points);
+    public void setRedPoints(int[] points) throws EffectException {
+        if (!nativeSetRedPoints(mNativeObj, points)) {
+            throw new EffectException("Setting illegal red points: " + Arrays.toString(points));
+        }
     }
 
     @Override
@@ -98,6 +119,16 @@ public class CurvesAdjust extends Adjust {
         return nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr())
                 ? dst
                 : src;
+    }
+
+    @Override
+    public String toString() {
+        return "CurvesAdjust: {\n"
+                + "\tvalue: " + Arrays.toString(getValuePoints()) + ",\n"
+                + "\tblue: " + Arrays.toString(getBluePoints()) + ",\n"
+                + "\tgreen: " + Arrays.toString(getGreenPoints()) + ",\n"
+                + "\tred: " + Arrays.toString(getRedPoints()) + "\n"
+                + "}";
     }
 
     private native long nativeCreateObject();

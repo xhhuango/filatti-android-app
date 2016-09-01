@@ -19,9 +19,17 @@ public class ContrastAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public Adjust copy() throws EffectException {
+        ContrastAdjust copied = new ContrastAdjust();
+        copied.setContrast(getContrast());
+        return copied;
+    }
+
     public void setContrast(double contrast) throws EffectException {
-        if (!nativeSetContrast(mNativeObj, contrast))
-            throw new EffectException("Contrast isn't within range: " + contrast);
+        if (!nativeSetContrast(mNativeObj, contrast)) {
+            throw new EffectException("Setting illegal contrast value: " + contrast);
+        }
     }
 
     public double getContrast() {
@@ -36,6 +44,13 @@ public class ContrastAdjust extends Adjust {
         return nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr())
                 ? dst
                 : src;
+    }
+
+    @Override
+    public String toString() {
+        return "ContrastAdjust: {\n"
+                + "\tcontrast: " + getContrast() + "\n"
+                + "}";
     }
 
     private native long nativeCreateObject();

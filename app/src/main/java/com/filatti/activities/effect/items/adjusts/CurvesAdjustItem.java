@@ -11,10 +11,14 @@ import android.widget.ImageButton;
 import com.filatti.R;
 import com.filatti.activities.effect.items.EffectItem;
 import com.filatti.activities.effect.ui.XyPlotView;
+import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.utils.DisplayUtils;
 
+import java.util.Arrays;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
     private static final int PLOT_PAINT_STROKE_WIDTH = DisplayUtils.dipToPixel(1);
@@ -168,7 +172,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected void setPoints(int[] points) {
                 super.setPoints(points);
-                mEffect.setValuePoints(points);
+                try {
+                    mEffect.setValuePoints(points);
+                } catch (EffectException e) {
+                    Timber.e(e, "Failed to set value points: %s", Arrays.toString(points));
+                }
             }
         };
 
@@ -197,7 +205,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected void setPoints(int[] points) {
                 super.setPoints(points);
-                mEffect.setBluePoints(points);
+                try {
+                    mEffect.setBluePoints(points);
+                } catch (EffectException e) {
+                    Timber.e(e, "Failed to set blue points: %s", Arrays.toString(points));
+                }
             }
         };
 
@@ -226,7 +238,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected void setPoints(int[] points) {
                 super.setPoints(points);
-                mEffect.setGreenPoints(points);
+                try {
+                    mEffect.setGreenPoints(points);
+                } catch (EffectException e) {
+                    Timber.e(e, "Failed to set green points: %s", Arrays.toString(points));
+                }
             }
         };
 
@@ -255,7 +271,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected void setPoints(int[] points) {
                 super.setPoints(points);
-                mEffect.setRedPoints(points);
+                try {
+                    mEffect.setRedPoints(points);
+                } catch (EffectException e) {
+                    Timber.e(e, "Failed to set red points: %s", Arrays.toString(points));
+                }
             }
         };
 

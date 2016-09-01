@@ -3,13 +3,15 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := libfilatti
 
-LOCAL_LDLIBS := -lstdc++
-LOCAL_LDLIBS := -llog
+LOCAL_DISABLE_FORMAT_STRING_CHECKS := true
+
+LOCAL_LDLIBS := -lstdc++ -llog
 LOCAL_SHARED_LIBRARIES += opencv_java3
 
 LIB_FILATTI_DIR = $(LOCAL_PATH)/../../../../../libfilatti/
 LIB_FILATTI_FILES := $(wildcard $(LIB_FILATTI_DIR)/lib/*.cpp)
 LIB_FILATTI_FILES += $(wildcard $(LIB_FILATTI_DIR)/lib/interpolator/*.cpp)
+LIB_FILATTI_FILES += $(wildcard $(LIB_FILATTI_DIR)/lib/gradient/*.cpp)
 LOCAL_SRC_FILES += $(LIB_FILATTI_FILES:$(LOCAL_PATH)/%=%)
 LOCAL_C_INCLUDES += $(LIB_FILATTI_DIR)/include
 

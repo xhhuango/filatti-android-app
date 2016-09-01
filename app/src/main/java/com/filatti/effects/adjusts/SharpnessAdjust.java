@@ -19,6 +19,11 @@ public class SharpnessAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public Adjust copy() throws EffectException {
+        return null;
+    }
+
     public void setSharpness(double sharpness) throws EffectException {
         if (!nativeSetSharpness(mNativeObj, sharpness))
             throw new EffectException("Sharpness isn't within the range: " + sharpness);

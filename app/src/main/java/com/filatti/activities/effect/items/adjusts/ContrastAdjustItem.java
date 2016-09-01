@@ -73,11 +73,10 @@ public class ContrastAdjustItem extends EffectItem<ContrastAdjust> {
 
     private void setToEffect(int barValue) {
         double contrast = (barValue / 2.0 + 100.0) / 100.0;
-        Timber.d("Set barValue=" + barValue + " -> contrast=" + contrast);
         try {
             mEffect.setContrast(contrast);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set contrast " + contrast);
+            Timber.e(e, "Failed to set contrast %f", contrast);
         }
     }
 
