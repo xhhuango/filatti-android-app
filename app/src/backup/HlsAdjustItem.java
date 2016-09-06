@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.items.adjusts;
+package com.filatti.activities.adjust.items;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,21 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.activities.effect.ui.ValueBarView;
+import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.HlsAdjust;
 
 import timber.log.Timber;
 
-public class HlsAdjustItem extends EffectItem<HlsAdjust> {
-    private ViewGroup mViewGroup;
+public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
     private ValueBarView mHueValueBarView;
     private ValueBarView mLightnessValueBarView;
     private ValueBarView mSaturationValueBarView;
 
-    public HlsAdjustItem(HlsAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+    public HlsAdjustItem(HlsAdjust effect) {
+        super(effect);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
         mHueValueBarView.cancel();
         mLightnessValueBarView.cancel();
         mSaturationValueBarView.cancel();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
@@ -53,43 +51,41 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
         mHueValueBarView.reset();
         mLightnessValueBarView.reset();
         mSaturationValueBarView.reset();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
     public View getView(Context context, ViewGroup rootView) {
-        if (mViewGroup == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            mViewGroup =
-                    (ViewGroup) inflater.inflate(R.layout.hls_item_view, rootView, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ViewGroup viewGroup =
+                (ViewGroup) inflater.inflate(R.layout.hls_item_view, rootView, false);
 
-            mHueValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.hueValueBar);
-            mHueValueBarView.initialize(true,
-                                        R.string.hls_hue,
-                                        -180,
-                                        180,
-                                        getHueFromEffect(),
-                                        createHueOnValueChangeListener());
+        mHueValueBarView = (ValueBarView) viewGroup.findViewById(R.id.hueValueBar);
+        mHueValueBarView.initialize(true,
+                                    R.string.hls_hue,
+                                    -180,
+                                    180,
+                                    getHueFromEffect(),
+                                    createHueOnValueChangeListener());
 
-            mLightnessValueBarView =
-                    (ValueBarView) mViewGroup.findViewById(R.id.lightnessValueBar);
-            mLightnessValueBarView.initialize(true,
-                                              R.string.hls_lightness,
-                                              -100,
-                                              100,
-                                              getLightnessFromEffect(),
-                                              createLightnessOnValueChangeListener());
+        mLightnessValueBarView =
+                (ValueBarView) viewGroup.findViewById(R.id.lightnessValueBar);
+        mLightnessValueBarView.initialize(true,
+                                          R.string.hls_lightness,
+                                          -100,
+                                          100,
+                                          getLightnessFromEffect(),
+                                          createLightnessOnValueChangeListener());
 
-            mSaturationValueBarView =
-                    (ValueBarView) mViewGroup.findViewById(R.id.saturationValueBar);
-            mSaturationValueBarView.initialize(true,
-                                               R.string.hls_saturation,
-                                               -100,
-                                               100,
-                                               getSaturationFromEffect(),
-                                               createSaturationOnValueChangeListener());
-        }
-        return mViewGroup;
+        mSaturationValueBarView =
+                (ValueBarView) viewGroup.findViewById(R.id.saturationValueBar);
+        mSaturationValueBarView.initialize(true,
+                                           R.string.hls_saturation,
+                                           -100,
+                                           100,
+                                           getSaturationFromEffect(),
+                                           createSaturationOnValueChangeListener());
+        return viewGroup;
     }
 
     private ValueBarView.OnValueChangeListener createHueOnValueChangeListener() {
@@ -97,7 +93,7 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setHueToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
@@ -106,7 +102,7 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
         try {
             mEffect.setHue(barValue);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set hue " + barValue);
+            Timber.e(e, "Failed to set hue %d", barValue);
         }
     }
 
@@ -119,7 +115,7 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setLightnessToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
@@ -129,7 +125,7 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
         try {
             mEffect.setLightness(brightness);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set brightness " + brightness);
+            Timber.e(e, "Failed to set brightness %f", brightness);
         }
     }
 
@@ -142,18 +138,18 @@ public class HlsAdjustItem extends EffectItem<HlsAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setRadiusToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
 
     private void setRadiusToEffect(int barValue) {
         double saturation = barValue / 100.0;
-        Timber.d("Set barValue=" + barValue + " -> saturation=" + saturation);
+        Timber.d("Set barValue=%d -> saturation=%f", barValue, saturation);
         try {
             mEffect.setSaturation(saturation);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set saturation " + saturation);
+            Timber.e(e, "Failed to set saturation %f", saturation);
         }
     }
 

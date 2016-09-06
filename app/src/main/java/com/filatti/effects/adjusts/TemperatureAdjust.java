@@ -28,11 +28,6 @@ public class TemperatureAdjust extends Adjust {
         super.finalize();
     }
 
-    @Override
-    public Adjust copy() throws EffectException {
-        return null;
-    }
-
     public int getKelvin() {
         return nativeGetKelvin(mNativeObj);
     }

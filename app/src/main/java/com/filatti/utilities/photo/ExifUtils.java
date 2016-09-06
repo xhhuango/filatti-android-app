@@ -1,4 +1,4 @@
-package com.filatti.utils;
+package com.filatti.utilities.photo;
 
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;

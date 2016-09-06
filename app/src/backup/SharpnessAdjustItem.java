@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.items.adjusts;
+package com.filatti.activities.adjust.items;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,19 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.activities.effect.ui.ValueBarView;
+import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 
 import timber.log.Timber;
 
-public class SharpnessAdjustItem extends EffectItem<SharpnessAdjust> {
-    private ViewGroup mViewGroup;
+public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
     private ValueBarView mValueBarView;
 
-    public SharpnessAdjustItem(SharpnessAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+    public SharpnessAdjustItem(SharpnessAdjust effect) {
+        super(effect);
     }
 
     @Override
@@ -39,26 +37,24 @@ public class SharpnessAdjustItem extends EffectItem<SharpnessAdjust> {
     @Override
     public void cancel() {
         mValueBarView.cancel();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
     public void reset() {
         mValueBarView.reset();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
     public View getView(Context context, ViewGroup rootView) {
-        if (mViewGroup == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            mViewGroup =
-                    (ViewGroup) inflater.inflate(R.layout.sharpness_item_view, rootView, false);
-            mValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.valueBar);
-            mValueBarView
-                    .initialize(false, 0, 0, 100, getFromEffect(), createOnValueChangeListener());
-        }
-        return mViewGroup;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ViewGroup viewGroup =
+                (ViewGroup) inflater.inflate(R.layout.sharpness_item_view, rootView, false);
+        mValueBarView = (ValueBarView) viewGroup.findViewById(R.id.valueBar);
+        mValueBarView
+                .initialize(false, 0, 0, 100, getFromEffect(), createOnValueChangeListener());
+        return viewGroup;
     }
 
     private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
@@ -66,18 +62,18 @@ public class SharpnessAdjustItem extends EffectItem<SharpnessAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
 
     private void setToEffect(int barValue) {
         double sharpness = barValue / 100.0;
-        Timber.d("Set barValue=" + barValue + " -> sharpness=" + sharpness);
+        Timber.d("Set barValue=%d -> sharpness=%f", barValue, sharpness);
         try {
             mEffect.setSharpness(sharpness);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set sharpness " + sharpness);
+            Timber.e(e, "Failed to set sharpness %f", sharpness);
         }
     }
 

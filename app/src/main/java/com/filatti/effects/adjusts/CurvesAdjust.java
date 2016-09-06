@@ -11,24 +11,24 @@ import java.util.Arrays;
 public class CurvesAdjust extends Adjust {
     private final long mNativeObj;
 
+    private final int[] mInitValuePoints;
+    private final int[] mInitBluePoints;
+    private final int[] mInitGreenPoints;
+    private final int[] mInitRedPoints;
+
     public CurvesAdjust() {
         mNativeObj = nativeCreateObject();
+
+        mInitValuePoints = getValuePoints();
+        mInitBluePoints = getBluePoints();
+        mInitGreenPoints = getGreenPoints();
+        mInitRedPoints = getRedPoints();
     }
 
     @Override
     protected void finalize() throws Throwable {
         nativeDestroyObject(mNativeObj);
         super.finalize();
-    }
-
-    @Override
-    public Adjust copy() throws EffectException {
-        CurvesAdjust copied = new CurvesAdjust();
-        copied.setValuePoints(getValuePoints());
-        copied.setBluePoints(getBluePoints());
-        copied.setGreenPoints(getGreenPoints());
-        copied.setRedPoints(getRedPoints());
-        return copied;
     }
 
     /**
@@ -39,6 +39,10 @@ public class CurvesAdjust extends Adjust {
         Preconditions.checkNotNull(curves);
         Preconditions.checkArgument(curves.length == 256);
         nativeGetValueCurves(mNativeObj, curves);
+    }
+
+    public int[] getInitValuePoints() {
+        return Arrays.copyOf(mInitValuePoints, mInitValuePoints.length);
     }
 
     public int[] getValuePoints() {
@@ -61,6 +65,10 @@ public class CurvesAdjust extends Adjust {
         nativeGetBlueCurves(mNativeObj, curves);
     }
 
+    public int[] getInitBluePoints() {
+        return Arrays.copyOf(mInitBluePoints, mInitBluePoints.length);
+    }
+
     public int[] getBluePoints() {
         return nativeGetBluePoints(mNativeObj);
     }
@@ -81,6 +89,10 @@ public class CurvesAdjust extends Adjust {
         nativeGetGreenCurves(mNativeObj, curves);
     }
 
+    public int[] getInitGreenPoints() {
+        return Arrays.copyOf(mInitGreenPoints, mInitGreenPoints.length);
+    }
+
     public int[] getGreenPoints() {
         return nativeGetGreenPoints(mNativeObj);
     }
@@ -99,6 +111,10 @@ public class CurvesAdjust extends Adjust {
         Preconditions.checkNotNull(curves);
         Preconditions.checkArgument(curves.length == 256);
         nativeGetRedCurves(mNativeObj, curves);
+    }
+
+    public int[] getInitRedPoints() {
+        return Arrays.copyOf(mInitRedPoints, mInitRedPoints.length);
     }
 
     public int[] getRedPoints() {

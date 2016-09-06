@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.items;
+package com.filatti.activities.adjust.items;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
@@ -9,16 +9,17 @@ import android.view.ViewGroup;
 import com.filatti.effects.Effect;
 import com.google.common.base.Preconditions;
 
-public abstract class EffectItem<T extends Effect> {
+public abstract class AdjustItem<T extends Effect> {
     protected final T mEffect;
-    protected final OnEffectChangeListener mOnEffectChangeListener;
+    protected OnAdjustListener mOnAdjustListener;
 
-    protected EffectItem(T effect, OnEffectChangeListener listener) {
+    protected AdjustItem(T effect) {
         Preconditions.checkNotNull(effect);
-        Preconditions.checkNotNull(listener);
-
         mEffect = effect;
-        mOnEffectChangeListener = listener;
+    }
+
+    public T getEffect() {
+        return mEffect;
     }
 
     @StringRes
@@ -35,8 +36,16 @@ public abstract class EffectItem<T extends Effect> {
 
     public abstract View getView(Context context, ViewGroup rootView);
 
-    public interface OnEffectChangeListener {
-        void onEffectChanged();
+    public void setOnAdjustListener(OnAdjustListener listener) {
+        mOnAdjustListener = listener;
+    }
+
+    public interface OnAdjustListener {
+        void onAdjustStart();
+
+        void onAdjustStop();
+
+        void onAdjustChange();
     }
 }
 

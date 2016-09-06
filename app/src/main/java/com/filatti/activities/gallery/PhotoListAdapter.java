@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.filatti.utils.DecodeUtils;
-import com.filatti.utils.ThreadPool;
+import com.filatti.utilities.photo.DecodeUtils;
+import com.filatti.utilities.ThreadPool;
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;

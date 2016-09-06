@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <com.filatti.activities.effect.ui.ValueBarView
+    <com.filatti.activities.adjust.ui.ValueBarView
         android:id="@+id/valueBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

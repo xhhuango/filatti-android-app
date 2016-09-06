@@ -12,10 +12,10 @@ import android.widget.ImageButton;
 
 import com.filatti.R;
 import com.filatti.activities.FilattiActivity;
-import com.filatti.photo.AspectRatio;
-import com.filatti.utils.DecodeUtils;
-import com.filatti.utils.DisplayUtils;
-import com.filatti.utils.ThreadPool;
+import com.filatti.utilities.photo.AspectRatio;
+import com.filatti.utilities.photo.DecodeUtils;
+import com.filatti.utilities.photo.DisplayUtils;
+import com.filatti.utilities.ThreadPool;
 import com.google.common.base.Preconditions;
 import com.lyft.android.scissors.CropView;
 

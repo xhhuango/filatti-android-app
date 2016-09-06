@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.ui;
+package com.filatti.activities.adjust.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;

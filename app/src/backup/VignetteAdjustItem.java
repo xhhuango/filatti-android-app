@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.items.adjusts;
+package com.filatti.activities.adjust.items;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,21 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.activities.effect.ui.ValueBarView;
+import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.VignetteAdjust;
 
 import timber.log.Timber;
 
-public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
-    private ViewGroup mViewGroup;
+public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
     private ValueBarView mStrengthValueBarView;
     private ValueBarView mFeatheringValueBarView;
     private ValueBarView mRadiusValueBarView;
 
-    public VignetteAdjustItem(VignetteAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+    public VignetteAdjustItem(VignetteAdjust effect) {
+        super(effect);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
         mStrengthValueBarView.cancel();
         mFeatheringValueBarView.cancel();
         mRadiusValueBarView.cancel();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
@@ -53,42 +51,40 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
         mStrengthValueBarView.reset();
         mFeatheringValueBarView.reset();
         mRadiusValueBarView.reset();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
     public View getView(Context context, ViewGroup rootView) {
-        if (mViewGroup == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            mViewGroup =
-                    (ViewGroup) inflater.inflate(R.layout.vignette_item_view, rootView, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ViewGroup viewGroup =
+                (ViewGroup) inflater.inflate(R.layout.vignette_item_view, rootView, false);
 
-            mStrengthValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.strengthValueBar);
-            mStrengthValueBarView.initialize(true,
-                                             R.string.vignette_strength_title,
-                                             0,
-                                             100,
-                                             getStrengthFromEffect(),
-                                             createStrengthOnValueChangeListener());
+        mStrengthValueBarView = (ValueBarView) viewGroup.findViewById(R.id.strengthValueBar);
+        mStrengthValueBarView.initialize(true,
+                                         R.string.vignette_strength_title,
+                                         0,
+                                         100,
+                                         getStrengthFromEffect(),
+                                         createStrengthOnValueChangeListener());
 
-            mFeatheringValueBarView =
-                    (ValueBarView) mViewGroup.findViewById(R.id.featheringValueBar);
-            mFeatheringValueBarView.initialize(true,
-                                               R.string.vignette_feathering_title,
-                                               0,
-                                               100,
-                                               getFeatheringFromEffect(),
-                                               createFeatheringOnValueChangeListener());
-
-            mRadiusValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.radiusValueBar);
-            mRadiusValueBarView.initialize(true,
-                                           R.string.vignette_radius_title,
+        mFeatheringValueBarView =
+                (ValueBarView) viewGroup.findViewById(R.id.featheringValueBar);
+        mFeatheringValueBarView.initialize(true,
+                                           R.string.vignette_feathering_title,
                                            0,
                                            100,
-                                           getRadiusFromEffect(),
-                                           createRadiusOnValueChangeListener());
-        }
-        return mViewGroup;
+                                           getFeatheringFromEffect(),
+                                           createFeatheringOnValueChangeListener());
+
+        mRadiusValueBarView = (ValueBarView) viewGroup.findViewById(R.id.radiusValueBar);
+        mRadiusValueBarView.initialize(true,
+                                       R.string.vignette_radius_title,
+                                       0,
+                                       100,
+                                       getRadiusFromEffect(),
+                                       createRadiusOnValueChangeListener());
+        return viewGroup;
     }
 
     private ValueBarView.OnValueChangeListener createStrengthOnValueChangeListener() {
@@ -96,18 +92,17 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setStrengthToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
 
     private void setStrengthToEffect(int barValue) {
         double strength = barValue / 100.0;
-        Timber.d("Set barValue=" + barValue + " -> strength=" + strength);
         try {
             mEffect.setStrength(strength);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set strength " + strength);
+            Timber.e(e, "Failed to set strength %f", strength);
         }
     }
 
@@ -120,18 +115,17 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setFeatheringToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
 
     private void setFeatheringToEffect(int barValue) {
         double feathering = barValue / 100.0;
-        Timber.d("Set barValue=" + barValue + " -> feathering=" + feathering);
         try {
             mEffect.setFeathering(feathering);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set feathering " + feathering);
+            Timber.e(e, "Failed to set feathering %f", feathering);
         }
     }
 
@@ -144,18 +138,17 @@ public class VignetteAdjustItem extends EffectItem<VignetteAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setRadiusToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
 
     private void setRadiusToEffect(int barValue) {
         double radius = barValue / 100.0;
-        Timber.d("Set barValue=" + barValue + " -> radius=" + radius);
         try {
             mEffect.setRadius(radius);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set radius " + radius);
+            Timber.e(e, "Failed to set radius %f", radius);
         }
     }
 

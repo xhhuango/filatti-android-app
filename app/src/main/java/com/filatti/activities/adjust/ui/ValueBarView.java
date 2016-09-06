@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.ui;
+package com.filatti.activities.adjust.ui;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -22,6 +22,7 @@ public class ValueBarView extends LinearLayout {
     @StringRes
     private int mTitleTextRes = 0;
 
+    private OnAffectListener mOnAffectListener;
     private OnValueChangeListener mOnValueChangeListener;
     private int mMaxValue = 100;
     private int mMinValue = -100;
@@ -61,6 +62,8 @@ public class ValueBarView extends LinearLayout {
                    mMinValue,
                    mMaxValue,
                    mInitValue,
+                   mAppliedValue,
+                   mOnAffectListener,
                    mOnValueChangeListener);
     }
 
@@ -74,9 +77,9 @@ public class ValueBarView extends LinearLayout {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int value = fromProgressValue(progress);
+                mValueTextView.setText(String.valueOf(value));
                 if (mTemporaryValue != value) {
                     mTemporaryValue = value;
-                    mValueTextView.setText(String.valueOf(mTemporaryValue));
                     if (mOnValueChangeListener != null) {
                         mOnValueChangeListener.onValueChanged(mTemporaryValue);
                     }
@@ -85,10 +88,16 @@ public class ValueBarView extends LinearLayout {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                if (mOnAffectListener != null) {
+                    mOnAffectListener.onStartAffect();
+                }
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mOnAffectListener != null) {
+                    mOnAffectListener.onStopAffect();
+                }
             }
         });
     }
@@ -106,7 +115,9 @@ public class ValueBarView extends LinearLayout {
                            int barMinValue,
                            int barMaxValue,
                            int initValue,
-                           OnValueChangeListener listener) {
+                           int value,
+                           OnAffectListener onAffectListener,
+                           OnValueChangeListener onValueChangeListener) {
         Preconditions.checkArgument(barMinValue < barMaxValue);
 
         mIsTitleVisible = isTitleVisible;
@@ -114,19 +125,21 @@ public class ValueBarView extends LinearLayout {
         mMaxValue = barMaxValue;
         mMinValue = barMinValue;
         mInitValue = initValue;
-        mTemporaryValue = initValue;
-        mAppliedValue = initValue;
-        mOnValueChangeListener = listener;
+        mTemporaryValue = value;
+        mAppliedValue = value;
+        mOnAffectListener = onAffectListener;
+        mOnValueChangeListener = onValueChangeListener;
 
         if (mSeekBar != null) {
             mTitleTextView.setVisibility(isTitleVisible ? VISIBLE : GONE);
-            if (mTitleTextRes != 0)
+            if (mTitleTextRes != 0) {
                 mTitleTextView.setText(mTitleTextRes);
-            else
+            } else {
                 mTitleTextView.setText("");
+            }
 
             mSeekBar.setMax(barMaxValue - barMinValue);
-            setValueToProgress(initValue);
+            setValueToProgress(value);
         }
     }
 

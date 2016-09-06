@@ -9,21 +9,18 @@ import org.opencv.core.Mat;
 public class ContrastAdjust extends Adjust {
     private final long mNativeObj;
 
+    private final double mInitContrast;
+
     public ContrastAdjust() {
         mNativeObj = nativeCreateObject();
+
+        mInitContrast = getContrast();
     }
 
     @Override
     protected void finalize() throws Throwable {
         nativeDestroyObject(mNativeObj);
         super.finalize();
-    }
-
-    @Override
-    public Adjust copy() throws EffectException {
-        ContrastAdjust copied = new ContrastAdjust();
-        copied.setContrast(getContrast());
-        return copied;
     }
 
     public void setContrast(double contrast) throws EffectException {
@@ -34,6 +31,10 @@ public class ContrastAdjust extends Adjust {
 
     public double getContrast() {
         return nativeGetContrast(mNativeObj);
+    }
+
+    public double getInitContrast() {
+        return mInitContrast;
     }
 
     @Override

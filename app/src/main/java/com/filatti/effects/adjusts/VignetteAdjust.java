@@ -34,11 +34,6 @@ public class VignetteAdjust extends Adjust {
         super.finalize();
     }
 
-    @Override
-    public Adjust copy() throws EffectException {
-        return null;
-    }
-
     public double[] getCenter() {
         double[] center = new double[2];
         nativeGetCenter(mNativeObj, center);

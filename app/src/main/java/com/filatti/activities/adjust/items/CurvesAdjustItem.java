@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.items.adjusts;
+package com.filatti.activities.adjust.items;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.filatti.R;
-import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.activities.effect.ui.XyPlotView;
+import com.filatti.activities.adjust.ui.OnAffectListener;
+import com.filatti.activities.adjust.ui.XyPlotView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.CurvesAdjust;
-import com.filatti.utils.DisplayUtils;
+import com.filatti.utilities.photo.DisplayUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
 
-public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
+public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
     private static final int PLOT_PAINT_STROKE_WIDTH = DisplayUtils.dipToPixel(1);
     private static final int CURVES_PAINT_STROKE_WIDTH = DisplayUtils.dipToPixel(2);
     private static final int POINT_RADIUS = DisplayUtils.dipToPixel(5);
@@ -28,7 +28,6 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
     private static final float UNSELECTED_BUTTON_ALPHA = 1;
     private static final float SELECTED_BUTTON_ALPHA = 0.5f;
 
-    private ViewGroup mViewGroup;
     private XyPlotView mXyPlotView;
 
     private ImageButton mValueButton;
@@ -51,8 +50,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
 
     private int[] mCurvesBuffer = new int[256];
 
-    public CurvesAdjustItem(CurvesAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+    public CurvesAdjustItem(CurvesAdjust effect) {
+        super(effect);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mGreenCurvesAccessor.cancel();
         mBlueCurvesAccessor.cancel();
 
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
         mSelectedButton.callOnClick();
     }
 
@@ -91,38 +90,39 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mGreenCurvesAccessor.reset();
         mBlueCurvesAccessor.reset();
 
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
         mSelectedButton.callOnClick();
     }
 
     @Override
     public View getView(Context context, ViewGroup rootView) {
-        if (mViewGroup == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            mViewGroup = (ViewGroup) inflater.inflate(R.layout.curves_item_view, rootView, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ViewGroup viewGroup =
+                (ViewGroup) inflater.inflate(R.layout.curves_item_view, rootView, false);
 
-            initXyPlotView();
+        initXyPlotView(viewGroup);
 
-            initButtonOnClickListener();
-            initValueButton();
-            initBlueButton();
-            initGreenButton();
-            initRedButton();
+        initButtonOnClickListener();
+        initValueButton(viewGroup);
+        initBlueButton(viewGroup);
+        initGreenButton(viewGroup);
+        initRedButton(viewGroup);
 
-            initOnAddListener();
-            initOnRemoveListener();
-            initOnMoveListener();
+        initOnAddListener();
+        initOnRemoveListener();
+        initOnMoveListener();
+        initOnAffectListener();
 
-            initPointButton();
-            initRemoveButton();
+        initPointButton(viewGroup);
+        initRemoveButton(viewGroup);
 
-            mValueButton.callOnClick();
-        }
-        return mViewGroup;
+        mValueButton.callOnClick();
+
+        return viewGroup;
     }
 
-    private void initXyPlotView() {
-        mXyPlotView = (XyPlotView) mViewGroup.findViewById(R.id.xyPlotView);
+    private void initXyPlotView(ViewGroup viewGroup) {
+        mXyPlotView = (XyPlotView) viewGroup.findViewById(R.id.xyPlotView);
         mXyPlotView.setPointPaint(Color.BLACK);
         mXyPlotView.setPlotPaint(PLOT_PAINT_STROKE_WIDTH, Color.LTGRAY);
         mXyPlotView.setMax(255, 255);
@@ -150,8 +150,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         };
     }
 
-    private void initValueButton() {
-        mValueButton = (ImageButton) mViewGroup.findViewById(R.id.valueButton);
+    private void initValueButton(ViewGroup viewGroup) {
+        mValueButton = (ImageButton) viewGroup.findViewById(R.id.valueButton);
         mValueCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
@@ -162,6 +162,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected int getCurvesColor() {
                 return Color.BLACK;
+            }
+
+            @Override
+            protected int[] getInitPoints() {
+                return mEffect.getInitValuePoints();
             }
 
             @Override
@@ -183,8 +188,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mValueButton.setOnClickListener(mButtonOnClickListener);
     }
 
-    private void initBlueButton() {
-        mBlueButton = (ImageButton) mViewGroup.findViewById(R.id.blueButton);
+    private void initBlueButton(ViewGroup viewGroup) {
+        mBlueButton = (ImageButton) viewGroup.findViewById(R.id.blueButton);
         mBlueCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
@@ -195,6 +200,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected int getCurvesColor() {
                 return Color.BLUE;
+            }
+
+            @Override
+            protected int[] getInitPoints() {
+                return mEffect.getInitBluePoints();
             }
 
             @Override
@@ -216,8 +226,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mBlueButton.setOnClickListener(mButtonOnClickListener);
     }
 
-    private void initGreenButton() {
-        mGreenButton = (ImageButton) mViewGroup.findViewById(R.id.greenButton);
+    private void initGreenButton(ViewGroup viewGroup) {
+        mGreenButton = (ImageButton) viewGroup.findViewById(R.id.greenButton);
         mGreenCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
@@ -228,6 +238,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected int getCurvesColor() {
                 return Color.GREEN;
+            }
+
+            @Override
+            protected int[] getInitPoints() {
+                return mEffect.getInitGreenPoints();
             }
 
             @Override
@@ -249,8 +264,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         mGreenButton.setOnClickListener(mButtonOnClickListener);
     }
 
-    private void initRedButton() {
-        mRedButton = (ImageButton) mViewGroup.findViewById(R.id.redButton);
+    private void initRedButton(ViewGroup viewGroup) {
+        mRedButton = (ImageButton) viewGroup.findViewById(R.id.redButton);
         mRedCurvesAccessor = new CurvesAccessor() {
             @Override
             protected int[] getCurves() {
@@ -261,6 +276,11 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
             @Override
             protected int getCurvesColor() {
                 return Color.RED;
+            }
+
+            @Override
+            protected int[] getInitPoints() {
+                return mEffect.getInitRedPoints();
             }
 
             @Override
@@ -300,37 +320,54 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
                 mSelectedCurvesAccessor.setPoints(pointListToArray(mXyPlotView.getPointList()));
                 mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
                 setButtonUnselected(mPointButton);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustStart();
+                mOnAdjustListener.onAdjustChange();
+                mOnAdjustListener.onAdjustStop();
             }
         });
     }
 
     private void initOnRemoveListener() {
-        mXyPlotView.setOnRemovePointListener(new XyPlotView.onRemovePointListener() {
+        mXyPlotView.setOnRemovePointListener(new XyPlotView.OnRemovePointListener() {
             @Override
             public void onPointRemoved(XyPlotView.Point point) {
                 mSelectedCurvesAccessor.setPoints(pointListToArray(mXyPlotView.getPointList()));
                 mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
                 setButtonUnselected(mRemoveButton);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustStart();
+                mOnAdjustListener.onAdjustChange();
+                mOnAdjustListener.onAdjustStop();
             }
         });
     }
 
     private void initOnMoveListener() {
-        mXyPlotView.setOnMovePointListener(new XyPlotView.onMovePointListener() {
-
+        mXyPlotView.setOnMovePointListener(new XyPlotView.OnMovePointListener() {
             @Override
             public void onPointMoved(XyPlotView.Point point, int oldX, int oldY) {
                 mSelectedCurvesAccessor.setPoints(pointListToArray(mXyPlotView.getPointList()));
                 mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         });
     }
 
-    private void initPointButton() {
-        mPointButton = (ImageButton) mViewGroup.findViewById(R.id.pointButton);
+    private void initOnAffectListener() {
+        mXyPlotView.setOnAffectListener(new OnAffectListener() {
+            @Override
+            public void onStartAffect() {
+                mOnAdjustListener.onAdjustStart();
+            }
+
+            @Override
+            public void onStopAffect() {
+                mOnAdjustListener.onAdjustStop();
+            }
+        });
+    }
+
+    private void initPointButton(ViewGroup viewGroup) {
+        mPointButton = (ImageButton) viewGroup.findViewById(R.id.pointButton);
         mPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -339,8 +376,8 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         });
     }
 
-    private void initRemoveButton() {
-        mRemoveButton = (ImageButton) mViewGroup.findViewById(R.id.removeButton);
+    private void initRemoveButton(ViewGroup viewGroup) {
+        mRemoveButton = (ImageButton) viewGroup.findViewById(R.id.removeButton);
         mRemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -421,15 +458,17 @@ public class CurvesAdjustItem extends EffectItem<CurvesAdjust> {
         private int[] mAppliedPoints;
 
         CurvesAccessor() {
-            mInitPoints = getPoints();
-            mTemporaryPoints = mInitPoints;
-            mAppliedPoints = mInitPoints;
+            mInitPoints = getInitPoints();
+            mTemporaryPoints = getPoints();
+            mAppliedPoints = mTemporaryPoints;
         }
 
         protected abstract int[] getCurves();
 
         @ColorInt
         protected abstract int getCurvesColor();
+
+        protected abstract int[] getInitPoints();
 
         protected abstract int[] getPoints();
 

@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <com.filatti.activities.effect.ui.XyPlotView
+    <com.filatti.activities.adjust.ui.XyPlotView
         android:id="@+id/xyPlotView"
         android:layout_width="240dp"
         android:layout_height="match_parent"

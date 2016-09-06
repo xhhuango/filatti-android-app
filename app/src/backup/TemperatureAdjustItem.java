@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.items.adjusts;
+package com.filatti.activities.adjust.items;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,20 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.activities.effect.ui.ValueBarView;
+import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 
 import timber.log.Timber;
 
-public class TemperatureAdjustItem extends EffectItem<TemperatureAdjust> {
-    private ViewGroup mViewGroup;
+public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
     private ValueBarView mTemperatureValueBarView;
     private ValueBarView mStrengthValueBarView;
 
-    public TemperatureAdjustItem(TemperatureAdjust effect, OnEffectChangeListener listener) {
-        super(effect, listener);
+    public TemperatureAdjustItem(TemperatureAdjust effect) {
+        super(effect);
     }
 
     @Override
@@ -42,41 +40,39 @@ public class TemperatureAdjustItem extends EffectItem<TemperatureAdjust> {
     public void cancel() {
         mTemperatureValueBarView.cancel();
         mStrengthValueBarView.cancel();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
     public void reset() {
         mTemperatureValueBarView.reset();
         mStrengthValueBarView.reset();
-        mOnEffectChangeListener.onEffectChanged();
+        mOnAdjustListener.onAdjustChange();
     }
 
     @Override
     public View getView(Context context, ViewGroup rootView) {
-        if (mViewGroup == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            mViewGroup =
-                    (ViewGroup) inflater.inflate(R.layout.temperature_item_view, rootView, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ViewGroup viewGroup =
+                (ViewGroup) inflater.inflate(R.layout.temperature_item_view, rootView, false);
 
-            mTemperatureValueBarView =
-                    (ValueBarView) mViewGroup.findViewById(R.id.temperatureValueBar);
-            mTemperatureValueBarView.initialize(true,
-                                                R.string.temperature_temperature_title,
-                                                -100,
-                                                100,
-                                                getTemperatureFromEffect(),
-                                                createTemperatureOnValueChangeListener());
+        mTemperatureValueBarView =
+                (ValueBarView) viewGroup.findViewById(R.id.temperatureValueBar);
+        mTemperatureValueBarView.initialize(true,
+                                            R.string.temperature_temperature_title,
+                                            -100,
+                                            100,
+                                            getTemperatureFromEffect(),
+                                            createTemperatureOnValueChangeListener());
 
-            mStrengthValueBarView = (ValueBarView) mViewGroup.findViewById(R.id.strengthValueBar);
-            mStrengthValueBarView.initialize(true,
-                                             R.string.temperature_strength_title,
-                                             0,
-                                             100,
-                                             getStrengthFromEffect(),
-                                             createStrengthOnValueChangeListener());
-        }
-        return mViewGroup;
+        mStrengthValueBarView = (ValueBarView) viewGroup.findViewById(R.id.strengthValueBar);
+        mStrengthValueBarView.initialize(true,
+                                         R.string.temperature_strength_title,
+                                         0,
+                                         100,
+                                         getStrengthFromEffect(),
+                                         createStrengthOnValueChangeListener());
+        return viewGroup;
     }
 
     private ValueBarView.OnValueChangeListener createTemperatureOnValueChangeListener() {
@@ -84,7 +80,7 @@ public class TemperatureAdjustItem extends EffectItem<TemperatureAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setTemperatureToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
@@ -99,11 +95,10 @@ public class TemperatureAdjustItem extends EffectItem<TemperatureAdjust> {
             kelvin = 8000 - barValue * 120;
         }
 
-        Timber.d("Set barValue=" + barValue + " -> temperature=" + kelvin);
         try {
             mEffect.setKelvin(kelvin);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set kelvin " + kelvin);
+            Timber.e(e, "Failed to set kelvin %d", kelvin);
         }
     }
 
@@ -123,18 +118,18 @@ public class TemperatureAdjustItem extends EffectItem<TemperatureAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setStrengthToEffect(value);
-                mOnEffectChangeListener.onEffectChanged();
+                mOnAdjustListener.onAdjustChange();
             }
         };
     }
 
     private void setStrengthToEffect(int barValue) {
         double strength = barValue / 400.0;
-        Timber.d("Set barValue=" + barValue + " -> strength=" + strength);
+        Timber.d("Set barValue=%d -> strength=%f", barValue, strength);
         try {
             mEffect.setStrength(strength);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set strength " + strength);
+            Timber.e(e, "Failed to set strength %f", strength);
         }
     }
 

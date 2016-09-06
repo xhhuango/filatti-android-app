@@ -1,4 +1,4 @@
-package com.filatti.utils;
+package com.filatti.utilities;
 
 import android.os.Handler;
 import android.os.Looper;

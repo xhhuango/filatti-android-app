@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.filatti.activities.effect.items.EffectItem;
-import com.filatti.utils.ThreadPool;
+import com.filatti.activities.adjust.items.AdjustItem;
+import com.filatti.utilities.ThreadPool;
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 class EffectItemListAdapter extends BaseAdapter {
     private static final int PADDING = 1;
 
-    private List<EffectItem> mEffectItemList = new ArrayList<>();
+    private List<AdjustItem> mEffectItemList = new ArrayList<>();
 
     private final EffectPresenter mPresenter;
     private final int mItemWidth;
@@ -28,7 +28,7 @@ class EffectItemListAdapter extends BaseAdapter {
         mItemWidth = itemViewWidth - (PADDING * 2);
     }
 
-    void setEffectItemList(List<EffectItem> effectItemList) {
+    void setEffectItemList(List<AdjustItem> effectItemList) {
         Preconditions.checkNotNull(effectItemList);
 
         mEffectItemList = effectItemList;
@@ -69,13 +69,13 @@ class EffectItemListAdapter extends BaseAdapter {
             effectItemView.setIcon(0);
         }
 
-        final EffectItem effectItem = mEffectItemList.get(position);
+        final AdjustItem effectItem = mEffectItemList.get(position);
         effectItemView.setName(effectItem.getDisplayName());
         effectItemView.setIcon(effectItem.getIcon());
         effectItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.onSelectEffectItem(effectItem);
+                mPresenter.onSelectAdjustItem(effectItem);
             }
         });
 

@@ -1,4 +1,4 @@
-package com.filatti.activities.effect.ui;
+package com.filatti.activities.adjust.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -53,9 +53,10 @@ public class XyPlotView extends View {
     private Point mSelectedPrecedingPoint;
     private Point mSelectedSucceedingPoint;
 
+    private OnAffectListener mOnAffectListener;
     private OnAddPointListener mOnAddPointListener;
-    private onRemovePointListener mOnRemovePointListener;
-    private onMovePointListener mOnMovePointListener;
+    private OnRemovePointListener mOnRemovePointListener;
+    private OnMovePointListener mOnMovePointListener;
 
     public XyPlotView(Context context) {
         super(context);
@@ -193,6 +194,9 @@ public class XyPlotView extends View {
                 break;
 
             case MotionEvent.ACTION_UP:
+                if (mSelectedPoint != null && mOnAffectListener != null) {
+                    mOnAffectListener.onStopAffect();
+                }
                 mSelectedPoint = null;
                 mSelectedPrecedingPoint = null;
                 mSelectedSucceedingPoint = null;
@@ -238,6 +242,10 @@ public class XyPlotView extends View {
                 mSelectedPrecedingPoint = mPointList.get(index - 1);
             if (index < mPointList.size() - 1)
                 mSelectedSucceedingPoint = mPointList.get(index + 1);
+
+            if (mOnAffectListener != null) {
+                mOnAffectListener.onStartAffect();
+            }
         }
     }
 
@@ -374,23 +382,27 @@ public class XyPlotView extends View {
         mOnAddPointListener = onAddPointListener;
     }
 
-    public void setOnRemovePointListener(onRemovePointListener onRemovePointListener) {
+    public void setOnRemovePointListener(OnRemovePointListener onRemovePointListener) {
         mOnRemovePointListener = onRemovePointListener;
     }
 
-    public void setOnMovePointListener(onMovePointListener onMovePointListener) {
+    public void setOnMovePointListener(OnMovePointListener onMovePointListener) {
         mOnMovePointListener = onMovePointListener;
+    }
+
+    public void setOnAffectListener(OnAffectListener onAffectListener) {
+        mOnAffectListener = onAffectListener;
     }
 
     public interface OnAddPointListener {
         void onPointAdded(Point point);
     }
 
-    public interface onRemovePointListener {
+    public interface OnRemovePointListener {
         void onPointRemoved(Point point);
     }
 
-    public interface onMovePointListener {
+    public interface OnMovePointListener {
         void onPointMoved(Point point, int oldX, int oldY);
     }
 

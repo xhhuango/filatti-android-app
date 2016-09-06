@@ -1,4 +1,4 @@
-package com.filatti.utils;
+package com.filatti.utilities.photo;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;

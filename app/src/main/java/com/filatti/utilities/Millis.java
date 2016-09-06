@@ -1,4 +1,4 @@
-package com.filatti.utils;
+package com.filatti.utilities;
 
 import com.filatti.BuildConfig;
 

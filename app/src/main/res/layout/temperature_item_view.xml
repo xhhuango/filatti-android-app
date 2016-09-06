@@ -9,12 +9,12 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <com.filatti.activities.effect.ui.ValueBarView
+        <com.filatti.activities.adjust.ui.ValueBarView
             android:id="@+id/temperatureValueBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.filatti.activities.effect.ui.ValueBarView
+        <com.filatti.activities.adjust.ui.ValueBarView
             android:id="@+id/strengthValueBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

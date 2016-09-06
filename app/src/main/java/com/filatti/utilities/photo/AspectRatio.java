@@ -1,4 +1,4 @@
-package com.filatti.photo;
+package com.filatti.utilities.photo;
 
 import com.google.common.base.Preconditions;
 

@@ -8,9 +8,9 @@ import android.provider.MediaStore;
 
 import com.filatti.activities.effect.EffectActivity;
 import com.filatti.activities.mvp.AbstractPresenter;
-import com.filatti.photo.AspectRatio;
-import com.filatti.photo.PhotoManager;
-import com.filatti.utils.ThreadPool;
+import com.filatti.utilities.photo.AspectRatio;
+import com.filatti.managers.EffectManager;
+import com.filatti.utilities.ThreadPool;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,12 +89,12 @@ class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
     }
 
     void onBackClick() {
-        PhotoManager.getInstance().clear();
+        EffectManager.destroyInstance();
         mActivity.finish();
     }
 
     void onNextClick() {
-        PhotoManager.getInstance().setPhoto(mActivity.crop(), mActivity.getAspectRatio());
+        EffectManager.getInstance().setOriginalBitmap(mActivity.crop(), mActivity.getAspectRatio());
 
         Intent intent = new Intent(mActivity, EffectActivity.class);
         mActivity.startActivity(intent);
@@ -110,7 +110,7 @@ class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
     void onCameraClick() {
         deletePhotographyFileIfExists();
 
-        mPhotographyFile = PhotoManager.getInstance().createPictureFile();
+        mPhotographyFile = EffectManager.getInstance().createPictureFile();
         mPhotographyFileUri = Uri.fromFile(mPhotographyFile);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
