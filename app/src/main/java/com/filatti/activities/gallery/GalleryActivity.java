@@ -1,8 +1,10 @@
 package com.filatti.activities.gallery;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -15,7 +17,6 @@ import com.filatti.activities.FilattiActivity;
 import com.filatti.utilities.photo.AspectRatio;
 import com.filatti.utilities.photo.DecodeUtils;
 import com.filatti.utilities.photo.DisplayUtils;
-import com.filatti.utilities.ThreadPool;
 import com.google.common.base.Preconditions;
 import com.lyft.android.scissors.CropView;
 
@@ -27,7 +28,10 @@ public class GalleryActivity extends FilattiActivity {
 
     private GalleryPresenter mPresenter;
 
+    private ImageButton mBackButton;
+    private ImageButton mNextButton;
     private ImageButton mAspectRatioButton;
+    private ImageButton mCameraButton;
 
     private CropView mCropView;
     private AspectRatio mAspectRatio = AspectRatio.RATIO_OF_1_TO_1;
@@ -82,8 +86,9 @@ public class GalleryActivity extends FilattiActivity {
     }
 
     private void initBackButton() {
-        ImageButton button = (ImageButton) findViewById(R.id.backButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        mBackButton = (ImageButton) findViewById(R.id.backButton);
+        mBackButton.setVisibility(View.INVISIBLE);
+        mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.onBackClick();
@@ -92,8 +97,9 @@ public class GalleryActivity extends FilattiActivity {
     }
 
     private void initNextButton() {
-        ImageButton button = (ImageButton) findViewById(R.id.nextButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        mNextButton = (ImageButton) findViewById(R.id.nextButton);
+        mNextButton.setVisibility(View.INVISIBLE);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.onNextClick();
@@ -118,6 +124,8 @@ public class GalleryActivity extends FilattiActivity {
         mAspectRatioButton.setLayoutParams(layoutParams);
         mAspectRatioButton.requestLayout();
 
+        mAspectRatioButton.setVisibility(View.INVISIBLE);
+
         mAspectRatioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,14 +135,16 @@ public class GalleryActivity extends FilattiActivity {
     }
 
     private void initCameraButton() {
-        ImageButton button = (ImageButton) findViewById(R.id.cameraButton);
+        mCameraButton = (ImageButton) findViewById(R.id.cameraButton);
         ViewGroup.MarginLayoutParams layoutParams =
-                (ViewGroup.MarginLayoutParams) button.getLayoutParams();
+                (ViewGroup.MarginLayoutParams) mCameraButton.getLayoutParams();
         layoutParams.topMargin = DisplayUtils.getScreenSize(getResources()).getWidth();
-        button.setLayoutParams(layoutParams);
-        button.requestLayout();
+        mCameraButton.setLayoutParams(layoutParams);
+        mCameraButton.requestLayout();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        mCameraButton.setVisibility(View.INVISIBLE);
+
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.onCameraClick();
@@ -167,6 +177,13 @@ public class GalleryActivity extends FilattiActivity {
         return mAspectRatio;
     }
 
+    private void setAllButtonsVisible() {
+        mBackButton.setVisibility(View.VISIBLE);
+        mNextButton.setVisibility(View.VISIBLE);
+        mAspectRatioButton.setVisibility(View.VISIBLE);
+        mCameraButton.setVisibility(View.VISIBLE);
+    }
+
     void setPhotoList(List<Long> photoList) {
         Preconditions.checkNotNull(photoList);
 
@@ -181,20 +198,25 @@ public class GalleryActivity extends FilattiActivity {
     }
 
     void display(Uri photoUri) {
-        DisplayUtils.Size screenSize = DisplayUtils.getScreenSize(getResources());
-        int size = Math.min(screenSize.getWidth(), screenSize.getHeight()) * 2;
-        final Bitmap bitmap = DecodeUtils.decode(this, photoUri, size, size);
-        ThreadPool.runOnUiThread(new Runnable() {
+        new AsyncTask<Object, Void, Bitmap>() {
             @Override
-            public void run() {
+            protected Bitmap doInBackground(Object... params) {
+                DisplayUtils.Size screenSize = DisplayUtils.getScreenSize(getResources());
+                int size = Math.min(screenSize.getWidth(), screenSize.getHeight()) * 2;
+                return DecodeUtils.decode((Context) params[0], (Uri) params[1], size, size);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
                 if (bitmap != null) {
                     setAspectRatio((bitmap.getWidth() > bitmap.getHeight())
                                            ? AspectRatio.RATIO_OF_16_TO_9
                                            : AspectRatio.RATIO_OF_1_TO_1);
                 }
                 mCropView.setImageBitmap(bitmap);
+                setAllButtonsVisible();
             }
-        });
+        }.execute(this, photoUri);
     }
 
     Uri getPhotoUri(long photoId) {
