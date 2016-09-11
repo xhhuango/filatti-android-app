@@ -1,12 +1,17 @@
 #include <jni.h>
 
-#include <opencv2/core.hpp>
+#include "log.hpp"
+
 #include <filatti/sharpness.hpp>
+#include <filatti/exception.hpp>
 
 extern "C" {
 
 using namespace cv;
 using namespace filatti;
+using libException = filatti::Exception;
+
+static const char* TAG = __FILE__;
 
 JNIEXPORT jlong JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeCreateObject
 (JNIEnv* env, jclass clazz)
@@ -32,8 +37,19 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativ
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeSetSharpness
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble sharpness)
 {
-    Sharpness* obj = (Sharpness*) thiz;
-    return (jboolean) obj->set_sharpness(sharpness);
+    try {
+        ((Sharpness*) thiz)->set_sharpness(sharpness);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
+}
+
+JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeSetRebuildBlurred
+(JNIEnv *env, jclass clazz, jlong thiz, jboolean does_rebuild_blurred)
+{
+    ((Sharpness*) thiz)->set_rebuild_blurred(does_rebuild_blurred);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeApply

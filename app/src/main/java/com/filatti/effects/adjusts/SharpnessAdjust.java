@@ -9,8 +9,12 @@ import org.opencv.core.Mat;
 public class SharpnessAdjust extends Adjust {
     private final long mNativeObj;
 
+    private final double mInitSharpness;
+
     public SharpnessAdjust() {
         mNativeObj = nativeCreateObject();
+
+        mInitSharpness = getSharpness();
     }
 
     @Override
@@ -28,6 +32,14 @@ public class SharpnessAdjust extends Adjust {
         return nativeGetSharpness(mNativeObj);
     }
 
+    public double getInitSharpness() {
+        return mInitSharpness;
+    }
+
+    public void setRebuildBlurred(boolean doesRebuildBlurred) {
+        nativeSetRebuildBlurred(mNativeObj, doesRebuildBlurred);
+    }
+
     @Override
     public Mat apply(Mat src) {
         Preconditions.checkNotNull(src);
@@ -38,6 +50,13 @@ public class SharpnessAdjust extends Adjust {
                 : src;
     }
 
+    @Override
+    public String toString() {
+        return "SharpnessAdjust: {\n"
+                + "\tsharpness: " + getSharpness() + "\n"
+                + "}";
+    }
+
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
@@ -45,6 +64,8 @@ public class SharpnessAdjust extends Adjust {
     private native double nativeGetSharpness(long self);
 
     private native boolean nativeSetSharpness(long self, double sharpness);
+
+    private native void nativeSetRebuildBlurred(long self, boolean doesRebuildBlurred);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

@@ -5,6 +5,7 @@ import android.os.Debug;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
+import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.utilities.Millis;
 import com.google.common.base.Preconditions;
@@ -24,6 +25,7 @@ public final class AdjustComposite implements Effect {
         mEffectList.add(new ContrastAdjust());
         mEffectList.add(new TemperatureAdjust());
         mEffectList.add(new HlsAdjust());
+        mEffectList.add(new SharpnessAdjust());
     }
 
     public <T> T getEffect(Class<T> clazz) {
@@ -48,6 +50,7 @@ public final class AdjustComposite implements Effect {
     public Mat apply(Mat src, Effect util) {
         Preconditions.checkNotNull(src);
 
+        long beforeInTotal = Millis.now();
         for (Effect effect : mEffectList) {
             if (util != null && effect.getClass().isInstance(util)) {
                 break;
@@ -56,7 +59,8 @@ public final class AdjustComposite implements Effect {
             long before = Millis.now();
             Mat dst = effect.apply(src);
             long after = Millis.now();
-            Timber.d("Spent %d ms, native heap=%d KB",
+            Timber.d("%s spent %d ms, native heap=%d KB",
+                     effect.getClass().getSimpleName(),
                      after - before,
                      Debug.getNativeHeapAllocatedSize() / 1000);
             Timber.d(effect.toString());
@@ -66,6 +70,8 @@ public final class AdjustComposite implements Effect {
                 src = dst;
             }
         }
+        long afterInTotal = Millis.now();
+        Timber.d("Spent %d ms in total", afterInTotal - beforeInTotal);
 
         return src;
     }

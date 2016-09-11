@@ -9,6 +9,7 @@ import com.filatti.activities.adjust.items.AdjustItem;
 import com.filatti.activities.adjust.items.ContrastAdjustItem;
 import com.filatti.activities.adjust.items.CurvesAdjustItem;
 import com.filatti.activities.adjust.items.HlsAdjustItem;
+import com.filatti.activities.adjust.items.SharpnessAdjustItem;
 import com.filatti.activities.adjust.items.TemperatureAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
@@ -16,6 +17,7 @@ import com.filatti.effects.AdjustComposite;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
+import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.managers.EffectManager;
 import com.filatti.activities.mvp.AbstractPresenter;
@@ -108,6 +110,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             HlsAdjustItem hlsAdjustItem =
                     new HlsAdjustItem(mAdjustComposite.getEffect(HlsAdjust.class));
             mAdjustItemList.add(hlsAdjustItem);
+
+            SharpnessAdjustItem sharpnessAdjustItem =
+                    new SharpnessAdjustItem(mAdjustComposite.getEffect(SharpnessAdjust.class));
+            mAdjustItemList.add(sharpnessAdjustItem);
         }
         return mAdjustItemList;
     }

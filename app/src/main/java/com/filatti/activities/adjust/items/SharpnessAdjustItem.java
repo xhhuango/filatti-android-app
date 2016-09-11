@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
+import com.filatti.activities.adjust.ui.OnAffectListener;
 import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.SharpnessAdjust;
@@ -37,13 +38,17 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
     @Override
     public void cancel() {
         mValueBarView.cancel();
-        mOnAdjustListener.onAdjustChange();
+        if (mOnAdjustListener != null) {
+            mOnAdjustListener.onAdjustChange();
+        }
     }
 
     @Override
     public void reset() {
         mValueBarView.reset();
-        mOnAdjustListener.onAdjustChange();
+        if (mOnAdjustListener != null) {
+            mOnAdjustListener.onAdjustChange();
+        }
     }
 
     @Override
@@ -52,9 +57,35 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.sharpness_item_view, rootView, false);
         mValueBarView = (ValueBarView) viewGroup.findViewById(R.id.valueBar);
-        mValueBarView
-                .initialize(false, 0, 0, 100, getFromEffect(), createOnValueChangeListener());
+        mValueBarView.initialize(false,
+                                 0,
+                                 0,
+                                 200,
+                                 getInitFromEffect(),
+                                 getFromEffect(),
+                                 createOnAffectListener(),
+                                 createOnValueChangeListener());
         return viewGroup;
+    }
+
+    private OnAffectListener createOnAffectListener() {
+        return new OnAffectListener() {
+            @Override
+            public void onStartAffect() {
+                if (mOnAdjustListener != null) {
+                    mEffect.setRebuildBlurred(false);
+                    mOnAdjustListener.onAdjustStart();
+                }
+            }
+
+            @Override
+            public void onStopAffect() {
+                if (mOnAdjustListener != null) {
+                    mEffect.setRebuildBlurred(true);
+                    mOnAdjustListener.onAdjustStop();
+                }
+            }
+        };
     }
 
     private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
@@ -62,14 +93,15 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
             @Override
             public void onValueChanged(int value) {
                 setToEffect(value);
-                mOnAdjustListener.onAdjustChange();
+                if (mOnAdjustListener != null) {
+                    mOnAdjustListener.onAdjustChange();
+                }
             }
         };
     }
 
     private void setToEffect(int barValue) {
-        double sharpness = barValue / 100.0;
-        Timber.d("Set barValue=%d -> sharpness=%f", barValue, sharpness);
+        double sharpness = barValue / 10.0;
         try {
             mEffect.setSharpness(sharpness);
         } catch (EffectException e) {
@@ -77,7 +109,15 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
         }
     }
 
+    private int convertFromEffect(double value) {
+        return (int) (value * 10.0);
+    }
+
     private int getFromEffect() {
-        return (int) (mEffect.getSharpness() * 100.0);
+        return convertFromEffect(mEffect.getSharpness());
+    }
+
+    private int getInitFromEffect() {
+        return convertFromEffect(mEffect.getInitSharpness());
     }
 }
