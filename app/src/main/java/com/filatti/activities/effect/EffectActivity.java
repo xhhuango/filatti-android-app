@@ -34,7 +34,6 @@ public class EffectActivity extends FilattiActivity {
 
         mPresenter = new EffectPresenter(this);
         initViews();
-        setPhoto(mPhotoBitmap);
         mPresenter.onCreate();
     }
 

@@ -2,9 +2,10 @@ package com.filatti.effects;
 
 import android.os.Debug;
 
-import com.filatti.effects.Effect;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
+import com.filatti.effects.adjusts.HlsAdjust;
+import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.utilities.Millis;
 import com.google.common.base.Preconditions;
 
@@ -21,6 +22,8 @@ public final class AdjustComposite implements Effect {
     public AdjustComposite() {
         mEffectList.add(new CurvesAdjust());
         mEffectList.add(new ContrastAdjust());
+        mEffectList.add(new TemperatureAdjust());
+        mEffectList.add(new HlsAdjust());
     }
 
     public <T> T getEffect(Class<T> clazz) {

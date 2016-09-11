@@ -1,12 +1,17 @@
 #include <jni.h>
 
-#include <opencv2/core.hpp>
+#include "log.hpp"
+
 #include <filatti/temperature.hpp>
+#include <filatti/exception.hpp>
 
 extern "C" {
 
 using namespace cv;
 using namespace filatti;
+using libException = filatti::Exception;
+
+static const char* TAG = __FILE__;
 
 JNIEXPORT jlong JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeCreateObject
 (JNIEnv* env, jclass clazz)
@@ -22,32 +27,23 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_native
     delete obj;
 }
 
-JNIEXPORT jint JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeGetKelvin
+JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeGetTemperature
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Temperature* obj = (Temperature*) thiz;
-    return (jint) obj->get_kelvin();
+    return (jdouble) obj->get_temperature();
 }
 
-JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeSetKelvin
-(JNIEnv *env, jclass clazz, jlong thiz, jint kelvin)
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeSetTemperature
+(JNIEnv *env, jclass clazz, jlong thiz, jdouble temperature)
 {
-    Temperature* obj = (Temperature*) thiz;
-    return (jboolean) obj->set_kelvin(kelvin);
-}
-
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeGetStrength
-(JNIEnv *env, jclass clazz, jlong thiz)
-{
-    Temperature* obj = (Temperature*) thiz;
-    return (jdouble) obj->get_strength();
-}
-
-JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeSetStrength
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble strength)
-{
-    Temperature* obj = (Temperature*) thiz;
-    return (jboolean) obj->set_strength(strength);
+    try {
+        ((Temperature*) thiz)->set_temperature(temperature);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeApply

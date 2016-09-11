@@ -38,13 +38,13 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
     private ImageButton mPointButton;
     private ImageButton mRemoveButton;
 
-    private CurvesAccessor mValueCurvesAccessor;
-    private CurvesAccessor mRedCurvesAccessor;
-    private CurvesAccessor mGreenCurvesAccessor;
-    private CurvesAccessor mBlueCurvesAccessor;
+    private Adapter mValueAdapter;
+    private Adapter mRedAdapter;
+    private Adapter mGreenAdapter;
+    private Adapter mBlueAdapter;
 
     private ImageButton mSelectedButton;
-    private CurvesAccessor mSelectedCurvesAccessor;
+    private Adapter mSelectedAdapter;
 
     private View.OnClickListener mButtonOnClickListener;
 
@@ -66,31 +66,35 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
 
     @Override
     public void apply() {
-        mValueCurvesAccessor.apply();
-        mRedCurvesAccessor.apply();
-        mGreenCurvesAccessor.apply();
-        mBlueCurvesAccessor.apply();
+        mValueAdapter.apply();
+        mRedAdapter.apply();
+        mGreenAdapter.apply();
+        mBlueAdapter.apply();
     }
 
     @Override
     public void cancel() {
-        mValueCurvesAccessor.cancel();
-        mRedCurvesAccessor.cancel();
-        mGreenCurvesAccessor.cancel();
-        mBlueCurvesAccessor.cancel();
+        mValueAdapter.cancel();
+        mRedAdapter.cancel();
+        mGreenAdapter.cancel();
+        mBlueAdapter.cancel();
 
-        mOnAdjustListener.onAdjustChange();
+        if (mOnAdjustListener != null) {
+            mOnAdjustListener.onAdjustChange();
+        }
         mSelectedButton.callOnClick();
     }
 
     @Override
     public void reset() {
-        mValueCurvesAccessor.reset();
-        mRedCurvesAccessor.reset();
-        mGreenCurvesAccessor.reset();
-        mBlueCurvesAccessor.reset();
+        mValueAdapter.reset();
+        mRedAdapter.reset();
+        mGreenAdapter.reset();
+        mBlueAdapter.reset();
 
-        mOnAdjustListener.onAdjustChange();
+        if (mOnAdjustListener != null) {
+            mOnAdjustListener.onAdjustChange();
+        }
         mSelectedButton.callOnClick();
     }
 
@@ -136,11 +140,11 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
                 selectRgbButton((ImageButton) view);
 
                 mXyPlotView.setCurvesPaint(CURVES_PAINT_STROKE_WIDTH,
-                                           mSelectedCurvesAccessor.getCurvesColor());
-                mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
+                                           mSelectedAdapter.getCurvesColor());
+                mXyPlotView.setCurves(mSelectedAdapter.getCurves());
 
                 mXyPlotView.clearPoints();
-                int[] pointArray = mSelectedCurvesAccessor.getPoints();
+                int[] pointArray = mSelectedAdapter.getPoints();
                 if (pointArray != null && pointArray.length > 0) {
                     for (int i = 0, j = pointArray.length; i < j; i += 2) {
                         mXyPlotView.addPoint(pointArray[i], pointArray[i + 1]);
@@ -152,7 +156,7 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
 
     private void initValueButton(ViewGroup viewGroup) {
         mValueButton = (ImageButton) viewGroup.findViewById(R.id.valueButton);
-        mValueCurvesAccessor = new CurvesAccessor() {
+        mValueAdapter = new Adapter() {
             @Override
             protected int[] getCurves() {
                 mEffect.getValueCurves(mCurvesBuffer);
@@ -190,7 +194,7 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
 
     private void initBlueButton(ViewGroup viewGroup) {
         mBlueButton = (ImageButton) viewGroup.findViewById(R.id.blueButton);
-        mBlueCurvesAccessor = new CurvesAccessor() {
+        mBlueAdapter = new Adapter() {
             @Override
             protected int[] getCurves() {
                 mEffect.getBlueCurves(mCurvesBuffer);
@@ -228,7 +232,7 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
 
     private void initGreenButton(ViewGroup viewGroup) {
         mGreenButton = (ImageButton) viewGroup.findViewById(R.id.greenButton);
-        mGreenCurvesAccessor = new CurvesAccessor() {
+        mGreenAdapter = new Adapter() {
             @Override
             protected int[] getCurves() {
                 mEffect.getGreenCurves(mCurvesBuffer);
@@ -266,7 +270,7 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
 
     private void initRedButton(ViewGroup viewGroup) {
         mRedButton = (ImageButton) viewGroup.findViewById(R.id.redButton);
-        mRedCurvesAccessor = new CurvesAccessor() {
+        mRedAdapter = new Adapter() {
             @Override
             protected int[] getCurves() {
                 mEffect.getRedCurves(mCurvesBuffer);
@@ -317,12 +321,14 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
         mXyPlotView.setOnAddPointListener(new XyPlotView.OnAddPointListener() {
             @Override
             public void onPointAdded(XyPlotView.Point point) {
-                mSelectedCurvesAccessor.setPoints(pointListToArray(mXyPlotView.getPointList()));
-                mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
+                mSelectedAdapter.setPoints(pointListToArray(mXyPlotView.getPointList()));
+                mXyPlotView.setCurves(mSelectedAdapter.getCurves());
                 setButtonUnselected(mPointButton);
-                mOnAdjustListener.onAdjustStart();
-                mOnAdjustListener.onAdjustChange();
-                mOnAdjustListener.onAdjustStop();
+                if (mOnAdjustListener != null) {
+                    mOnAdjustListener.onAdjustStart();
+                    mOnAdjustListener.onAdjustChange();
+                    mOnAdjustListener.onAdjustStop();
+                }
             }
         });
     }
@@ -331,12 +337,14 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
         mXyPlotView.setOnRemovePointListener(new XyPlotView.OnRemovePointListener() {
             @Override
             public void onPointRemoved(XyPlotView.Point point) {
-                mSelectedCurvesAccessor.setPoints(pointListToArray(mXyPlotView.getPointList()));
-                mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
+                mSelectedAdapter.setPoints(pointListToArray(mXyPlotView.getPointList()));
+                mXyPlotView.setCurves(mSelectedAdapter.getCurves());
                 setButtonUnselected(mRemoveButton);
-                mOnAdjustListener.onAdjustStart();
-                mOnAdjustListener.onAdjustChange();
-                mOnAdjustListener.onAdjustStop();
+                if (mOnAdjustListener != null) {
+                    mOnAdjustListener.onAdjustStart();
+                    mOnAdjustListener.onAdjustChange();
+                    mOnAdjustListener.onAdjustStop();
+                }
             }
         });
     }
@@ -345,9 +353,11 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
         mXyPlotView.setOnMovePointListener(new XyPlotView.OnMovePointListener() {
             @Override
             public void onPointMoved(XyPlotView.Point point, int oldX, int oldY) {
-                mSelectedCurvesAccessor.setPoints(pointListToArray(mXyPlotView.getPointList()));
-                mXyPlotView.setCurves(mSelectedCurvesAccessor.getCurves());
-                mOnAdjustListener.onAdjustChange();
+                mSelectedAdapter.setPoints(pointListToArray(mXyPlotView.getPointList()));
+                mXyPlotView.setCurves(mSelectedAdapter.getCurves());
+                if (mOnAdjustListener != null) {
+                    mOnAdjustListener.onAdjustChange();
+                }
             }
         });
     }
@@ -356,12 +366,16 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
         mXyPlotView.setOnAffectListener(new OnAffectListener() {
             @Override
             public void onStartAffect() {
-                mOnAdjustListener.onAdjustStart();
+                if (mOnAdjustListener != null) {
+                    mOnAdjustListener.onAdjustStart();
+                }
             }
 
             @Override
             public void onStopAffect() {
-                mOnAdjustListener.onAdjustStop();
+                if (mOnAdjustListener != null) {
+                    mOnAdjustListener.onAdjustStop();
+                }
             }
         });
     }
@@ -424,40 +438,40 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
         mSelectedButton = button;
 
         if (button == mValueButton) {
-            mSelectedCurvesAccessor = mValueCurvesAccessor;
+            mSelectedAdapter = mValueAdapter;
             setButtonSelected(mValueButton);
         } else {
             setButtonUnselected(mValueButton);
         }
 
         if (button == mBlueButton) {
-            mSelectedCurvesAccessor = mBlueCurvesAccessor;
+            mSelectedAdapter = mBlueAdapter;
             setButtonSelected(mBlueButton);
         } else {
             setButtonUnselected(mBlueButton);
         }
 
         if (button == mGreenButton) {
-            mSelectedCurvesAccessor = mGreenCurvesAccessor;
+            mSelectedAdapter = mGreenAdapter;
             setButtonSelected(mGreenButton);
         } else {
             setButtonUnselected(mGreenButton);
         }
 
         if (button == mRedButton) {
-            mSelectedCurvesAccessor = mRedCurvesAccessor;
+            mSelectedAdapter = mRedAdapter;
             setButtonSelected(mRedButton);
         } else {
             setButtonUnselected(mRedButton);
         }
     }
 
-    private abstract class CurvesAccessor {
+    private abstract class Adapter {
         private int[] mInitPoints;
         private int[] mTemporaryPoints;
         private int[] mAppliedPoints;
 
-        CurvesAccessor() {
+        Adapter() {
             mInitPoints = getInitPoints();
             mTemporaryPoints = getPoints();
             mAppliedPoints = mTemporaryPoints;

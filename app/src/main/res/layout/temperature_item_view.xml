@@ -3,22 +3,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.filatti.activities.adjust.ui.ValueBarView
+        android:id="@+id/temperatureValueBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/temperatureValueBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/strengthValueBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

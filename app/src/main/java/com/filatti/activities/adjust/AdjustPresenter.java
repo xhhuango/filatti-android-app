@@ -23,6 +23,23 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
         super(activity);
 
         mAdjustItem = EffectManager.getInstance().getSelectedAdjustItem();
+    }
+
+    @Override
+    protected void onCreate() {
+    }
+
+    @Override
+    protected void onResume() {
+        mMat = EffectManager.getInstance().getMatAppliedUtilSelectedAdjustItem();
+
+        mBitmap = BitmapUtils.createBitmap(mMat.cols(), mMat.rows());
+        BitmapUtils.convertMatToBitmap(mMat, mBitmap);
+
+        applyPhoto();
+
+        showPhoto(EffectManager.getInstance().getAppliedBitmap());
+
         mAdjustItem.setOnAdjustListener(new AdjustItem.OnAdjustListener() {
             @Override
             public void onAdjustStart() {
@@ -46,23 +63,9 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
     }
 
     @Override
-    protected void onCreate() {
-    }
-
-    @Override
-    protected void onResume() {
-        mMat = EffectManager.getInstance().getMatAppliedUtilSelectedAdjustItem();
-
-        mBitmap = BitmapUtils.createBitmap(mMat.cols(), mMat.rows());
-        BitmapUtils.convertMatToBitmap(mMat, mBitmap);
-
-        applyPhoto();
-
-        showPhoto(EffectManager.getInstance().getAppliedBitmap());
-    }
-
-    @Override
     protected void onPause() {
+        mAdjustItem.setOnAdjustListener(null);
+
         if (!mBitmap.isRecycled()) {
             mBitmap.recycle();
         }
@@ -113,6 +116,6 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
 
     void onResetEffectItem() {
         mAdjustItem.reset();
-        applyPhoto();
+        showPhoto(EffectManager.getInstance().applyBitmap());
     }
 }

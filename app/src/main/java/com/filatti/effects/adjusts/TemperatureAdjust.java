@@ -5,21 +5,16 @@ import com.google.common.base.Preconditions;
 
 import org.opencv.core.Mat;
 
-import timber.log.Timber;
-
 @SuppressWarnings("JniMissingFunction")
 public class TemperatureAdjust extends Adjust {
     private final long mNativeObj;
 
+    private final double mInitTemperature;
+
     public TemperatureAdjust() {
         mNativeObj = nativeCreateObject();
 
-        try {
-            setKelvin(6600);
-            setStrength(0.125);
-        } catch (EffectException e) {
-            Timber.e(e, "Failed to initialize Temperature");
-        }
+        mInitTemperature = getTemperature();
     }
 
     @Override
@@ -28,22 +23,18 @@ public class TemperatureAdjust extends Adjust {
         super.finalize();
     }
 
-    public int getKelvin() {
-        return nativeGetKelvin(mNativeObj);
+    public double getInitTemperature() {
+        return mInitTemperature;
     }
 
-    public void setKelvin(int kelvin) throws EffectException {
-        if (!nativeSetKelvin(mNativeObj, kelvin))
-            throw new EffectException("Kelvin isn't within range: " + kelvin);
+    public double getTemperature() {
+        return nativeGetTemperature(mNativeObj);
     }
 
-    public double getStrength() {
-        return nativeGetStrength(mNativeObj);
-    }
-
-    public void setStrength(double strength) throws EffectException {
-        if (!nativeSetStrength(mNativeObj, strength))
-            throw new EffectException("Strength isn't within range: " + strength);
+    public void setTemperature(double temperature) throws EffectException {
+        if (!nativeSetTemperature(mNativeObj, temperature)) {
+            throw new EffectException("Temperature isn't within range: " + temperature);
+        }
     }
 
     @Override
@@ -56,17 +47,20 @@ public class TemperatureAdjust extends Adjust {
                 : src;
     }
 
+    @Override
+    public String toString() {
+        return "TemperatureAdjust: {\n"
+                + "\ttemperature: " + getTemperature() + "\n"
+                + "}";
+    }
+
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
 
-    private native int nativeGetKelvin(long self);
+    private native double nativeGetTemperature(long self);
 
-    private native boolean nativeSetKelvin(long self, int kelvin);
-
-    private native double nativeGetStrength(long self);
-
-    private native boolean nativeSetStrength(long self, double strength);
+    private native boolean nativeSetTemperature(long self, double temperature);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

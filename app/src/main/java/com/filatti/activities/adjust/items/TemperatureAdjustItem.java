@@ -9,35 +9,35 @@ import com.filatti.R;
 import com.filatti.activities.adjust.ui.OnAffectListener;
 import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
-import com.filatti.effects.adjusts.ContrastAdjust;
+import com.filatti.effects.adjusts.TemperatureAdjust;
 
 import timber.log.Timber;
 
-public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
-    private ValueBarView mValueBarView;
+public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
+    private ValueBarView mTemperatureValueBarView;
 
-    public ContrastAdjustItem(ContrastAdjust effect) {
+    public TemperatureAdjustItem(TemperatureAdjust effect) {
         super(effect);
     }
 
     @Override
     public int getDisplayName() {
-        return R.string.contrast;
+        return R.string.temperature;
     }
 
     @Override
     public int getIcon() {
-        return R.drawable.contrast;
+        return R.drawable.temperature;
     }
 
     @Override
     public void apply() {
-        mValueBarView.apply();
+        mTemperatureValueBarView.apply();
     }
 
     @Override
     public void cancel() {
-        mValueBarView.cancel();
+        mTemperatureValueBarView.cancel();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
         }
@@ -45,7 +45,7 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
 
     @Override
     public void reset() {
-        mValueBarView.reset();
+        mTemperatureValueBarView.reset();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
         }
@@ -55,16 +55,19 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
     public View getView(Context context, ViewGroup rootView) {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup viewGroup =
-                (ViewGroup) inflater.inflate(R.layout.contrast_item_view, rootView, false);
-        mValueBarView = (ValueBarView) viewGroup.findViewById(R.id.valueBar);
-        mValueBarView.initialize(false,
-                                 0,
-                                 -100,
-                                 100,
-                                 getInitFromEffect(),
-                                 getFromEffect(),
-                                 createOnAffectListener(),
-                                 createOnValueChangeListener());
+                (ViewGroup) inflater.inflate(R.layout.temperature_item_view, rootView, false);
+
+        mTemperatureValueBarView =
+                (ValueBarView) viewGroup.findViewById(R.id.temperatureValueBar);
+        mTemperatureValueBarView.initialize(true,
+                                            0,
+                                            -100,
+                                            100,
+                                            getInitTemperatureFromEffect(),
+                                            getTemperatureFromEffect(),
+                                            createOnAffectListener(),
+                                            createOnValueChangeListener());
+
         return viewGroup;
     }
 
@@ -90,7 +93,7 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
         return new ValueBarView.OnValueChangeListener() {
             @Override
             public void onValueChanged(int value) {
-                setToEffect(value);
+                setTemperatureToEffect(value);
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustChange();
                 }
@@ -98,24 +101,23 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
         };
     }
 
-    private void setToEffect(int barValue) {
-        double contrast = (barValue / 2.0 + 100.0) / 100.0;
+    private void setTemperatureToEffect(int barValue) {
+        double temperature = barValue / 200.0;
         try {
-            mEffect.setContrast(contrast);
+            mEffect.setTemperature(temperature);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to set contrast %f", contrast);
+            Timber.e(e, "Failed to set temperature %d", temperature);
         }
     }
 
     private int convertFromEffect(double valueFromEffect) {
-        return (int) (((valueFromEffect * 100.0) - 100.0) * 2.0);
+        return (int) (valueFromEffect * 200.0);
+    }
+    private int getTemperatureFromEffect() {
+        return convertFromEffect(mEffect.getTemperature());
     }
 
-    private int getFromEffect() {
-        return convertFromEffect(mEffect.getContrast());
-    }
-
-    private int getInitFromEffect() {
-        return convertFromEffect(mEffect.getInitContrast());
+    private int getInitTemperatureFromEffect() {
+        return convertFromEffect(mEffect.getInitTemperature());
     }
 }

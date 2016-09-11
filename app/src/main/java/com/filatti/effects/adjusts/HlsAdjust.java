@@ -9,8 +9,16 @@ import org.opencv.core.Mat;
 public class HlsAdjust extends Adjust {
     private final long mNativeObj;
 
+    private final int mInitHue;
+    private final double mInitLightness;
+    private final double mInitSaturation;
+
     public HlsAdjust() {
         mNativeObj = nativeCreateObject();
+
+        mInitHue = getHue();
+        mInitLightness = getLightness();
+        mInitSaturation = getSaturation();
     }
 
     @Override
@@ -20,30 +28,45 @@ public class HlsAdjust extends Adjust {
     }
 
     public void setHue(int hue) throws EffectException {
-        if (!nativeSetHue(mNativeObj, hue))
+        if (!nativeSetHue(mNativeObj, hue)) {
             throw new EffectException("Hue isn't within range: " + hue);
+        }
     }
 
     public int getHue() {
         return nativeGetHue(mNativeObj);
     }
 
+    public int getInitHue() {
+        return mInitHue;
+    }
+
     public void setLightness(double lightness) throws EffectException {
-        if (!nativeSetLightness(mNativeObj, lightness))
+        if (!nativeSetLightness(mNativeObj, lightness)) {
             throw new EffectException("Lightness isn't within range: " + lightness);
+        }
     }
 
     public double getLightness() {
         return nativeGetLightness(mNativeObj);
     }
 
+    public double getInitLightness() {
+        return mInitLightness;
+    }
+
     public void setSaturation(double saturation) throws EffectException {
-        if (!nativeSetSaturation(mNativeObj, saturation))
+        if (!nativeSetSaturation(mNativeObj, saturation)) {
             throw new EffectException("Saturation isn't within range: " + saturation);
+        }
     }
 
     public double getSaturation() {
         return nativeGetSaturation(mNativeObj);
+    }
+
+    public double getInitSaturation() {
+        return mInitSaturation;
     }
 
     @Override
@@ -54,6 +77,15 @@ public class HlsAdjust extends Adjust {
         return nativeApply(mNativeObj, src.getNativeObjAddr(), dst.getNativeObjAddr())
                 ? dst
                 : src;
+    }
+
+    @Override
+    public String toString() {
+        return "HlsAdjust: {\n"
+                + "\thue: " + getHue() + "\n"
+                + "\tlightness: " + getLightness() + "\n"
+                + "\tsaturation: " + getSaturation() + "\n"
+                + "}";
     }
 
     private native long nativeCreateObject();

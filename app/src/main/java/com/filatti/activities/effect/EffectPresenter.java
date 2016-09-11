@@ -8,11 +8,15 @@ import com.filatti.activities.adjust.AdjustActivity;
 import com.filatti.activities.adjust.items.AdjustItem;
 import com.filatti.activities.adjust.items.ContrastAdjustItem;
 import com.filatti.activities.adjust.items.CurvesAdjustItem;
+import com.filatti.activities.adjust.items.HlsAdjustItem;
+import com.filatti.activities.adjust.items.TemperatureAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.AdjustComposite;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
+import com.filatti.effects.adjusts.HlsAdjust;
+import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.managers.EffectManager;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.google.common.base.Preconditions;
@@ -41,6 +45,7 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
 
     @Override
     protected void onCreate() {
+        mActivity.setPhoto(EffectManager.getInstance().getOriginalBitmap());
     }
 
     @Override
@@ -95,6 +100,14 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             ContrastAdjustItem contrastAdjustItem =
                     new ContrastAdjustItem(mAdjustComposite.getEffect(ContrastAdjust.class));
             mAdjustItemList.add(contrastAdjustItem);
+
+            TemperatureAdjustItem temperatureAdjustItem =
+                    new TemperatureAdjustItem(mAdjustComposite.getEffect(TemperatureAdjust.class));
+            mAdjustItemList.add(temperatureAdjustItem);
+
+            HlsAdjustItem hlsAdjustItem =
+                    new HlsAdjustItem(mAdjustComposite.getEffect(HlsAdjust.class));
+            mAdjustItemList.add(hlsAdjustItem);
         }
         return mAdjustItemList;
     }

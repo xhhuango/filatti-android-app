@@ -1,12 +1,17 @@
 #include <jni.h>
 
-#include <opencv2/core.hpp>
+#include "log.hpp"
+
 #include <filatti/hls.hpp>
+#include <filatti/exception.hpp>
 
 extern "C" {
 
 using namespace cv;
 using namespace filatti;
+using libException = filatti::Exception;
+
+static const char* TAG = __FILE__;
 
 JNIEXPORT jlong JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeCreateObject
 (JNIEnv* env, jclass clazz)
@@ -32,8 +37,13 @@ JNIEXPORT jint JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetHue
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetHue
 (JNIEnv *env, jclass clazz, jlong thiz, jint hue)
 {
-    Hls* obj = (Hls*) thiz;
-    return (jboolean) obj->set_hue(hue);
+    try {
+        ((Hls*) thiz)->set_hue(hue);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetLightness
@@ -46,8 +56,13 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetLi
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetLightness
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble lightness)
 {
-    Hls* obj = (Hls*) thiz;
-    return (jboolean) obj->set_lightness(lightness);
+    try {
+        ((Hls*) thiz)->set_lightness(lightness);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetSaturation
@@ -60,8 +75,13 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetSa
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetSaturation
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble saturation)
 {
-    Hls* obj = (Hls*) thiz;
-    return (jboolean) obj->set_saturation(saturation);
+    try {
+        ((Hls*) thiz)->set_saturation(saturation);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeApply
