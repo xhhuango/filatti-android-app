@@ -70,11 +70,18 @@
         android:layout_below="@+id/header"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <RelativeLayout
+            android:id="@+id/imageContainer"
             android:layout_width="match_parent"
-            android:layout_height="360dp"
-            tools:ignore="ContentDescription"/>
+            android:layout_height="360dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="ContentDescription"/>
+
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/adjustContainer"

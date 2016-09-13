@@ -5,7 +5,7 @@ LOCAL_MODULE := libfilatti
 
 LOCAL_DISABLE_FORMAT_STRING_CHECKS := true
 
-LOCAL_LDLIBS := -lstdc++ -llog
+LOCAL_LDLIBS := -lstdc++ -llog -latomic
 LOCAL_SHARED_LIBRARIES += opencv_java3
 
 LIB_FILATTI_DIR = $(LOCAL_PATH)/../../../../../libfilatti/

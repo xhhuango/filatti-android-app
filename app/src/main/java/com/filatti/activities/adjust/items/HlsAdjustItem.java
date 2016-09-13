@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.ui.OnAffectListener;
 import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.HlsAdjust;
@@ -60,6 +59,11 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
     }
 
     @Override
+    public View getOverlayView(Context context, ViewGroup rootView) {
+        return null;
+    }
+
+    @Override
     public View getView(Context context, ViewGroup rootView) {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup viewGroup =
@@ -73,7 +77,6 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
                                     180,
                                     hueAdapter.getInitFromEffect(),
                                     hueAdapter.getFromEffect(),
-                                    hueAdapter,
                                     hueAdapter);
 
         mLightnessValueBarView = (ValueBarView) viewGroup.findViewById(R.id.lightnessValueBar);
@@ -84,7 +87,6 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
                                           100,
                                           lightnessAdapter.getInitFromEffect(),
                                           lightnessAdapter.getFromEffect(),
-                                          lightnessAdapter,
                                           lightnessAdapter);
 
         mSaturationValueBarView = (ValueBarView) viewGroup.findViewById(R.id.saturationValueBar);
@@ -95,7 +97,6 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
                                            100,
                                            saturationAdapter.getInitFromEffect(),
                                            saturationAdapter.getFromEffect(),
-                                           saturationAdapter,
                                            saturationAdapter);
         return viewGroup;
     }
@@ -179,7 +180,7 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
         };
     }
 
-    private abstract class Adapter implements OnAffectListener, ValueBarView.OnValueChangeListener {
+    private abstract class Adapter implements ValueBarView.OnValueChangeListener {
         abstract void setToEffect(int value);
 
         abstract int getFromEffect();
@@ -187,21 +188,21 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
         abstract int getInitFromEffect();
 
         @Override
-        public void onStartAffect() {
+        public void onStart(int value) {
             if (mOnAdjustListener != null) {
                 mOnAdjustListener.onAdjustStart();
             }
         }
 
         @Override
-        public void onStopAffect() {
+        public void onStop(int value) {
             if (mOnAdjustListener != null) {
                 mOnAdjustListener.onAdjustStop();
             }
         }
 
         @Override
-        public void onValueChanged(int value) {
+        public void onChange(int value) {
             setToEffect(value);
             if (mOnAdjustListener != null) {
                 mOnAdjustListener.onAdjustChange();

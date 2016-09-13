@@ -7,6 +7,7 @@ import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
+import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.utilities.Millis;
 import com.google.common.base.Preconditions;
 
@@ -26,6 +27,7 @@ public final class AdjustComposite implements Effect {
         mEffectList.add(new TemperatureAdjust());
         mEffectList.add(new HlsAdjust());
         mEffectList.add(new SharpnessAdjust());
+        mEffectList.add(new VignetteAdjust());
     }
 
     public <T> T getEffect(Class<T> clazz) {
@@ -47,12 +49,12 @@ public final class AdjustComposite implements Effect {
         return apply(src, null);
     }
 
-    public Mat apply(Mat src, Effect util) {
+    public Mat apply(Mat src, Effect until) {
         Preconditions.checkNotNull(src);
 
         long beforeInTotal = Millis.now();
         for (Effect effect : mEffectList) {
-            if (util != null && effect.getClass().isInstance(util)) {
+            if (until != null && effect.getClass().isInstance(until)) {
                 break;
             }
 

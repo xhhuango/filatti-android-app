@@ -6,10 +6,11 @@ import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.effects.Effect;
 import com.google.common.base.Preconditions;
 
-public abstract class AdjustItem<T extends Effect> {
+public abstract class AdjustItem<T extends Effect> implements AdjustAction {
     protected final T mEffect;
     protected OnAdjustListener mOnAdjustListener;
 
@@ -28,13 +29,13 @@ public abstract class AdjustItem<T extends Effect> {
     @DrawableRes
     public abstract int getIcon();
 
-    public abstract void apply();
-
-    public abstract void cancel();
-
-    public abstract void reset();
-
     public abstract View getView(Context context, ViewGroup rootView);
+
+    public abstract View getOverlayView(Context context, ViewGroup rootView);
+
+    public boolean doesApplyUponAdjusting() {
+        return true;
+    }
 
     public void setOnAdjustListener(OnAdjustListener listener) {
         mOnAdjustListener = listener;

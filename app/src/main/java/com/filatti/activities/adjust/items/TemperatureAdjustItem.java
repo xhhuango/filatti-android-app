@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.ui.OnAffectListener;
 import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.TemperatureAdjust;
@@ -52,6 +51,11 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
     }
 
     @Override
+    public View getOverlayView(Context context, ViewGroup rootView) {
+        return null;
+    }
+
+    @Override
     public View getView(Context context, ViewGroup rootView) {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup viewGroup =
@@ -65,34 +69,29 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
                                             100,
                                             getInitTemperatureFromEffect(),
                                             getTemperatureFromEffect(),
-                                            createOnAffectListener(),
                                             createOnValueChangeListener());
 
         return viewGroup;
     }
 
-    private OnAffectListener createOnAffectListener() {
-        return new OnAffectListener() {
+    private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
+        return new ValueBarView.OnValueChangeListener() {
             @Override
-            public void onStartAffect() {
+            public void onStart(int value) {
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustStart();
                 }
             }
 
             @Override
-            public void onStopAffect() {
+            public void onStop(int value) {
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustStop();
                 }
             }
-        };
-    }
 
-    private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
-        return new ValueBarView.OnValueChangeListener() {
             @Override
-            public void onValueChanged(int value) {
+            public void onChange(int value) {
                 setTemperatureToEffect(value);
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustChange();

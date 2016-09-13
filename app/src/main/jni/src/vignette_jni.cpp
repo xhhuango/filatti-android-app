@@ -1,12 +1,17 @@
 #include <jni.h>
 
-#include <opencv2/core.hpp>
+#include "log.hpp"
+
 #include <filatti/vignette.hpp>
+#include <filatti/exception.hpp>
 
 extern "C" {
 
 using namespace cv;
 using namespace filatti;
+using libException = filatti::Exception;
+
+static const char* TAG = __FILE__;
 
 JNIEXPORT jlong JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeCreateObject
 (JNIEnv* env, jclass clazz)
@@ -27,17 +32,22 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGet
 {
     Vignette* obj = (Vignette*) thiz;
     jdouble *center_arr = env->GetDoubleArrayElements(arr, JNI_FALSE);
-    std::vector<double> center = obj->get_center();
-    center_arr[0] = center[0];
-    center_arr[1] = center[1];
+    cv::Point2d center = obj->get_center();
+    center_arr[0] = center.x;
+    center_arr[1] = center.y;
     env->ReleaseDoubleArrayElements(arr, center_arr, 0);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetCenter
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble x, jdouble y)
 {
-    Vignette* obj = (Vignette*) thiz;
-    return (jboolean) obj->set_center(x, y);
+    try {
+        ((Vignette*) thiz)->set_center(cv::Point2d{x, y});
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetRadius
@@ -50,8 +60,13 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_native
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetRadius
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble radius)
 {
-    Vignette* obj = (Vignette*) thiz;
-    return (jboolean) obj->set_radius(radius);
+    try {
+        ((Vignette*) thiz)->set_radius(radius);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetStrength
@@ -64,8 +79,13 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_native
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetStrength
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble strength)
 {
-    Vignette* obj = (Vignette*) thiz;
-    return (jboolean) obj->set_strength(strength);
+    try {
+        ((Vignette*) thiz)->set_strength(strength);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetFeathering
@@ -78,8 +98,13 @@ JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_native
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetFeathering
 (JNIEnv *env, jclass clazz, jlong thiz, jdouble feathering)
 {
-    Vignette* obj = (Vignette*) thiz;
-    return (jboolean) obj->set_feathering(feathering);
+    try {
+        ((Vignette*) thiz)->set_feathering(feathering);
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
 }
 
 JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetColor
@@ -97,11 +122,29 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGet
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetColor
 (JNIEnv *env, jclass clazz, jlong thiz, jint b, jint g, jint r)
 {
-    Vignette* obj = (Vignette*) thiz;
-    uchar blue = cv::saturate_cast<uchar>(b);
-    uchar green = cv::saturate_cast<uchar>(g);
-    uchar red = cv::saturate_cast<uchar>(r);
-    return (jboolean) obj->set_color(cv::Scalar_<uchar>{blue, green, red});
+    try {
+        Vignette* obj = (Vignette*) thiz;
+        uchar blue = cv::saturate_cast<uchar>(b);
+        uchar green = cv::saturate_cast<uchar>(g);
+        uchar red = cv::saturate_cast<uchar>(r);
+        obj->set_color(cv::Scalar_<uchar>{blue, green, red});
+        return true;
+    } catch (libException& e) {
+        LOGW(TAG, e.what());
+        return false;
+    }
+}
+
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeIsFitToImage
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Vignette*) thiz)->is_fit_to_image();
+}
+
+JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetFitToImage
+(JNIEnv *env, jclass clazz, jlong thiz, jboolean is_fit_to_image)
+{
+    ((Vignette*) thiz)->set_fit_to_image((bool) is_fit_to_image);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeApply

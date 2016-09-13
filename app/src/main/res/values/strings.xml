@@ -13,6 +13,7 @@
     <string name="vignette_strength_title">Strength</string>
     <string name="vignette_feathering_title">Feathering</string>
     <string name="vignette_radius_title">Radius</string>
+    <string name="vignette_color_title">Color</string>
 
     <string name="temperature">Temperature</string>
     <string name="temperature_temperature_title">Temperature</string>

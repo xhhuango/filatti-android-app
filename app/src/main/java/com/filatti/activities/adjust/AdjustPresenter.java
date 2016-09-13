@@ -36,7 +36,9 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
         mBitmap = BitmapUtils.createBitmap(mMat.cols(), mMat.rows());
         BitmapUtils.convertMatToBitmap(mMat, mBitmap);
 
-        applyPhoto();
+        if (mAdjustItem.doesApplyUponAdjusting()) {
+            applyPhoto();
+        }
 
         showPhoto(EffectManager.getInstance().getAppliedBitmap());
 
@@ -86,6 +88,10 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
     @StringRes
     int getAdjustName() {
         return mAdjustItem.getDisplayName();
+    }
+
+    View getAdjustOverlyView(ViewGroup viewGroup) {
+        return mAdjustItem.getOverlayView(mActivity, viewGroup);
     }
 
     View getAdjustView(ViewGroup viewGroup) {

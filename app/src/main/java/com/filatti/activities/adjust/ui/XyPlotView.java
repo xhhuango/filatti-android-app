@@ -53,7 +53,7 @@ public class XyPlotView extends View {
     private Point mSelectedPrecedingPoint;
     private Point mSelectedSucceedingPoint;
 
-    private OnAffectListener mOnAffectListener;
+    private OnChangeListener mOnChangeListener;
     private OnAddPointListener mOnAddPointListener;
     private OnRemovePointListener mOnRemovePointListener;
     private OnMovePointListener mOnMovePointListener;
@@ -194,8 +194,8 @@ public class XyPlotView extends View {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if (mSelectedPoint != null && mOnAffectListener != null) {
-                    mOnAffectListener.onStopAffect();
+                if (mSelectedPoint != null && mOnChangeListener != null) {
+                    mOnChangeListener.onStop();
                 }
                 mSelectedPoint = null;
                 mSelectedPrecedingPoint = null;
@@ -243,8 +243,8 @@ public class XyPlotView extends View {
             if (index < mPointList.size() - 1)
                 mSelectedSucceedingPoint = mPointList.get(index + 1);
 
-            if (mOnAffectListener != null) {
-                mOnAffectListener.onStartAffect();
+            if (mOnChangeListener != null) {
+                mOnChangeListener.onStart();
             }
         }
     }
@@ -390,8 +390,8 @@ public class XyPlotView extends View {
         mOnMovePointListener = onMovePointListener;
     }
 
-    public void setOnAffectListener(OnAffectListener onAffectListener) {
-        mOnAffectListener = onAffectListener;
+    public void setOnChangeListener(OnChangeListener onChangeListener) {
+        mOnChangeListener = onChangeListener;
     }
 
     public interface OnAddPointListener {
@@ -404,6 +404,12 @@ public class XyPlotView extends View {
 
     public interface OnMovePointListener {
         void onPointMoved(Point point, int oldX, int oldY);
+    }
+
+    public interface OnChangeListener {
+        void onStart();
+
+        void onStop();
     }
 
     public class Point {

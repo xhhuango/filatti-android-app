@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.ui.OnAffectListener;
+import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.XyPlotView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.CurvesAdjust;
@@ -96,6 +96,11 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
             mOnAdjustListener.onAdjustChange();
         }
         mSelectedButton.callOnClick();
+    }
+
+    @Override
+    public View getOverlayView(Context context, ViewGroup rootView) {
+        return null;
     }
 
     @Override
@@ -363,16 +368,16 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
     }
 
     private void initOnAffectListener() {
-        mXyPlotView.setOnAffectListener(new OnAffectListener() {
+        mXyPlotView.setOnChangeListener(new XyPlotView.OnChangeListener() {
             @Override
-            public void onStartAffect() {
+            public void onStart() {
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustStart();
                 }
             }
 
             @Override
-            public void onStopAffect() {
+            public void onStop() {
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustStop();
                 }
@@ -466,7 +471,7 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
         }
     }
 
-    private abstract class Adapter {
+    private abstract class Adapter implements AdjustAction {
         private int[] mInitPoints;
         private int[] mTemporaryPoints;
         private int[] mAppliedPoints;
@@ -490,15 +495,18 @@ public class CurvesAdjustItem extends AdjustItem<CurvesAdjust> {
             mTemporaryPoints = points;
         }
 
-        protected void apply() {
+        @Override
+        public void apply() {
             mAppliedPoints = mTemporaryPoints;
         }
 
-        protected void reset() {
+        @Override
+        public void reset() {
             setPoints(mInitPoints);
         }
 
-        protected void cancel() {
+        @Override
+        public void cancel() {
             setPoints(mAppliedPoints);
         }
     }

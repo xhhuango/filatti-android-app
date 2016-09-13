@@ -11,9 +11,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.filatti.R;
+import com.filatti.activities.adjust.AdjustAction;
 import com.google.common.base.Preconditions;
 
-public class ValueBarView extends LinearLayout {
+public class ValueBarView extends LinearLayout implements AdjustAction {
     private TextView mTitleTextView;
     private TextView mValueTextView;
     private SeekBar mSeekBar;
@@ -22,7 +23,6 @@ public class ValueBarView extends LinearLayout {
     @StringRes
     private int mTitleTextRes = 0;
 
-    private OnAffectListener mOnAffectListener;
     private OnValueChangeListener mOnValueChangeListener;
     private int mMaxValue = 100;
     private int mMinValue = -100;
@@ -63,7 +63,6 @@ public class ValueBarView extends LinearLayout {
                    mMaxValue,
                    mInitValue,
                    mAppliedValue,
-                   mOnAffectListener,
                    mOnValueChangeListener);
     }
 
@@ -81,22 +80,22 @@ public class ValueBarView extends LinearLayout {
                 if (mTemporaryValue != value) {
                     mTemporaryValue = value;
                     if (mOnValueChangeListener != null) {
-                        mOnValueChangeListener.onValueChanged(mTemporaryValue);
+                        mOnValueChangeListener.onChange(mTemporaryValue);
                     }
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                if (mOnAffectListener != null) {
-                    mOnAffectListener.onStartAffect();
+                if (mOnValueChangeListener != null) {
+                    mOnValueChangeListener.onStart(mTemporaryValue);
                 }
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (mOnAffectListener != null) {
-                    mOnAffectListener.onStopAffect();
+                if (mOnValueChangeListener != null) {
+                    mOnValueChangeListener.onStop(mTemporaryValue);
                 }
             }
         });
@@ -116,7 +115,6 @@ public class ValueBarView extends LinearLayout {
                            int barMaxValue,
                            int initValue,
                            int value,
-                           OnAffectListener onAffectListener,
                            OnValueChangeListener onValueChangeListener) {
         Preconditions.checkArgument(barMinValue < barMaxValue);
 
@@ -127,7 +125,6 @@ public class ValueBarView extends LinearLayout {
         mInitValue = initValue;
         mTemporaryValue = value;
         mAppliedValue = value;
-        mOnAffectListener = onAffectListener;
         mOnValueChangeListener = onValueChangeListener;
 
         if (mSeekBar != null) {
@@ -149,21 +146,28 @@ public class ValueBarView extends LinearLayout {
         }
     }
 
+    @Override
     public void apply() {
         mAppliedValue = mTemporaryValue;
     }
 
+    @Override
     public void reset() {
         if (mInitValue != fromProgressValue(mSeekBar.getProgress())) {
             setValueToProgress(mInitValue);
         }
     }
 
+    @Override
     public void cancel() {
         setValueToProgress(mAppliedValue);
     }
 
     public interface OnValueChangeListener {
-        void onValueChanged(int value);
+        void onStart(int value);
+
+        void onStop(int value);
+
+        void onChange(int value);
     }
 }

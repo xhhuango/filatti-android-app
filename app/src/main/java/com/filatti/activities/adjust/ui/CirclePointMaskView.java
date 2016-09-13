@@ -19,7 +19,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CircleMaskView extends View {
+public class CirclePointMaskView extends View {
     private int mWidth;
     private int mHeight;
     private float mWidthHalf;
@@ -62,17 +62,17 @@ public class CircleMaskView extends View {
 
     private Point mSelectedPoint;
 
-    public CircleMaskView(Context context) {
+    public CirclePointMaskView(Context context) {
         super(context);
         init();
     }
 
-    public CircleMaskView(Context context, AttributeSet attrs) {
+    public CirclePointMaskView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CircleMaskView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CirclePointMaskView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

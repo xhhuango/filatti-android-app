@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.ui.OnAffectListener;
 import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.SharpnessAdjust;
@@ -52,6 +51,11 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
     }
 
     @Override
+    public View getOverlayView(Context context, ViewGroup rootView) {
+        return null;
+    }
+
+    @Override
     public View getView(Context context, ViewGroup rootView) {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup viewGroup =
@@ -63,15 +67,14 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
                                  200,
                                  getInitFromEffect(),
                                  getFromEffect(),
-                                 createOnAffectListener(),
                                  createOnValueChangeListener());
         return viewGroup;
     }
 
-    private OnAffectListener createOnAffectListener() {
-        return new OnAffectListener() {
+    private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
+        return new ValueBarView.OnValueChangeListener() {
             @Override
-            public void onStartAffect() {
+            public void onStart(int value) {
                 if (mOnAdjustListener != null) {
                     mEffect.setRebuildBlurred(false);
                     mOnAdjustListener.onAdjustStart();
@@ -79,19 +82,15 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
             }
 
             @Override
-            public void onStopAffect() {
+            public void onStop(int value) {
                 if (mOnAdjustListener != null) {
                     mEffect.setRebuildBlurred(true);
                     mOnAdjustListener.onAdjustStop();
                 }
             }
-        };
-    }
 
-    private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
-        return new ValueBarView.OnValueChangeListener() {
             @Override
-            public void onValueChanged(int value) {
+            public void onChange(int value) {
                 setToEffect(value);
                 if (mOnAdjustListener != null) {
                     mOnAdjustListener.onAdjustChange();

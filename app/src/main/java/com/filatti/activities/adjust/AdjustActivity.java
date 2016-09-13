@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.filatti.R;
@@ -17,6 +18,7 @@ import com.filatti.utilities.photo.DisplayUtils;
 public class AdjustActivity extends FilattiActivity {
     private AdjustPresenter mPresenter;
 
+    private ViewGroup mImageContainer;
     private ImageView mImageView;
 
     @Override
@@ -60,6 +62,7 @@ public class AdjustActivity extends FilattiActivity {
         initResetButton();
         initOkButton();
         initImageView();
+        initImageOverlayView();
         initAdjustView();
     }
 
@@ -99,13 +102,29 @@ public class AdjustActivity extends FilattiActivity {
     }
 
     private void initImageView() {
-        mImageView = (ImageView) findViewById(R.id.imageView);
+        mImageContainer = (ViewGroup) findViewById(R.id.imageContainer);
         ViewGroup.MarginLayoutParams layoutParams =
-                (ViewGroup.MarginLayoutParams) mImageView.getLayoutParams();
+                (ViewGroup.MarginLayoutParams) mImageContainer.getLayoutParams();
         layoutParams.height = DisplayUtils.getScreenSize(getResources()).getWidth();
-        mImageView.setLayoutParams(layoutParams);
-        mImageView.requestLayout();
+        mImageContainer.setLayoutParams(layoutParams);
+        mImageContainer.requestLayout();
+
+        mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageBitmap(EffectManager.getInstance().getOriginalBitmap());
+    }
+
+    private void initImageOverlayView() {
+        View adjustOverlayView = mPresenter.getAdjustOverlyView(mImageContainer);
+
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) adjustOverlayView.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        Bitmap bitmap = EffectManager.getInstance().getOriginalBitmap();
+        layoutParams.height = bitmap.getHeight();
+        layoutParams.width = bitmap.getWidth();
+        adjustOverlayView.setLayoutParams(layoutParams);
+
+        mImageContainer.addView(adjustOverlayView);
     }
 
     private void initAdjustView() {
