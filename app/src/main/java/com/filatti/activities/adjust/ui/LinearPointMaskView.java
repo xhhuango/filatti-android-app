@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class LinearMaskView extends View {
+public class LinearPointMaskView extends View {
     private int mWidth;
     private int mHeight;
     private int mPivotX;
@@ -45,17 +45,17 @@ public class LinearMaskView extends View {
 
     private float mStartAngle;
 
-    public LinearMaskView(Context context) {
+    public LinearPointMaskView(Context context) {
         super(context);
         init();
     }
 
-    public LinearMaskView(Context context, AttributeSet attrs) {
+    public LinearPointMaskView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public LinearMaskView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LinearPointMaskView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

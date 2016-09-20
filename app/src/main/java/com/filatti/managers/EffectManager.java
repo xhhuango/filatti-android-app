@@ -68,6 +68,14 @@ public final class EffectManager {
         return mOriginalBitmap;
     }
 
+    public int getBitmapHeight() {
+        return mOriginalBitmap.getHeight();
+    }
+
+    public int getBitmapWidth() {
+        return mOriginalBitmap.getWidth();
+    }
+
     public Bitmap applyBitmap() {
         Mat mat = new Mat();
         BitmapUtils.convertBitmapToMat(mOriginalBitmap, mat);

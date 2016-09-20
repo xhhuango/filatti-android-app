@@ -15,9 +15,8 @@ import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.RadialPinchMaskView;
 import com.filatti.activities.adjust.ui.ValueBarView;
 import com.filatti.effects.EffectException;
+import com.filatti.utilities.StringUtil;
 import com.filatti.effects.adjusts.VignetteAdjust;
-
-import java.text.DecimalFormat;
 
 import timber.log.Timber;
 
@@ -88,13 +87,10 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         mRadialPinchMaskView = (RadialPinchMaskView) viewGroup.findViewById(R.id.overlayView);
         mRadialPinchMaskView.setCircle(false);
         mRadialMaskAdapter = new RadialMaskAdapter();
-        mRadialPinchMaskView.setOnRadiusChangeListener(mRadialMaskAdapter);
+        mRadialPinchMaskView.setOnChangeListener(mRadialMaskAdapter);
+        mRadialPinchMaskView.enableCenterMove(false);
 
         return viewGroup;
-    }
-
-    public String formatRadius(float radius) {
-        return new DecimalFormat("#.##").format(radius);
     }
 
     @Override
@@ -129,7 +125,7 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         mColorButton.setOnClickListener(mColorButtonAdapter);
 
         mRadiusTextView = (TextView) viewGroup.findViewById(R.id.radiusTextView);
-        mRadiusTextView.setText(formatRadius((float) mEffect.getRadius()));
+        mRadiusTextView.setText(StringUtil.valueToString(mEffect.getRadius()));
 
         return viewGroup;
     }
@@ -230,7 +226,7 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
     }
 
     private class RadialMaskAdapter
-            implements RadialPinchMaskView.OnRadiusChangeListener, AdjustAction {
+            implements RadialPinchMaskView.OnChangeListener, AdjustAction {
         private float mInitRadius;
         private float mAppliedRadius;
         private float mTemporaryRadius;
@@ -260,23 +256,27 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         }
 
         @Override
-        public void onStartRadiusChange(float radius) {
+        public void onStartChange() {
             if (mOnAdjustListener != null) {
                 mOnAdjustListener.onAdjustStart();
             }
         }
 
         @Override
-        public void onRadiusChange(float radius) {
-            mRadiusTextView.setText(formatRadius(radius));
-        }
-
-        @Override
-        public void onStopRadiusChange(float radius) {
-            setToEffect(radius);
+        public void onStopChange() {
+            setToEffect(mRadialPinchMaskView.getOuterRadius());
             if (mOnAdjustListener != null) {
                 mOnAdjustListener.onAdjustStop();
             }
+        }
+
+        @Override
+        public void onRadiusChange(float radius) {
+            mRadiusTextView.setText(StringUtil.valueToString(radius));
+        }
+
+        @Override
+        public void onCenterChange(float x, float y) {
         }
 
         @Override
@@ -293,7 +293,7 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         public void reset() {
             setToEffect(mInitRadius);
             mRadialPinchMaskView.setOuterRadius(mInitRadius);
-            mRadiusTextView.setText(formatRadius(mInitRadius));
+            mRadiusTextView.setText(StringUtil.valueToString(mInitRadius));
         }
     }
 

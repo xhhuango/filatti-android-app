@@ -11,6 +11,7 @@ import com.filatti.activities.adjust.items.CurvesAdjustItem;
 import com.filatti.activities.adjust.items.HlsAdjustItem;
 import com.filatti.activities.adjust.items.SharpnessAdjustItem;
 import com.filatti.activities.adjust.items.TemperatureAdjustItem;
+import com.filatti.activities.adjust.items.TiltShiftAdjustItem;
 import com.filatti.activities.adjust.items.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
@@ -20,6 +21,7 @@ import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
+import com.filatti.effects.adjusts.TiltShiftAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.managers.EffectManager;
 import com.filatti.activities.mvp.AbstractPresenter;
@@ -120,6 +122,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             VignetteAdjustItem vignetteAdjustItem =
                     new VignetteAdjustItem(mAdjustComposite.getEffect(VignetteAdjust.class));
             mAdjustItemList.add(vignetteAdjustItem);
+
+            TiltShiftAdjustItem tiltShiftAdjustItem =
+                    new TiltShiftAdjustItem(mAdjustComposite.getEffect(TiltShiftAdjust.class));
+            mAdjustItemList.add(tiltShiftAdjustItem);
         }
         return mAdjustItemList;
     }

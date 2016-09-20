@@ -3,6 +3,7 @@
 
     <string name="contrast">Contrast</string>
     <string name="sharpen">Sharpen</string>
+    <string name="curves">Curves</string>
 
     <string name="hls">HLS</string>
     <string name="hls_hue">Hue</string>
@@ -19,5 +20,9 @@
     <string name="temperature_temperature_title">Temperature</string>
     <string name="temperature_strength_title">Strength</string>
 
-    <string name="curves">Curves</string>
+    <string name="tilt_shift">Tilt Shift</string>
+    <string name="tilt_shift_strength_title">Strength</string>
+    <string name="tilt_shift_feathering_title">Feathering</string>
+    <string name="tilt_shift_radius_title">Radius</string>
+    <string name="tilt_shift_angle_title">Angle</string>
 </resources>

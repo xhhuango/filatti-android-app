@@ -115,16 +115,16 @@ public class AdjustActivity extends FilattiActivity {
 
     private void initImageOverlayView() {
         View adjustOverlayView = mPresenter.getAdjustOverlyView(mImageContainer);
+        if (adjustOverlayView != null) {
+            RelativeLayout.LayoutParams layoutParams =
+                    (RelativeLayout.LayoutParams) adjustOverlayView.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            layoutParams.height = EffectManager.getInstance().getBitmapHeight();
+            layoutParams.width = EffectManager.getInstance().getBitmapWidth();
+            adjustOverlayView.setLayoutParams(layoutParams);
 
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) adjustOverlayView.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        Bitmap bitmap = EffectManager.getInstance().getOriginalBitmap();
-        layoutParams.height = bitmap.getHeight();
-        layoutParams.width = bitmap.getWidth();
-        adjustOverlayView.setLayoutParams(layoutParams);
-
-        mImageContainer.addView(adjustOverlayView);
+            mImageContainer.addView(adjustOverlayView);
+        }
     }
 
     private void initAdjustView() {

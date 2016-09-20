@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.filatti.utilities.photo.DisplayUtils;
 import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
@@ -45,8 +46,8 @@ public class XyPlotView extends View {
 
     private final Paint mPointPaint = new Paint();
     private final List<Point> mPointList = new ArrayList<>();
-    private int mPointRadius = 15;
-    private int mPointTouchableRadius = 20;
+    private int mPointRadius = DisplayUtils.dipToPixel(5);
+    private int mPointTouchableRadius = DisplayUtils.dipToPixel(7);
 
     private Mode mMode = Mode.NORMAL;
     private Point mSelectedPoint;

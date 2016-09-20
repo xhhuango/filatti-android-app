@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <com.filatti.activities.adjust.ui.RadialPinchMaskView
+        android:id="@+id/radialOverlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.filatti.activities.adjust.ui.LinearPinchMaskView
+        android:id="@+id/linearOverlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

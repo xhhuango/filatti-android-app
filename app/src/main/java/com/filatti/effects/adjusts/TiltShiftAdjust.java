@@ -1,8 +1,5 @@
 package com.filatti.effects.adjusts;
 
-import android.graphics.Color;
-import android.support.annotation.ColorInt;
-
 import com.filatti.effects.EffectException;
 import com.google.common.base.Preconditions;
 
@@ -13,37 +10,57 @@ import java.util.Arrays;
 import timber.log.Timber;
 
 @SuppressWarnings("JniMissingFunction")
-public class VignetteAdjust extends Adjust {
+public class TiltShiftAdjust extends Adjust {
+    public enum MaskType {
+        CIRCULAR(0),
+        ELLIPTIC(1),
+        LINEAR(2);
+
+        final int mValue;
+
+        MaskType(int value) {
+            mValue = value;
+        }
+
+        static MaskType valueOf(int value) {
+            for (MaskType maskType : values()) {
+                if (maskType.mValue == value) {
+                    return maskType;
+                }
+            }
+            return null;
+        }
+    }
+
     private final long mNativeObj;
 
     private final double[] mInitCenter;
     private final double mInitRadius;
     private final double mInitFeathering;
     private final double mInitStrength;
-    @ColorInt
-    private final int mInitColor;
-    private final boolean mInitIsFitToImage;
+    private final double mInitAngle;
+    private final MaskType mInitMaskType;
 
-    public VignetteAdjust() {
+    public TiltShiftAdjust() {
         mNativeObj = nativeCreateObject();
 
         try {
-            setRadius(1.20);
-            setFeathering(0.25);
+            setRadius(0.5);
+            setFeathering(0.5);
             setStrength(0);
             setCenter(0.5, 0.5);
-            setColor(Color.BLACK);
-            setFitToImage(true);
+            setAngle(0);
+            setMaskType(MaskType.CIRCULAR);
         } catch (EffectException e) {
-            Timber.e(e, "Failed to initialize Vignette");
+            Timber.e(e, "Failed to initialize TiltShift");
         }
 
         mInitCenter = getCenter();
         mInitRadius = getRadius();
         mInitFeathering = getFeathering();
         mInitStrength = getStrength();
-        mInitColor = getColor();
-        mInitIsFitToImage = isFitToImage();
+        mInitAngle = getAngle();
+        mInitMaskType = getMaskType();
     }
 
     @Override
@@ -110,34 +127,36 @@ public class VignetteAdjust extends Adjust {
         }
     }
 
-    @ColorInt
-    public int getInitColor() {
-        return mInitColor;
+    public double getInitAngle() {
+        return mInitAngle;
     }
 
-    @ColorInt
-    public int getColor() {
-        int[] color = new int[3];
-        nativeGetColor(mNativeObj, color);
-        return Color.argb(255, color[2], color[1], color[0]);
+    public double getAngle() {
+        return nativeGetAngle(mNativeObj);
     }
 
-    public void setColor(@ColorInt int color) throws EffectException {
-        if (!nativeSetColor(mNativeObj, Color.blue(color), Color.green(color), Color.red(color))) {
-            throw new EffectException("Color is not correct");
+    public void setAngle(double angle) throws EffectException {
+        if (!nativeSetAngle(mNativeObj, angle)) {
+            throw new EffectException("Angle isn't within range: " + angle);
         }
     }
 
-    public boolean getInitIsFitToImage() {
-        return mInitIsFitToImage;
+    public void setRebuildBlurred(boolean doesRebuildBlurred) {
+        nativeSetRebuildBlurred(mNativeObj, doesRebuildBlurred);
     }
 
-    public boolean isFitToImage() {
-        return nativeIsFitToImage(mNativeObj);
+    public MaskType getInitMaskType() {
+        return mInitMaskType;
     }
 
-    public void setFitToImage(boolean isFitToImage) {
-        nativeSetFitToImage(mNativeObj, isFitToImage);
+    public MaskType getMaskType() {
+        int maskType = nativeGetMaskType(mNativeObj);
+        return MaskType.valueOf(maskType);
+    }
+
+    public void setMaskType(MaskType maskType) {
+        Preconditions.checkNotNull(maskType);
+        nativeSetMaskType(mNativeObj, maskType.mValue);
     }
 
     @Override
@@ -153,13 +172,13 @@ public class VignetteAdjust extends Adjust {
     @Override
     public String toString() {
         double[] center = getCenter();
-        return "VignetteAdjust: {\n"
-                + "\tcolor: " + Integer.toHexString(getColor()) + "\n"
+        return "TiltShiftAdjust: {\n"
+                + "\tcenter: {x: " + center[0] + ", y: " + center[1] + "}\n"
                 + "\tradius: " + getRadius() + "\n"
                 + "\tfeathering: " + getFeathering() + "\n"
                 + "\tstrength: " + getStrength() + "\n"
-                + "\tcenter: {x: " + center[0] + ", y: " + center[1] + "}\n"
-                + "\tisFitToImage: " + isFitToImage() + "\n"
+                + "\tangle: " + getAngle() + "\n"
+                + "\tmask type: " + getMaskType() + "\n"
                 + "}";
     }
 
@@ -183,13 +202,15 @@ public class VignetteAdjust extends Adjust {
 
     private native boolean nativeSetFeathering(long self, double feathering);
 
-    private native void nativeGetColor(long self, int[] color);
+    private native double nativeGetAngle(long self);
 
-    private native boolean nativeSetColor(long self, int b, int g, int r);
+    private native boolean nativeSetAngle(long self, double angle);
 
-    private native boolean nativeIsFitToImage(long self);
+    private native int nativeGetMaskType(long self);
 
-    private native void nativeSetFitToImage(long self, boolean isFitToImage);
+    private native void nativeSetMaskType(long self, int maskType);
+
+    private native void nativeSetRebuildBlurred(long self, boolean doesRebuildBlurred);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }
