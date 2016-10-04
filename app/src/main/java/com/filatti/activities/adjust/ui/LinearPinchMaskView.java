@@ -162,13 +162,13 @@ public class LinearPinchMaskView extends AbstractPinchMaskView {
             return false;
         }
 
-        if (mCenterMoveEnabled && event.getPointerCount() == 2) {
-            int x = (int) event.getX(pointIndex);
-            int y = (int) event.getY(pointIndex);
+        if (mCenterMoveEnabled && event.getPointerCount() == 1) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
             adjustCenterWithOffset(x - mLastPoint.x, y - mLastPoint.y);
             mLastPoint.set(x, y);
             return true;
-        } else if (event.getPointerCount() == 1) {
+        } else if (event.getPointerCount() == 2) {
             int touchedX = bound((int) event.getX(pointIndex), 0, mWidth);
             int touchedY = bound((int) event.getY(pointIndex), 0, mHeight);
             int x = unrotateX(touchedX, touchedY);

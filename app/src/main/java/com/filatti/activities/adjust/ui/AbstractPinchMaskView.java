@@ -21,7 +21,7 @@ public abstract class AbstractPinchMaskView extends View {
     protected static final float INNER_RADIUS_MAX = 1.0f;
     protected static final float INNER_RADIUS_MIN = 0;
     protected static final float OUTER_RADIUS_SMALLEST = 0.05f;
-    protected static final int SCALE_SPAN_LIMIT = DisplayUtils.dipToPixel(5);
+    protected static final int SCALE_SPAN_LIMIT = DisplayUtils.dipToPixel(10);
 
     protected int mWidth;
     protected int mHeight;
