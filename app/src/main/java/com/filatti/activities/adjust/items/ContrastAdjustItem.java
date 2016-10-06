@@ -90,8 +90,8 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
             mTextView.setText(String.valueOf(mApplied));
         }
 
-        private void setToEffect(int barValue) {
-            double contrast = (barValue / 2.0 + 100.0) / 100.0;
+        private void setToEffect(int valueFromSlider) {
+            double contrast = (valueFromSlider / 2.0 + 100.0) / 100.0;
             try {
                 mEffect.setContrast(contrast);
             } catch (EffectException e) {

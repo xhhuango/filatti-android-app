@@ -4,16 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.ui.ValueBarView;
+import com.filatti.activities.adjust.AdjustAction;
+import com.filatti.activities.adjust.ui.SliderView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 
 import timber.log.Timber;
 
 public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
-    private ValueBarView mTemperatureValueBarView;
+    private TextView mTextView;
+    private SliderView mSliderView;
+
+    private SliderAdapter mSliderAdapter;
 
     public TemperatureAdjustItem(TemperatureAdjust effect) {
         super(effect);
@@ -31,12 +36,12 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
 
     @Override
     public void apply() {
-        mTemperatureValueBarView.apply();
+        mSliderAdapter.apply();
     }
 
     @Override
     public void cancel() {
-        mTemperatureValueBarView.cancel();
+        mSliderAdapter.cancel();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
         }
@@ -44,7 +49,7 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
 
     @Override
     public void reset() {
-        mTemperatureValueBarView.reset();
+        mSliderAdapter.reset();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
         }
@@ -61,62 +66,88 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.temperature_item_view, rootView, false);
 
-        mTemperatureValueBarView =
-                (ValueBarView) viewGroup.findViewById(R.id.temperatureValueBar);
-        mTemperatureValueBarView.initialize(true,
-                                            0,
-                                            -100,
-                                            100,
-                                            getInitTemperatureFromEffect(),
-                                            getTemperatureFromEffect(),
-                                            createOnValueChangeListener());
+        mTextView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+
+        mSliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mSliderAdapter = new SliderAdapter();
+        mSliderView.setOnSliderChangeListener(mSliderAdapter);
+        mSliderView.setMaxMinValue(-100, 100);
+        mSliderView.setValue(mSliderAdapter.getFromEffect());
 
         return viewGroup;
     }
 
-    private ValueBarView.OnValueChangeListener createOnValueChangeListener() {
-        return new ValueBarView.OnValueChangeListener() {
-            @Override
-            public void onStart(int value) {
-                if (mOnAdjustListener != null) {
-                    mOnAdjustListener.onAdjustStart();
-                }
-            }
+    private class SliderAdapter implements SliderView.OnSliderChangeListener, AdjustAction {
+        private int mInit;
+        private int mApplied;
+        private int mTemporary;
 
-            @Override
-            public void onStop(int value) {
-                if (mOnAdjustListener != null) {
-                    mOnAdjustListener.onAdjustStop();
-                }
-            }
+        private SliderAdapter() {
+            mInit = getInitFromEffect();
+            mApplied = getFromEffect();
+            mTemporary = mApplied;
 
-            @Override
-            public void onChange(int value) {
-                setTemperatureToEffect(value);
-                if (mOnAdjustListener != null) {
-                    mOnAdjustListener.onAdjustChange();
-                }
-            }
-        };
-    }
-
-    private void setTemperatureToEffect(int barValue) {
-        double temperature = barValue / 200.0;
-        try {
-            mEffect.setTemperature(temperature);
-        } catch (EffectException e) {
-            Timber.e(e, "Failed to set temperature %d", temperature);
+            mTextView.setText(String.valueOf(mApplied));
         }
-    }
 
-    private int convertFromEffect(double valueFromEffect) {
-        return (int) (valueFromEffect * 200.0);
-    }
-    private int getTemperatureFromEffect() {
-        return convertFromEffect(mEffect.getTemperature());
-    }
+        private void setToEffect(int barValue) {
+            double temperature = barValue / 200.0;
+            try {
+                mEffect.setTemperature(temperature);
+            } catch (EffectException e) {
+                Timber.e(e, "Failed to set temperature %d", temperature);
+            }
+        }
 
-    private int getInitTemperatureFromEffect() {
-        return convertFromEffect(mEffect.getInitTemperature());
+        private int convertFromEffect(double valueFromEffect) {
+            return (int) (valueFromEffect * 200.0);
+        }
+        private int getFromEffect() {
+            return convertFromEffect(mEffect.getTemperature());
+        }
+
+        private int getInitFromEffect() {
+            return convertFromEffect(mEffect.getInitTemperature());
+        }
+
+        @Override
+        public void apply() {
+            mApplied = mTemporary;
+        }
+
+        @Override
+        public void cancel() {
+            setToEffect(mApplied);
+            mSliderView.setValue(mApplied);
+        }
+
+        @Override
+        public void reset() {
+            setToEffect(mInit);
+            mSliderView.setValue(mInit);
+        }
+
+        @Override
+        public void onStartTouch() {
+            if (mOnAdjustListener != null) {
+                mOnAdjustListener.onAdjustStart();
+            }
+        }
+
+        @Override
+        public void onStopTouch() {
+            if (mOnAdjustListener != null) {
+                mOnAdjustListener.onAdjustStop();
+            }
+        }
+
+        @Override
+        public void onSliderChange(int value, boolean fromUser) {
+            setToEffect(value);
+            mTextView.setText(String.valueOf(value));
+            if (mOnAdjustListener != null) {
+                mOnAdjustListener.onAdjustChange();
+            }
+        }
     }
 }
