@@ -27,11 +27,8 @@ public class XyPlotView extends View {
         REMOVE_POINT,
     }
 
-    private int mWidth;
-    private int mHeight;
     private int mStartX;
     private int mStartY;
-    private int mAvailableWidth;
     private int mAvailableHeight;
     private int mMaxX = DEFAULT_MAX;
     private int mMaxY = DEFAULT_MAX;
@@ -82,13 +79,11 @@ public class XyPlotView extends View {
 
     @Override
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
-        mWidth = width;
-        mHeight = height;
         mStartX = getPaddingStart() + mPointRadius;
         mStartY = getPaddingTop() + mPointRadius;
-        mAvailableWidth = mWidth - mStartX - (getPaddingEnd() + mPointRadius);
-        mAvailableHeight = mHeight - mStartY - (getPaddingBottom() + mPointRadius);
-        mIntervalSizeX = (double) mAvailableWidth / (double) mMaxX;
+        int availableWidth = width - mStartX - (getPaddingEnd() + mPointRadius);
+        mAvailableHeight = height - mStartY - (getPaddingBottom() + mPointRadius);
+        mIntervalSizeX = (double) availableWidth / (double) mMaxX;
         mIntervalSizeY = (double) mAvailableHeight / (double) mMaxY;
     }
 

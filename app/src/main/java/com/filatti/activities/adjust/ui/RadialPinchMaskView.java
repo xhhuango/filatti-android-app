@@ -18,7 +18,6 @@ public class RadialPinchMaskView extends AbstractPinchMaskView {
     private int mOuterRadiusY;
 
     private int mInnerRadiusX;
-    private int mInnerRadiusY;
 
     private final RectF mOuterRect = new RectF();
     private final RectF mInnerRect = new RectF();
@@ -81,7 +80,6 @@ public class RadialPinchMaskView extends AbstractPinchMaskView {
         }
 
         mInnerRadiusX = innerRadiusX;
-        mInnerRadiusY = innerRadiusY;
         mInnerRect.set(mCenterPoint.x - innerRadiusX,
                        mCenterPoint.y - innerRadiusY,
                        mCenterPoint.x + innerRadiusX,
