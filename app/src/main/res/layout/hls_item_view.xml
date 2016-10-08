@@ -9,20 +9,35 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/hueValueBar"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/hls_hue"/>
 
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/lightnessValueBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <include
+            android:id="@+id/hueTextSlider"
+            layout="@layout/text_slider_layout"/>
 
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/saturationValueBar"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/hls_lightness"/>
+
+        <include
+            android:id="@+id/lightnessTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/hls_saturation"/>
+
+        <include
+            android:id="@+id/saturationTextSlider"
+            layout="@layout/text_slider_layout"/>
 
     </LinearLayout>
 

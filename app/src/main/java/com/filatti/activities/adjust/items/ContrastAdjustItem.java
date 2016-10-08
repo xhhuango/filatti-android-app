@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.SliderView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.ContrastAdjust;
@@ -15,9 +14,6 @@ import com.filatti.effects.adjusts.ContrastAdjust;
 import timber.log.Timber;
 
 public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
-    private TextView mTextView;
-    private SliderView mSliderView;
-
     private SliderAdapter mSliderAdapter;
 
     public ContrastAdjustItem(ContrastAdjust effect) {
@@ -66,31 +62,24 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.contrast_item_view, rootView, false);
 
-        mTextView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
 
-        mSliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
-        mSliderAdapter = new SliderAdapter();
-        mSliderView.setOnSliderChangeListener(mSliderAdapter);
-        mSliderView.setMaxMinValue(-100, 100);
-        mSliderView.setValue(mSliderAdapter.getFromEffect());
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mSliderAdapter = new SliderAdapter(textView, sliderView);
+        sliderView.setOnSliderChangeListener(mSliderAdapter);
+        sliderView.setMaxMinValue(-100, 100);
+        sliderView.setValue(mSliderAdapter.getFromEffect());
 
         return viewGroup;
     }
 
-    private class SliderAdapter implements SliderView.OnSliderChangeListener, AdjustAction {
-        private int mInit;
-        private int mApplied;
-        private int mTemporary;
-
-        private SliderAdapter() {
-            mInit = getInitFromEffect();
-            mApplied = getFromEffect();
-            mTemporary = mApplied;
-
-            mTextView.setText(String.valueOf(mApplied));
+    private class SliderAdapter extends SliderActionAdapter {
+        SliderAdapter(TextView textView, SliderView sliderView) {
+            super(textView, sliderView);
         }
 
-        private void setToEffect(int valueFromSlider) {
+        @Override
+        protected void setToEffect(int valueFromSlider) {
             double contrast = (valueFromSlider / 2.0 + 100.0) / 100.0;
             try {
                 mEffect.setContrast(contrast);
@@ -103,52 +92,20 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
             return (int) (((valueFromEffect * 100.0) - 100.0) * 2.0);
         }
 
-        private int getFromEffect() {
+        @Override
+        protected int getFromEffect() {
             return convertFromEffect(mEffect.getContrast());
         }
 
-        private int getInitFromEffect() {
+        @Override
+        protected int getInitFromEffect() {
             return convertFromEffect(mEffect.getInitContrast());
         }
 
         @Override
-        public void apply() {
-            mApplied = mTemporary;
+        protected OnAdjustListener getOnAdjustListener() {
+            return mOnAdjustListener;
         }
 
-        @Override
-        public void cancel() {
-            setToEffect(mApplied);
-            mSliderView.setValue(mApplied);
-        }
-
-        @Override
-        public void reset() {
-            setToEffect(mInit);
-            mSliderView.setValue(mInit);
-        }
-
-        @Override
-        public void onStartTouch() {
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustStart();
-            }
-        }
-
-        @Override
-        public void onStopTouch() {
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustStop();
-            }
-        }
-
-        @Override
-        public void onSliderChange(int value, boolean fromUser) {
-            setToEffect(value);
-            mTextView.setText(String.valueOf(value));
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustChange();
-            }
-        }
     }
 }

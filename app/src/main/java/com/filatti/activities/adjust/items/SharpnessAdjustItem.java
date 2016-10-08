@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.filatti.R;
-import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.SliderView;
 import com.filatti.effects.EffectException;
 
@@ -16,9 +15,6 @@ import com.filatti.effects.adjusts.SharpnessAdjust;
 import timber.log.Timber;
 
 public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
-    private TextView mTextView;
-    private SliderView mSliderView;
-
     private SliderAdapter mSliderAdapter;
 
     public SharpnessAdjustItem(SharpnessAdjust effect) {
@@ -66,30 +62,23 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.sharpness_item_view, rootView, false);
-        mTextView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
 
-        mSliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
-        mSliderAdapter = new SliderAdapter();
-        mSliderView.setOnSliderChangeListener(mSliderAdapter);
-        mSliderView.setMaxMinValue(0, 100);
-        mSliderView.setValue(mSliderAdapter.getFromEffect());
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mSliderAdapter = new SliderAdapter(textView, sliderView);
+        sliderView.setOnSliderChangeListener(mSliderAdapter);
+        sliderView.setMaxMinValue(0, 100);
+        sliderView.setValue(mSliderAdapter.getFromEffect());
         return viewGroup;
     }
 
-    private class SliderAdapter implements SliderView.OnSliderChangeListener, AdjustAction {
-        private int mInit;
-        private int mApplied;
-        private int mTemporary;
-
-        private SliderAdapter() {
-            mInit = getInitFromEffect();
-            mApplied = getFromEffect();
-            mTemporary = mApplied;
-
-            mTextView.setText(String.valueOf(mApplied));
+    private class SliderAdapter extends SliderActionAdapter {
+        SliderAdapter(TextView textView, SliderView sliderView) {
+            super(textView, sliderView);
         }
 
-        private void setToEffect(int barValue) {
+        @Override
+        protected void setToEffect(int barValue) {
             double sharpness = barValue / 20.0;
             try {
                 mEffect.setSharpness(sharpness);
@@ -102,54 +91,29 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
             return (int) (value * 10.0);
         }
 
-        private int getFromEffect() {
+        @Override
+        protected int getFromEffect() {
             return convertFromEffect(mEffect.getSharpness());
         }
 
-        private int getInitFromEffect() {
+        @Override
+        protected int getInitFromEffect() {
             return convertFromEffect(mEffect.getInitSharpness());
         }
 
         @Override
-        public void apply() {
-            mApplied = mTemporary;
+        protected OnAdjustListener getOnAdjustListener() {
+            return mOnAdjustListener;
         }
 
         @Override
-        public void cancel() {
-            setToEffect(mApplied);
-            mSliderView.setValue(mApplied);
+        protected void onAdjustStart() {
+            mEffect.setRebuildBlurred(false);
         }
 
         @Override
-        public void reset() {
-            setToEffect(mInit);
-            mSliderView.setValue(mInit);
-        }
-
-        @Override
-        public void onStartTouch() {
-            if (mOnAdjustListener != null) {
-                mEffect.setRebuildBlurred(false);
-                mOnAdjustListener.onAdjustStart();
-            }
-        }
-
-        @Override
-        public void onStopTouch() {
-            if (mOnAdjustListener != null) {
-                mEffect.setRebuildBlurred(true);
-                mOnAdjustListener.onAdjustStop();
-            }
-        }
-
-        @Override
-        public void onSliderChange(int value, boolean fromUser) {
-            setToEffect(value);
-            mTextView.setText(String.valueOf(value));
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustChange();
-            }
+        protected void onAdjustStop() {
+            mEffect.setRebuildBlurred(true);
         }
     }
 }
