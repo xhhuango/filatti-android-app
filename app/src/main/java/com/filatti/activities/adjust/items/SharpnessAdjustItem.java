@@ -108,13 +108,19 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
         }
 
         @Override
-        protected void onAdjustStart() {
-            mEffect.setRebuildBlurred(false);
+        public void onStartTouch() {
+            if (mOnAdjustListener != null) {
+                mEffect.setRebuildBlurred(false);
+                mOnAdjustListener.onAdjustStart();
+            }
         }
 
         @Override
-        protected void onAdjustStop() {
-            mEffect.setRebuildBlurred(true);
+        public void onStopTouch() {
+            if (mOnAdjustListener != null) {
+                mEffect.setRebuildBlurred(true);
+                mOnAdjustListener.onAdjustStop();
+            }
         }
     }
 }

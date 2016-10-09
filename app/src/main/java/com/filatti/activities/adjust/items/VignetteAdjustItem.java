@@ -13,7 +13,7 @@ import com.azeesoft.lib.colorpicker.ColorPickerDialog;
 import com.filatti.R;
 import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.RadialPinchMaskView;
-import com.filatti.activities.adjust.ui.ValueBarView;
+import com.filatti.activities.adjust.ui.SliderView;
 import com.filatti.effects.EffectException;
 import com.filatti.utilities.StringUtil;
 import com.filatti.effects.adjusts.VignetteAdjust;
@@ -22,11 +22,12 @@ import timber.log.Timber;
 
 public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
     private RadialPinchMaskView mRadialPinchMaskView;
-    private ValueBarView mStrengthValueBarView;
-    private ValueBarView mFeatheringValueBarView;
+
     private ImageButton mColorButton;
     private TextView mRadiusTextView;
 
+    private StrengthSliderActionAdapter mStrengthSliderActionAdapter;
+    private FeatheringSliderActionAdapter mFeatheringSliderActionAdapter;
     private RadialMaskAdapter mRadialMaskAdapter;
     private ColorButtonAdapter mColorButtonAdapter;
 
@@ -46,17 +47,17 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
 
     @Override
     public void apply() {
-        mStrengthValueBarView.apply();
-        mFeatheringValueBarView.apply();
         mRadialMaskAdapter.apply();
+        mStrengthSliderActionAdapter.apply();
+        mFeatheringSliderActionAdapter.apply();
         mColorButtonAdapter.apply();
     }
 
     @Override
     public void cancel() {
-        mStrengthValueBarView.cancel();
-        mFeatheringValueBarView.cancel();
         mRadialMaskAdapter.cancel();
+        mStrengthSliderActionAdapter.cancel();
+        mFeatheringSliderActionAdapter.cancel();
         mColorButtonAdapter.cancel();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
@@ -65,9 +66,9 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
 
     @Override
     public void reset() {
-        mStrengthValueBarView.reset();
-        mFeatheringValueBarView.reset();
         mRadialMaskAdapter.reset();
+        mStrengthSliderActionAdapter.reset();
+        mFeatheringSliderActionAdapter.reset();
         mColorButtonAdapter.reset();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
@@ -99,25 +100,8 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.vignette_item_view, rootView, false);
 
-        mStrengthValueBarView = (ValueBarView) viewGroup.findViewById(R.id.strengthValueBar);
-        ValueBarAdapter strengthValueBarAdapter = createStrengthAdapter();
-        mStrengthValueBarView.initialize(true,
-                                         R.string.vignette_strength_title,
-                                         0,
-                                         100,
-                                         strengthValueBarAdapter.getInitFromEffect(),
-                                         strengthValueBarAdapter.getFromEffect(),
-                                         strengthValueBarAdapter);
-
-        mFeatheringValueBarView = (ValueBarView) viewGroup.findViewById(R.id.featheringValueBar);
-        ValueBarAdapter featheringValueBarAdapter = createFeatheringAdapter();
-        mFeatheringValueBarView.initialize(true,
-                                           R.string.vignette_feathering_title,
-                                           0,
-                                           100,
-                                           featheringValueBarAdapter.getInitFromEffect(),
-                                           featheringValueBarAdapter.getFromEffect(),
-                                           featheringValueBarAdapter);
+        initStrengthView(viewGroup);
+        initFeatheringView(viewGroup);
 
         mColorButton = (ImageButton) viewGroup.findViewById(R.id.colorButton);
         mColorButton.setBackgroundColor(mEffect.getColor());
@@ -130,98 +114,134 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         return viewGroup;
     }
 
-    private ValueBarAdapter createStrengthAdapter() {
-        return new ValueBarAdapter() {
-            @Override
-            protected void setToEffect(int value) {
-                double strength = convertToEffect(value);
-                mRadialPinchMaskView.setStrength((float) strength);
-                try {
-                    mEffect.setStrength(strength);
-                } catch (EffectException e) {
-                    Timber.e(e, "Failed to set strength %f", strength);
-                }
-            }
-
-            @Override
-            protected int getFromEffect() {
-                return convertFromEffect(mEffect.getStrength());
-            }
-
-            @Override
-            protected int getInitFromEffect() {
-                return convertFromEffect(mEffect.getInitStrength());
-            }
-
-            protected int convertFromEffect(double value) {
-                return (int) (value * 100.0);
-            }
-
-            protected double convertToEffect(int value) {
-                return value / 100.0;
-            }
-        };
+    private void initStrengthView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.strengthTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mStrengthSliderActionAdapter = new StrengthSliderActionAdapter(textView, sliderView, 0, 100);
     }
 
-    private ValueBarAdapter createFeatheringAdapter() {
-        return new ValueBarAdapter() {
-            @Override
-            protected void setToEffect(int value) {
-                double feathering = convertToEffect(value);
-                mRadialPinchMaskView.setInnerRadius((float) (1.0 - feathering));
-                try {
-                    mEffect.setFeathering(feathering);
-                } catch (EffectException e) {
-                    Timber.e(e, "Failed to set feathering %f", feathering);
-                }
-            }
-
-            @Override
-            protected int getFromEffect() {
-                return convertFromEffect(mEffect.getFeathering());
-            }
-
-            @Override
-            protected int getInitFromEffect() {
-                return convertFromEffect(mEffect.getInitFeathering());
-            }
-
-            protected int convertFromEffect(double value) {
-                return (int) (value * 100.0);
-            }
-
-            protected double convertToEffect(int value) {
-                return value / 100.0;
-            }
-        };
+    private void initFeatheringView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.featheringTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mFeatheringSliderActionAdapter =
+                new FeatheringSliderActionAdapter(textView, sliderView, 0, 100);
     }
 
-    private abstract class ValueBarAdapter implements ValueBarView.OnValueChangeListener {
-        abstract protected void setToEffect(int value);
-
-        abstract protected int getFromEffect();
-
-        abstract protected int getInitFromEffect();
+    private class StrengthSliderActionAdapter extends SliderActionAdapter {
+        StrengthSliderActionAdapter(TextView textView,
+                                    SliderView sliderView,
+                                    int minSliderView,
+                                    int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
+            setToEffect(getFromEffect());
+        }
 
         @Override
-        public void onStart(int value) {
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustStart();
+        protected void setToEffect(int value) {
+            double strength = value / 100.0;
+            mRadialPinchMaskView.setStrength((float) strength);
+            try {
+                mEffect.setStrength(strength);
+            } catch (EffectException e) {
+                Timber.e(e, "Failed to set strength %f", strength);
             }
+        }
+
+        private int convertFromEffect(double value) {
+            return (int) (value * 100.0);
+        }
+
+        @Override
+        protected int getFromEffect() {
+            return convertFromEffect(mEffect.getStrength());
+        }
+
+        @Override
+        protected int getInitFromEffect() {
+            return convertFromEffect(mEffect.getInitStrength());
+        }
+
+        @Override
+        public void onStartTouch() {
+            super.onStartTouch();
             mRadialPinchMaskView.display(true);
         }
 
         @Override
-        public void onStop(int value) {
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustStop();
-            }
+        public void onStopTouch() {
+            super.onStopTouch();
             mRadialPinchMaskView.display(false);
         }
 
         @Override
-        public void onChange(int value) {
+        public void onSliderChange(int value, boolean fromUser) {
             setToEffect(value);
+            mTextView.setText(String.valueOf(value));
+        }
+
+        @Override
+        protected OnAdjustListener getOnAdjustListener() {
+            return mOnAdjustListener;
+        }
+    }
+
+    private class FeatheringSliderActionAdapter extends SliderActionAdapter {
+        FeatheringSliderActionAdapter(TextView textView,
+                                      SliderView sliderView,
+                                      int minSliderView,
+                                      int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
+            setToEffect(getFromEffect());
+        }
+
+        @Override
+        protected void setToEffect(int value) {
+            double feathering = value / 100.0;
+            mRadialPinchMaskView.setInnerRadius((float) (1.0 - feathering));
+            try {
+                mEffect.setFeathering(feathering);
+            } catch (EffectException e) {
+                Timber.e(e, "Failed to set feathering %f", feathering);
+            }
+        }
+
+        private int convertFromEffect(double value) {
+            return (int) (value * 100.0);
+        }
+
+        @Override
+        protected int getFromEffect() {
+            return convertFromEffect(mEffect.getFeathering());
+        }
+
+        @Override
+        protected int getInitFromEffect() {
+            return convertFromEffect(mEffect.getInitFeathering());
+        }
+
+        @Override
+        public void onStartTouch() {
+            super.onStartTouch();
+            mRadialPinchMaskView.display(true);
+        }
+
+        @Override
+        public void onStopTouch() {
+            super.onStopTouch();
+            mRadialPinchMaskView.display(false);
+        }
+
+        @Override
+        public void onSliderChange(int value, boolean fromUser) {
+            setToEffect(value);
+            mTextView.setText(String.valueOf(value));
+        }
+
+        @Override
+        protected OnAdjustListener getOnAdjustListener() {
+            return mOnAdjustListener;
         }
     }
 
@@ -350,11 +370,7 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
                 public void onColorPicked(int color, String hexVal) {
                     setTemporaryColor(color);
 
-                    try {
-                        mEffect.setColor(color);
-                    } catch (EffectException e) {
-                        Timber.e(e, "Failed to set color");
-                    }
+                    setToEffect(color);
 
                     if (mOnAdjustListener != null) {
                         mOnAdjustListener.onAdjustStop();

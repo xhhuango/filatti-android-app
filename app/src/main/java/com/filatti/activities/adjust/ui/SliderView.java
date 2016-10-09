@@ -54,7 +54,7 @@ public class SliderView extends View {
     }
 
     public void setValue(int value) {
-        if (value >= mMinValue && value <= mMaxValue && value != mCurrentValue) {
+        if (value >= mMinValue && value <= mMaxValue) {
             mCurrentValue = value;
             if (mOnSliderChangeListener != null) {
                 mOnSliderChangeListener.onSliderChange(mCurrentValue, false);

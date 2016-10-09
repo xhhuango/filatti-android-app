@@ -9,15 +9,25 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/strengthValueBar"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/vignette_strength_title"/>
 
-        <com.filatti.activities.adjust.ui.ValueBarView
-            android:id="@+id/featheringValueBar"
+        <include
+            android:id="@+id/strengthTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/vignette_feathering_title"/>
+
+        <include
+            android:id="@+id/featheringTextSlider"
+            layout="@layout/text_slider_layout"/>
 
         <LinearLayout
             android:layout_width="match_parent"

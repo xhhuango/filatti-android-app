@@ -11,7 +11,7 @@ abstract class SliderActionAdapter implements SliderView.OnSliderChangeListener,
     private int mApplied;
     private int mTemporary;
 
-    private TextView mTextView;
+    TextView mTextView;
     private SliderView mSliderView;
 
     SliderActionAdapter(TextView textView,
@@ -60,17 +60,10 @@ abstract class SliderActionAdapter implements SliderView.OnSliderChangeListener,
         mSliderView.setValue(mInit);
     }
 
-    protected void onAdjustStart() {
-    }
-
-    protected void onAdjustStop() {
-    }
-
     @Override
     public void onStartTouch() {
         AdjustItem.OnAdjustListener onAdjustListener = getOnAdjustListener();
         if (onAdjustListener != null) {
-            onAdjustStart();
             onAdjustListener.onAdjustStart();
         }
     }
@@ -79,7 +72,6 @@ abstract class SliderActionAdapter implements SliderView.OnSliderChangeListener,
     public void onStopTouch() {
         AdjustItem.OnAdjustListener onAdjustListener = getOnAdjustListener();
         if (onAdjustListener != null) {
-            onAdjustStop();
             onAdjustListener.onAdjustStop();
         }
     }

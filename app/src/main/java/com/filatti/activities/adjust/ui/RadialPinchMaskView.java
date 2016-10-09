@@ -17,8 +17,6 @@ public class RadialPinchMaskView extends AbstractPinchMaskView {
     private int mOuterRadiusX;
     private int mOuterRadiusY;
 
-    private int mInnerRadiusX;
-
     private final RectF mOuterRect = new RectF();
     private final RectF mInnerRect = new RectF();
 
@@ -79,7 +77,6 @@ public class RadialPinchMaskView extends AbstractPinchMaskView {
             innerRadiusX = innerRadiusY = Math.min(innerRadiusX, innerRadiusY);
         }
 
-        mInnerRadiusX = innerRadiusX;
         mInnerRect.set(mCenterPoint.x - innerRadiusX,
                        mCenterPoint.y - innerRadiusY,
                        mCenterPoint.x + innerRadiusX,
@@ -94,7 +91,7 @@ public class RadialPinchMaskView extends AbstractPinchMaskView {
                           mCenterPoint.y + mOuterRadiusY);
 
         int[] colors = new int[]{0xff000000, 0xff000000, 0x00000000};
-        float[] anchors = new float[]{0, (float) mInnerRadiusX / (float) mOuterRadiusX, 1};
+        float[] anchors = new float[]{0, mInnerRadius, 1};
         RadialGradient radialGradient =
                 new RadialGradient(0, 0, 1, colors, anchors, Shader.TileMode.CLAMP);
 

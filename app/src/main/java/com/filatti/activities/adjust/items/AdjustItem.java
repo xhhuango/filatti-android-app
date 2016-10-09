@@ -11,8 +11,8 @@ import com.filatti.effects.Effect;
 import com.google.common.base.Preconditions;
 
 public abstract class AdjustItem<T extends Effect> implements AdjustAction {
-    protected final T mEffect;
-    protected OnAdjustListener mOnAdjustListener;
+    final T mEffect;
+    OnAdjustListener mOnAdjustListener;
 
     protected AdjustItem(T effect) {
         Preconditions.checkNotNull(effect);
