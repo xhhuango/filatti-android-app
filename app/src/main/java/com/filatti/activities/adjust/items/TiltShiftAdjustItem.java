@@ -14,7 +14,7 @@ import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.AbstractPinchMaskView;
 import com.filatti.activities.adjust.ui.LinearPinchMaskView;
 import com.filatti.activities.adjust.ui.RadialPinchMaskView;
-import com.filatti.activities.adjust.ui.ValueBarView;
+import com.filatti.activities.adjust.ui.SliderView;
 import com.filatti.effects.EffectException;
 import com.filatti.utilities.StringUtil;
 import com.filatti.effects.adjusts.TiltShiftAdjust;
@@ -26,16 +26,14 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
     private RadialPinchMaskView mRadialPinchMaskView;
     private LinearPinchMaskView mLinearPinchMaskView;
 
-    private ValueBarView mStrengthValueBarView;
-    private ValueBarView mFeatheringValueBarView;
     private TextView mRadiusTextView;
     private TextView mAngleTextView;
-    private ImageButton mCircleButton;
-    private ImageButton mEllipseButton;
-    private ImageButton mLinearButton;
 
     private PinchMaskAdapter mPinchMaskAdapter;
     private MaskTypeButtonAdapter mMaskTypeButtonAdapter;
+
+    private StrengthSliderActionAdapter mStrengthSliderActionAdapter;
+    private FeatheringSliderActionAdapter mFeatheringSliderActionAdapter;
 
     public TiltShiftAdjustItem(TiltShiftAdjust effect) {
         super(effect);
@@ -53,16 +51,16 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
 
     @Override
     public void apply() {
-        mStrengthValueBarView.apply();
-        mFeatheringValueBarView.apply();
         mPinchMaskAdapter.apply();
+        mStrengthSliderActionAdapter.apply();
+        mFeatheringSliderActionAdapter.apply();
     }
 
     @Override
     public void cancel() {
-        mStrengthValueBarView.cancel();
-        mFeatheringValueBarView.cancel();
         mPinchMaskAdapter.cancel();
+        mStrengthSliderActionAdapter.cancel();
+        mFeatheringSliderActionAdapter.cancel();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
         }
@@ -70,9 +68,9 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
 
     @Override
     public void reset() {
-        mStrengthValueBarView.reset();
-        mFeatheringValueBarView.reset();
         mPinchMaskAdapter.reset();
+        mStrengthSliderActionAdapter.reset();
+        mFeatheringSliderActionAdapter.reset();
         if (mOnAdjustListener != null) {
             mOnAdjustListener.onAdjustChange();
         }
@@ -114,25 +112,8 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.tilt_shit_item_view, rootView, false);
 
-        mStrengthValueBarView = (ValueBarView) viewGroup.findViewById(R.id.strengthValueBar);
-        ValueBarAdapter strengthValueBarAdapter = createStrengthAdapter();
-        mStrengthValueBarView.initialize(true,
-                                         R.string.tilt_shift_strength_title,
-                                         0,
-                                         100,
-                                         strengthValueBarAdapter.getInitFromEffect(),
-                                         strengthValueBarAdapter.getFromEffect(),
-                                         strengthValueBarAdapter);
-
-        mFeatheringValueBarView = (ValueBarView) viewGroup.findViewById(R.id.featheringValueBar);
-        ValueBarAdapter featheringValueBarAdapter = createFeatheringAdapter();
-        mFeatheringValueBarView.initialize(true,
-                                           R.string.tilt_shift_feathering_title,
-                                           0,
-                                           100,
-                                           featheringValueBarAdapter.getInitFromEffect(),
-                                           featheringValueBarAdapter.getFromEffect(),
-                                           featheringValueBarAdapter);
+        initStrengthView(viewGroup);
+        initFeatheringView(viewGroup);
 
         mRadiusTextView = (TextView) viewGroup.findViewById(R.id.radiusTextView);
         mRadiusTextView.setText(StringUtil.valueToString(mEffect.getRadius()));
@@ -140,132 +121,170 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
         mAngleTextView = (TextView) viewGroup.findViewById(R.id.angleTextView);
         mAngleTextView.setText(StringUtil.valueToString(mEffect.getAngle()));
 
+        initMaskTypeButtons(viewGroup);
+
+        return viewGroup;
+    }
+
+    private void initStrengthView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.strengthTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mStrengthSliderActionAdapter = new StrengthSliderActionAdapter(textView, sliderView, 0, 100);
+    }
+
+    private void initFeatheringView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.featheringTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mFeatheringSliderActionAdapter =
+                new FeatheringSliderActionAdapter(textView, sliderView, 0, 100);
+    }
+
+    private void initMaskTypeButtons(ViewGroup viewGroup) {
         mMaskTypeButtonAdapter = new MaskTypeButtonAdapter();
         mMaskTypeButtonAdapter.setMaskType(mEffect.getMaskType());
 
-        mCircleButton = (ImageButton) viewGroup.findViewById(R.id.circleButton);
-        mCircleButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton circleButton = (ImageButton) viewGroup.findViewById(R.id.circleButton);
+        circleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMaskTypeButtonAdapter.setMaskType(TiltShiftAdjust.MaskType.CIRCULAR);
             }
         });
 
-        mEllipseButton = (ImageButton) viewGroup.findViewById(R.id.ellipseButton);
-        mEllipseButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton ellipseButton = (ImageButton) viewGroup.findViewById(R.id.ellipseButton);
+        ellipseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMaskTypeButtonAdapter.setMaskType(TiltShiftAdjust.MaskType.ELLIPTIC);
             }
         });
 
-        mLinearButton = (ImageButton) viewGroup.findViewById(R.id.linearButton);
-        mLinearButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton linearButton = (ImageButton) viewGroup.findViewById(R.id.linearButton);
+        linearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mMaskTypeButtonAdapter.setMaskType(TiltShiftAdjust.MaskType.LINEAR);
             }
         });
-
-        return viewGroup;
     }
 
-    private ValueBarAdapter createStrengthAdapter() {
-        return new ValueBarAdapter() {
-            @Override
-            protected void setToEffect(int value) {
-                double strength = convertToEffect(value);
-                mRadialPinchMaskView.setStrength((float) strength);
-                mLinearPinchMaskView.setStrength((float) strength);
-                try {
-                    mEffect.setStrength(strength);
-                } catch (EffectException e) {
-                    Timber.e(e, "Failed to set strength %f", strength);
-                }
-            }
-
-            @Override
-            protected int getFromEffect() {
-                return convertFromEffect(mEffect.getStrength());
-            }
-
-            @Override
-            protected int getInitFromEffect() {
-                return convertFromEffect(mEffect.getInitStrength());
-            }
-
-            private int convertFromEffect(double value) {
-                return (int) (value * 100.0);
-            }
-
-            private double convertToEffect(int value) {
-                return value / 100.0;
-            }
-        };
-    }
-
-    private ValueBarAdapter createFeatheringAdapter() {
-        return new ValueBarAdapter() {
-            @Override
-            protected void setToEffect(int value) {
-                double feathering = convertToEffect(value);
-                mRadialPinchMaskView.setInnerRadius((float) (1.0 - feathering));
-                mLinearPinchMaskView.setInnerRadius((float) (1.0 - feathering));
-                try {
-                    mEffect.setFeathering(feathering);
-                } catch (EffectException e) {
-                    Timber.e(e, "Failed to set feathering %f", feathering);
-                }
-            }
-
-            @Override
-            protected int getFromEffect() {
-                return convertFromEffect(mEffect.getFeathering());
-            }
-
-            @Override
-            protected int getInitFromEffect() {
-                return convertFromEffect(mEffect.getInitFeathering());
-            }
-
-            private int convertFromEffect(double value) {
-                return (int) (value * 100.0);
-            }
-
-            private double convertToEffect(int value) {
-                return value / 100.0;
-            }
-        };
-    }
-
-    private abstract class ValueBarAdapter implements ValueBarView.OnValueChangeListener {
-        abstract protected void setToEffect(int value);
-
-        abstract protected int getFromEffect();
-
-        abstract protected int getInitFromEffect();
+    private class StrengthSliderActionAdapter extends SliderActionAdapter {
+        StrengthSliderActionAdapter(TextView textView,
+                                    SliderView sliderView,
+                                    int minSliderView,
+                                    int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
+            setToEffect(getFromEffect());
+        }
 
         @Override
-        public void onStart(int value) {
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustStart();
+        protected void setToEffect(int value) {
+            double strength = value / 100.0;
+            mRadialPinchMaskView.setStrength((float) strength);
+            mLinearPinchMaskView.setStrength((float) strength);
+            try {
+                mEffect.setStrength(strength);
+            } catch (EffectException e) {
+                Timber.e(e, "Failed to set strength %f", strength);
             }
+        }
+
+        private int convertFromEffect(double value) {
+            return (int) (value * 100.0);
+        }
+
+        @Override
+        protected int getFromEffect() {
+            return convertFromEffect(mEffect.getStrength());
+        }
+
+        @Override
+        protected int getInitFromEffect() {
+            return convertFromEffect(mEffect.getInitStrength());
+        }
+
+        @Override
+        public void onStartTouch() {
+            super.onStartTouch();
             mRadialPinchMaskView.display(true);
-            mLinearPinchMaskView.display(true);
         }
 
         @Override
-        public void onStop(int value) {
-            if (mOnAdjustListener != null) {
-                mOnAdjustListener.onAdjustStop();
-            }
+        public void onStopTouch() {
+            super.onStopTouch();
             mRadialPinchMaskView.display(false);
-            mLinearPinchMaskView.display(false);
         }
 
         @Override
-        public void onChange(int value) {
+        public void onSliderChange(int value, boolean fromUser) {
             setToEffect(value);
+            mTextView.setText(String.valueOf(value));
+        }
+
+        @Override
+        protected OnAdjustListener getOnAdjustListener() {
+            return mOnAdjustListener;
+        }
+    }
+
+    private class FeatheringSliderActionAdapter extends SliderActionAdapter {
+        FeatheringSliderActionAdapter(TextView textView,
+                                      SliderView sliderView,
+                                      int minSliderView,
+                                      int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
+            setToEffect(getFromEffect());
+        }
+
+        @Override
+        protected void setToEffect(int value) {
+            double feathering = value / 100.0;
+            mRadialPinchMaskView.setInnerRadius((float) (1.0 - feathering));
+            mLinearPinchMaskView.setInnerRadius((float) (1.0 - feathering));
+            try {
+                mEffect.setFeathering(feathering);
+            } catch (EffectException e) {
+                Timber.e(e, "Failed to set feathering %f", feathering);
+            }
+        }
+
+        private int convertFromEffect(double value) {
+            return (int) (value * 100.0);
+        }
+
+        @Override
+        protected int getFromEffect() {
+            return convertFromEffect(mEffect.getFeathering());
+        }
+
+        @Override
+        protected int getInitFromEffect() {
+            return convertFromEffect(mEffect.getInitFeathering());
+        }
+
+        @Override
+        public void onStartTouch() {
+            super.onStartTouch();
+            mRadialPinchMaskView.display(true);
+        }
+
+        @Override
+        public void onStopTouch() {
+            super.onStopTouch();
+            mRadialPinchMaskView.display(false);
+        }
+
+        @Override
+        public void onSliderChange(int value, boolean fromUser) {
+            setToEffect(value);
+            mTextView.setText(String.valueOf(value));
+        }
+
+        @Override
+        protected OnAdjustListener getOnAdjustListener() {
+            return mOnAdjustListener;
         }
     }
 
@@ -401,14 +420,6 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
             } catch (EffectException e) {
                 Timber.e(e, "Failed to set center (%f, %f)", x, y);
             }
-        }
-
-        private float getInitAngleFromEffect() {
-            return (float) mEffect.getInitAngle();
-        }
-
-        private float getAngleFromEffect() {
-            return (float) mEffect.getAngle();
         }
 
         private void setAngleToEffect(float angle) {

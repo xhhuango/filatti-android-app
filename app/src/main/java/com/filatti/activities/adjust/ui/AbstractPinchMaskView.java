@@ -223,14 +223,14 @@ public abstract class AbstractPinchMaskView extends View {
     protected class ScaleGestureListener implements ScaleGestureDetector.OnScaleGestureListener {
         private float mLastSpan;
 
-        private boolean scale(ScaleGestureDetector scaleGestureDetector) {
+        private void scale(ScaleGestureDetector scaleGestureDetector) {
             float radius = mOuterRadius * scaleGestureDetector.getScaleFactor();
-            if (radius <= OUTER_RADIUS_MAX && radius >= OUTER_RADIUS_SMALLEST) {
-                adjust(mCenter.x, mCenter.y, radius, mInnerRadius);
-                return true;
-            } else {
-                return false;
+            if (radius > OUTER_RADIUS_MAX) {
+                radius = OUTER_RADIUS_MAX;
+            } else if (radius < OUTER_RADIUS_SMALLEST) {
+                radius = OUTER_RADIUS_SMALLEST;
             }
+            adjust(mCenter.x, mCenter.y, radius, mInnerRadius);
         }
 
         private boolean canScale(float span) {
@@ -254,7 +254,8 @@ public abstract class AbstractPinchMaskView extends View {
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
             if (canScale(scaleGestureDetector.getCurrentSpan())) {
                 mDidGestureHandle = true;
-                if (scale(scaleGestureDetector) && mOnChangeListener != null) {
+                scale(scaleGestureDetector);
+                if (mOnChangeListener != null) {
                     mOnChangeListener.onRadiusChange(mOuterRadius);
                     return true;
                 }
