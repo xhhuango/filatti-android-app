@@ -70,38 +70,42 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
         ViewGroup viewGroup =
                 (ViewGroup) inflater.inflate(R.layout.hls_item_view, rootView, false);
 
-        ViewGroup hueViewGroup = (ViewGroup) viewGroup.findViewById(R.id.hueTextSlider);
-        TextView hueTextView = (TextView) hueViewGroup.findViewById(R.id.sliderTextView);
-        SliderView hueSliderView = (SliderView) hueViewGroup.findViewById(R.id.sliderView);
-        mHueSliderActionAdapter = new HueSliderActionAdapter(hueTextView, hueSliderView);
-        hueSliderView.setOnSliderChangeListener(mHueSliderActionAdapter);
-        hueSliderView.setMaxMinValue(-180, 180);
-        hueSliderView.setValue(mHueSliderActionAdapter.getFromEffect());
-
-        ViewGroup lightnessViewGroup = (ViewGroup) viewGroup.findViewById(R.id.lightnessTextSlider);
-        TextView lightnessTextView = (TextView) lightnessViewGroup.findViewById(R.id.sliderTextView);
-        SliderView lightnessSliderView = (SliderView) lightnessViewGroup.findViewById(R.id.sliderView);
-        mLightnessSliderActionAdapter =
-                new LightnessSliderActionAdapter(lightnessTextView, lightnessSliderView);
-        lightnessSliderView.setOnSliderChangeListener(mLightnessSliderActionAdapter);
-        lightnessSliderView.setMaxMinValue(-100, 100);
-        lightnessSliderView.setValue(mLightnessSliderActionAdapter.getFromEffect());
-
-        ViewGroup saturationViewGroup = (ViewGroup) viewGroup.findViewById(R.id.saturationTextSlider);
-        TextView saturationTextView = (TextView) saturationViewGroup.findViewById(R.id.sliderTextView);
-        SliderView saturationSliderView = (SliderView) saturationViewGroup.findViewById(R.id.sliderView);
-        mSaturationSliderActionAdapter =
-                new SaturationSliderActionAdapter(saturationTextView, saturationSliderView);
-        saturationSliderView.setOnSliderChangeListener(mSaturationSliderActionAdapter);
-        saturationSliderView.setMaxMinValue(-100, 100);
-        saturationSliderView.setValue(mSaturationSliderActionAdapter.getFromEffect());
+        initHueView(viewGroup);
+        initLightnessView(viewGroup);
+        initSaturationView(viewGroup);
 
         return viewGroup;
     }
 
+    private void initHueView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.hueTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mHueSliderActionAdapter = new HueSliderActionAdapter(textView, sliderView, -180, 180);
+    }
+
+    private void initLightnessView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.lightnessTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mLightnessSliderActionAdapter =
+                new LightnessSliderActionAdapter(textView, sliderView, -100, 100);
+    }
+
+    private void initSaturationView(ViewGroup rootView) {
+        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.saturationTextSlider);
+        TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
+        SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
+        mSaturationSliderActionAdapter =
+                new SaturationSliderActionAdapter(textView, sliderView, -100, 100);
+    }
+
     private class HueSliderActionAdapter extends SliderActionAdapter {
-        HueSliderActionAdapter(TextView textView, SliderView sliderView) {
-            super(textView, sliderView);
+        HueSliderActionAdapter(TextView textView,
+                               SliderView sliderView,
+                               int minSliderView,
+                               int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
         }
 
         @Override
@@ -130,8 +134,11 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
     }
 
     private class LightnessSliderActionAdapter extends SliderActionAdapter {
-        LightnessSliderActionAdapter(TextView textView, SliderView sliderView) {
-            super(textView, sliderView);
+        LightnessSliderActionAdapter(TextView textView,
+                                     SliderView sliderView,
+                                     int minSliderView,
+                                     int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
         }
 
         @Override
@@ -165,8 +172,11 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
     }
 
     private class SaturationSliderActionAdapter extends SliderActionAdapter {
-        SaturationSliderActionAdapter(TextView textView, SliderView sliderView) {
-            super(textView, sliderView);
+        SaturationSliderActionAdapter(TextView textView,
+                                      SliderView sliderView,
+                                      int minSliderView,
+                                      int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
         }
 
         @Override

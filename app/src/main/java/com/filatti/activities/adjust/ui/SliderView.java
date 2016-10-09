@@ -63,7 +63,7 @@ public class SliderView extends View {
         }
     }
 
-    public void setMaxMinValue(int minValue, int maxValue) {
+    public void setValueRange(int minValue, int maxValue) {
         if (maxValue > minValue) {
             mMinValue = minValue;
             mMaxValue = maxValue;

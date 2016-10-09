@@ -65,16 +65,17 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
         TextView textView = (TextView) viewGroup.findViewById(R.id.sliderTextView);
 
         SliderView sliderView = (SliderView) viewGroup.findViewById(R.id.sliderView);
-        mSliderAdapter = new SliderAdapter(textView, sliderView);
-        sliderView.setOnSliderChangeListener(mSliderAdapter);
-        sliderView.setMaxMinValue(0, 100);
-        sliderView.setValue(mSliderAdapter.getFromEffect());
+        mSliderAdapter = new SliderAdapter(textView, sliderView, 0, 100);
+
         return viewGroup;
     }
 
     private class SliderAdapter extends SliderActionAdapter {
-        SliderAdapter(TextView textView, SliderView sliderView) {
-            super(textView, sliderView);
+        SliderAdapter(TextView textView,
+                      SliderView sliderView,
+                      int minSliderView,
+                      int maxSliderView) {
+            super(textView, sliderView, minSliderView, maxSliderView);
         }
 
         @Override

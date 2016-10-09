@@ -14,7 +14,10 @@ abstract class SliderActionAdapter implements SliderView.OnSliderChangeListener,
     private TextView mTextView;
     private SliderView mSliderView;
 
-    SliderActionAdapter(TextView textView, SliderView sliderView) {
+    SliderActionAdapter(TextView textView,
+                        SliderView sliderView,
+                        int minSliderView,
+                        int maxSliderView) {
         Preconditions.checkNotNull(textView);
         Preconditions.checkNotNull(sliderView);
 
@@ -26,6 +29,10 @@ abstract class SliderActionAdapter implements SliderView.OnSliderChangeListener,
         mTemporary = mApplied;
 
         mTextView.setText(String.valueOf(mApplied));
+
+        sliderView.setOnSliderChangeListener(this);
+        mSliderView.setValueRange(minSliderView, maxSliderView);
+        mSliderView.setValue(mApplied);
     }
 
     protected abstract void setToEffect(int valueFromSlider);
