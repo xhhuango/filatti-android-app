@@ -78,6 +78,7 @@ abstract class SliderActionAdapter implements SliderView.OnSliderChangeListener,
 
     @Override
     public void onSliderChange(int value, boolean fromUser) {
+        mTemporary = value;
         setToEffect(value);
         mTextView.setText(String.valueOf(value));
 

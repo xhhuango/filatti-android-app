@@ -25,4 +25,15 @@
     <string name="tilt_shift_feathering_title">Feathering</string>
     <string name="tilt_shift_radius_title">Radius</string>
     <string name="tilt_shift_angle_title">Angle</string>
+
+    <string name="color_balance">Color Balance</string>
+    <string name="color_balance_red">Red</string>
+    <string name="color_balance_cyan">Cyan</string>
+    <string name="color_balance_green">Green</string>
+    <string name="color_balance_magenta">Magenta</string>
+    <string name="color_balance_blue">Blue</string>
+    <string name="color_balance_yellow">Yellow</string>
+    <string name="color_balance_shadows">Shadows</string>
+    <string name="color_balance_midtones">Midtones</string>
+    <string name="color_balance_highlight">Highlights</string>
 </resources>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/slider_margin_end"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_cyan"
+                android:textAlignment="viewStart"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_red"
+                android:textAlignment="viewEnd"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/redCyanTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/slider_margin_end"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_magenta"
+                android:textAlignment="viewStart"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_green"
+                android:textAlignment="viewEnd"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/greenMagentaTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/slider_margin_end"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_yellow"
+                android:textAlignment="viewStart"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_blue"
+                android:textAlignment="viewEnd"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/blueYellowTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/slider_margin_end"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/shadowsButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_shadows"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/midtonesButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_midtones"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/highlightButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/color_balance_highlight"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

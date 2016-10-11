@@ -2,6 +2,7 @@ package com.filatti.effects;
 
 import android.os.Debug;
 
+import com.filatti.effects.adjusts.ColorBalanceAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
@@ -24,9 +25,10 @@ public final class AdjustComposite implements Effect {
 
     public AdjustComposite() {
         mEffectList.add(new CurvesAdjust());
+        mEffectList.add(new ColorBalanceAdjust());
+        mEffectList.add(new HlsAdjust());
         mEffectList.add(new ContrastAdjust());
         mEffectList.add(new TemperatureAdjust());
-        mEffectList.add(new HlsAdjust());
         mEffectList.add(new SharpnessAdjust());
         mEffectList.add(new VignetteAdjust());
         mEffectList.add(new TiltShiftAdjust());

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import com.filatti.activities.adjust.AdjustActivity;
 import com.filatti.activities.adjust.items.AdjustItem;
+import com.filatti.activities.adjust.items.ColorBalanceAdjustItem;
 import com.filatti.activities.adjust.items.ContrastAdjustItem;
 import com.filatti.activities.adjust.items.CurvesAdjustItem;
 import com.filatti.activities.adjust.items.HlsAdjustItem;
@@ -16,6 +17,7 @@ import com.filatti.activities.adjust.items.VignetteAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.AdjustComposite;
+import com.filatti.effects.adjusts.ColorBalanceAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
@@ -103,6 +105,14 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
                     new CurvesAdjustItem(mAdjustComposite.getEffect(CurvesAdjust.class));
             mAdjustItemList.add(curvesAdjustItem);
 
+            ColorBalanceAdjustItem colorBalanceAdjustItem =
+                    new ColorBalanceAdjustItem(mAdjustComposite.getEffect(ColorBalanceAdjust.class));
+            mAdjustItemList.add(colorBalanceAdjustItem);
+
+            HlsAdjustItem hlsAdjustItem =
+                    new HlsAdjustItem(mAdjustComposite.getEffect(HlsAdjust.class));
+            mAdjustItemList.add(hlsAdjustItem);
+
             ContrastAdjustItem contrastAdjustItem =
                     new ContrastAdjustItem(mAdjustComposite.getEffect(ContrastAdjust.class));
             mAdjustItemList.add(contrastAdjustItem);
@@ -110,10 +120,6 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             TemperatureAdjustItem temperatureAdjustItem =
                     new TemperatureAdjustItem(mAdjustComposite.getEffect(TemperatureAdjust.class));
             mAdjustItemList.add(temperatureAdjustItem);
-
-            HlsAdjustItem hlsAdjustItem =
-                    new HlsAdjustItem(mAdjustComposite.getEffect(HlsAdjust.class));
-            mAdjustItemList.add(hlsAdjustItem);
 
             SharpnessAdjustItem sharpnessAdjustItem =
                     new SharpnessAdjustItem(mAdjustComposite.getEffect(SharpnessAdjust.class));
