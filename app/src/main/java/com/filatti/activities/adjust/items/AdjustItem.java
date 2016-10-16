@@ -29,9 +29,9 @@ public abstract class AdjustItem<T extends Effect> implements AdjustAction {
     @DrawableRes
     public abstract int getIcon();
 
-    public abstract View getView(Context context, ViewGroup rootView);
-
     public abstract View getOverlayView(Context context, ViewGroup rootView);
+
+    public abstract View getView(Context context, ViewGroup rootView);
 
     public boolean doesApplyUponAdjusting() {
         return true;

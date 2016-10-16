@@ -9,6 +9,7 @@ import com.filatti.activities.adjust.items.AdjustItem;
 import com.filatti.activities.adjust.items.ColorBalanceAdjustItem;
 import com.filatti.activities.adjust.items.ContrastAdjustItem;
 import com.filatti.activities.adjust.items.CurvesAdjustItem;
+import com.filatti.activities.adjust.items.HighlightShadowAdjustItem;
 import com.filatti.activities.adjust.items.HlsAdjustItem;
 import com.filatti.activities.adjust.items.SharpnessAdjustItem;
 import com.filatti.activities.adjust.items.TemperatureAdjustItem;
@@ -20,6 +21,7 @@ import com.filatti.effects.AdjustComposite;
 import com.filatti.effects.adjusts.ColorBalanceAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
+import com.filatti.effects.adjusts.HighlightShadowAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
@@ -116,6 +118,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             ContrastAdjustItem contrastAdjustItem =
                     new ContrastAdjustItem(mAdjustComposite.getEffect(ContrastAdjust.class));
             mAdjustItemList.add(contrastAdjustItem);
+
+            HighlightShadowAdjustItem highlightShadowAdjustItem =
+                    new HighlightShadowAdjustItem(mAdjustComposite.getEffect(HighlightShadowAdjust.class));
+            mAdjustItemList.add(highlightShadowAdjustItem);
 
             TemperatureAdjustItem temperatureAdjustItem =
                     new TemperatureAdjustItem(mAdjustComposite.getEffect(TemperatureAdjust.class));

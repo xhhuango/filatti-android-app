@@ -9,22 +9,6 @@ import java.util.Arrays;
 
 @SuppressWarnings("JniMissingFunction")
 public class ColorBalanceAdjust extends Adjust {
-    public enum Tone {
-        SHADOWS(0),
-        MIDTONES(1),
-        HIGHLIGHTS(2);
-
-        final int mValue;
-
-        Tone(int value) {
-            mValue = value;
-        }
-
-        public int toInt() {
-            return mValue;
-        }
-    }
-
     private final long mNativeObj;
 
     private final int[] mInitRedCyan;
@@ -35,19 +19,19 @@ public class ColorBalanceAdjust extends Adjust {
         mNativeObj = nativeCreateObject();
 
         mInitRedCyan = new int[3];
-        mInitRedCyan[Tone.SHADOWS.mValue] = getRedCyan(Tone.SHADOWS);
-        mInitRedCyan[Tone.MIDTONES.mValue] = getRedCyan(Tone.MIDTONES);
-        mInitRedCyan[Tone.HIGHLIGHTS.mValue] = getRedCyan(Tone.HIGHLIGHTS);
+        mInitRedCyan[Tone.SHADOWS.toInt()] = getRedCyan(Tone.SHADOWS);
+        mInitRedCyan[Tone.MIDTONES.toInt()] = getRedCyan(Tone.MIDTONES);
+        mInitRedCyan[Tone.HIGHLIGHTS.toInt()] = getRedCyan(Tone.HIGHLIGHTS);
 
         mInitGreenMagenta = new int[3];
-        mInitGreenMagenta[Tone.SHADOWS.mValue] = getGreenMagenta(Tone.SHADOWS);
-        mInitGreenMagenta[Tone.MIDTONES.mValue] = getGreenMagenta(Tone.MIDTONES);
-        mInitGreenMagenta[Tone.HIGHLIGHTS.mValue] = getGreenMagenta(Tone.HIGHLIGHTS);
+        mInitGreenMagenta[Tone.SHADOWS.toInt()] = getGreenMagenta(Tone.SHADOWS);
+        mInitGreenMagenta[Tone.MIDTONES.toInt()] = getGreenMagenta(Tone.MIDTONES);
+        mInitGreenMagenta[Tone.HIGHLIGHTS.toInt()] = getGreenMagenta(Tone.HIGHLIGHTS);
 
         mInitBlueYellow = new int[3];
-        mInitBlueYellow[Tone.SHADOWS.mValue] = getBlueYellow(Tone.SHADOWS);
-        mInitBlueYellow[Tone.MIDTONES.mValue] = getBlueYellow(Tone.MIDTONES);
-        mInitBlueYellow[Tone.HIGHLIGHTS.mValue] = getBlueYellow(Tone.HIGHLIGHTS);
+        mInitBlueYellow[Tone.SHADOWS.toInt()] = getBlueYellow(Tone.SHADOWS);
+        mInitBlueYellow[Tone.MIDTONES.toInt()] = getBlueYellow(Tone.MIDTONES);
+        mInitBlueYellow[Tone.HIGHLIGHTS.toInt()] = getBlueYellow(Tone.HIGHLIGHTS);
     }
 
     @Override
@@ -58,51 +42,51 @@ public class ColorBalanceAdjust extends Adjust {
 
     public int getInitRedCyan(Tone tone) {
         Preconditions.checkNotNull(tone);
-        return mInitRedCyan[tone.mValue];
+        return mInitRedCyan[tone.toInt()];
     }
 
     public int getRedCyan(Tone tone) {
         Preconditions.checkNotNull(tone);
-        return nativeGetRedCyan(mNativeObj, tone.mValue);
+        return nativeGetRedCyan(mNativeObj, tone.toInt());
     }
 
     public void setRedCyan(Tone tone, int value) throws EffectException {
         Preconditions.checkNotNull(tone);
-        if (!nativeSetRedCyan(mNativeObj, tone.mValue, value)) {
+        if (!nativeSetRedCyan(mNativeObj, tone.toInt(), value)) {
             throw new EffectException("Red/Cyan value isn't within range: " + value);
         }
     }
 
     public int getInitGreenMagenta(Tone tone) {
         Preconditions.checkNotNull(tone);
-        return mInitGreenMagenta[tone.mValue];
+        return mInitGreenMagenta[tone.toInt()];
     }
 
     public int getGreenMagenta(Tone tone) {
         Preconditions.checkNotNull(tone);
-        return nativeGetGreenMagenta(mNativeObj, tone.mValue);
+        return nativeGetGreenMagenta(mNativeObj, tone.toInt());
     }
 
     public void setGreenMagenta(Tone tone, int value) throws EffectException {
         Preconditions.checkNotNull(tone);
-        if (!nativeSetGreenMagenta(mNativeObj, tone.mValue, value)) {
+        if (!nativeSetGreenMagenta(mNativeObj, tone.toInt(), value)) {
             throw new EffectException("Red/Cyan value isn't within range: " + value);
         }
     }
 
     public int getInitBlueYellow(Tone tone) {
         Preconditions.checkNotNull(tone);
-        return mInitBlueYellow[tone.mValue];
+        return mInitBlueYellow[tone.toInt()];
     }
 
     public int getBlueYellow(Tone tone) {
         Preconditions.checkNotNull(tone);
-        return nativeGetBlueYellow(mNativeObj, tone.mValue);
+        return nativeGetBlueYellow(mNativeObj, tone.toInt());
     }
 
     public void setBlueYellow(Tone tone, int value) throws EffectException {
         Preconditions.checkNotNull(tone);
-        if (!nativeSetBlueYellow(mNativeObj, tone.mValue, value)) {
+        if (!nativeSetBlueYellow(mNativeObj, tone.toInt(), value)) {
             throw new EffectException("Red/Cyan value isn't within range: " + value);
         }
     }

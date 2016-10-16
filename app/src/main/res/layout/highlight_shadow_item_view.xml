@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/highlight_shadow_highlight_amount"/>
+
+        <include
+            android:id="@+id/highlightAmountTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/highlight_shadow_highlight_tone_width"/>
+
+        <include
+            android:id="@+id/highlightToneWidthTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/highlight_shadow_shadow_amount"/>
+
+        <include
+            android:id="@+id/shadowAmountTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/slider_margin_start"
+            android:text="@string/highlight_shadow_shadow_tone_width"/>
+
+        <include
+            android:id="@+id/shadowToneWidthTextSlider"
+            layout="@layout/text_slider_layout"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

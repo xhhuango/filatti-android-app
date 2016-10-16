@@ -12,6 +12,7 @@ import com.filatti.activities.adjust.AdjustAction;
 import com.filatti.activities.adjust.ui.SliderView;
 import com.filatti.effects.EffectException;
 import com.filatti.effects.adjusts.ColorBalanceAdjust;
+import com.filatti.effects.adjusts.Tone;
 import com.google.common.base.Preconditions;
 
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
     private GreenMagentaSliderActionAdapter mGreenMagentaSliderActionAdapter;
     private BlueYellowSliderActionAdapter mBlueYellowSliderActionAdapter;
 
-    private ColorBalanceAdjust.Tone mSelectedTone;
+    private Tone mSelectedTone;
 
     public ColorBalanceAdjustItem(ColorBalanceAdjust effect) {
         super(effect);
@@ -82,7 +83,7 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         initBlueYellowView(viewGroup);
         initButtons(viewGroup);
 
-        setTone(ColorBalanceAdjust.Tone.SHADOWS);
+        setTone(Tone.SHADOWS);
 
         return viewGroup;
     }
@@ -116,7 +117,7 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         shadows.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTone(ColorBalanceAdjust.Tone.SHADOWS);
+                setTone(Tone.SHADOWS);
             }
         });
 
@@ -124,7 +125,7 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         midtones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTone(ColorBalanceAdjust.Tone.MIDTONES);
+                setTone(Tone.MIDTONES);
             }
         });
 
@@ -132,12 +133,12 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         highlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTone(ColorBalanceAdjust.Tone.HIGHLIGHTS);
+                setTone(Tone.HIGHLIGHTS);
             }
         });
     }
 
-    private void setTone(ColorBalanceAdjust.Tone tone) {
+    private void setTone(Tone tone) {
         Preconditions.checkNotNull(tone);
         if (tone != mSelectedTone) {
             mSelectedTone = tone;
@@ -158,21 +159,21 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         @Override
         protected int[] getFromEffect() {
             return new int[]{
-                    mEffect.getRedCyan(ColorBalanceAdjust.Tone.SHADOWS),
-                    mEffect.getRedCyan(ColorBalanceAdjust.Tone.MIDTONES),
-                    mEffect.getRedCyan(ColorBalanceAdjust.Tone.HIGHLIGHTS)};
+                    mEffect.getRedCyan(Tone.SHADOWS),
+                    mEffect.getRedCyan(Tone.MIDTONES),
+                    mEffect.getRedCyan(Tone.HIGHLIGHTS)};
         }
 
         @Override
         protected int[] getInitFromEffect() {
             return new int[]{
-                    mEffect.getInitRedCyan(ColorBalanceAdjust.Tone.SHADOWS),
-                    mEffect.getInitRedCyan(ColorBalanceAdjust.Tone.MIDTONES),
-                    mEffect.getInitRedCyan(ColorBalanceAdjust.Tone.HIGHLIGHTS)};
+                    mEffect.getInitRedCyan(Tone.SHADOWS),
+                    mEffect.getInitRedCyan(Tone.MIDTONES),
+                    mEffect.getInitRedCyan(Tone.HIGHLIGHTS)};
         }
 
         @Override
-        protected void setToEffect(ColorBalanceAdjust.Tone tone, int value) {
+        protected void setToEffect(Tone tone, int value) {
             super.setToEffect(tone, value);
             try {
                 mEffect.setRedCyan(tone, value);
@@ -193,21 +194,21 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         @Override
         protected int[] getFromEffect() {
             return new int[]{
-                    mEffect.getGreenMagenta(ColorBalanceAdjust.Tone.SHADOWS),
-                    mEffect.getGreenMagenta(ColorBalanceAdjust.Tone.MIDTONES),
-                    mEffect.getGreenMagenta(ColorBalanceAdjust.Tone.HIGHLIGHTS)};
+                    mEffect.getGreenMagenta(Tone.SHADOWS),
+                    mEffect.getGreenMagenta(Tone.MIDTONES),
+                    mEffect.getGreenMagenta(Tone.HIGHLIGHTS)};
         }
 
         @Override
         protected int[] getInitFromEffect() {
             return new int[]{
-                    mEffect.getInitGreenMagenta(ColorBalanceAdjust.Tone.SHADOWS),
-                    mEffect.getInitGreenMagenta(ColorBalanceAdjust.Tone.MIDTONES),
-                    mEffect.getInitGreenMagenta(ColorBalanceAdjust.Tone.HIGHLIGHTS)};
+                    mEffect.getInitGreenMagenta(Tone.SHADOWS),
+                    mEffect.getInitGreenMagenta(Tone.MIDTONES),
+                    mEffect.getInitGreenMagenta(Tone.HIGHLIGHTS)};
         }
 
         @Override
-        protected void setToEffect(ColorBalanceAdjust.Tone tone, int value) {
+        protected void setToEffect(Tone tone, int value) {
             super.setToEffect(tone, value);
             try {
                 mEffect.setGreenMagenta(tone, value);
@@ -228,21 +229,21 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         @Override
         protected int[] getFromEffect() {
             return new int[]{
-                    mEffect.getBlueYellow(ColorBalanceAdjust.Tone.SHADOWS),
-                    mEffect.getBlueYellow(ColorBalanceAdjust.Tone.MIDTONES),
-                    mEffect.getBlueYellow(ColorBalanceAdjust.Tone.HIGHLIGHTS)};
+                    mEffect.getBlueYellow(Tone.SHADOWS),
+                    mEffect.getBlueYellow(Tone.MIDTONES),
+                    mEffect.getBlueYellow(Tone.HIGHLIGHTS)};
         }
 
         @Override
         protected int[] getInitFromEffect() {
             return new int[]{
-                    mEffect.getInitBlueYellow(ColorBalanceAdjust.Tone.SHADOWS),
-                    mEffect.getInitBlueYellow(ColorBalanceAdjust.Tone.MIDTONES),
-                    mEffect.getInitBlueYellow(ColorBalanceAdjust.Tone.HIGHLIGHTS)};
+                    mEffect.getInitBlueYellow(Tone.SHADOWS),
+                    mEffect.getInitBlueYellow(Tone.MIDTONES),
+                    mEffect.getInitBlueYellow(Tone.HIGHLIGHTS)};
         }
 
         @Override
-        protected void setToEffect(ColorBalanceAdjust.Tone tone, int value) {
+        protected void setToEffect(Tone tone, int value) {
             super.setToEffect(tone, value);
             try {
                 mEffect.setBlueYellow(tone, value);
@@ -261,7 +262,7 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
         TextView mTextView;
         private SliderView mSliderView;
 
-        private ColorBalanceAdjust.Tone mTone;
+        private Tone mTone;
 
         ColorBalanceSliderActionAdapter(TextView textView,
                                         SliderView sliderView,
@@ -285,11 +286,11 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
 
         protected abstract int[] getInitFromEffect();
 
-        protected void setToEffect(ColorBalanceAdjust.Tone tone, int value) {
+        protected void setToEffect(Tone tone, int value) {
             mTemporary[tone.toInt()] = value;
         }
 
-        void setTone(ColorBalanceAdjust.Tone tone) {
+        void setTone(Tone tone) {
             Preconditions.checkNotNull(tone);
 
             mTone = tone;
@@ -305,23 +306,17 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
 
         @Override
         public void cancel() {
-            setToEffect(ColorBalanceAdjust.Tone.SHADOWS,
-                        mApplied[ColorBalanceAdjust.Tone.SHADOWS.toInt()]);
-            setToEffect(ColorBalanceAdjust.Tone.MIDTONES,
-                        mApplied[ColorBalanceAdjust.Tone.MIDTONES.toInt()]);
-            setToEffect(ColorBalanceAdjust.Tone.HIGHLIGHTS,
-                        mApplied[ColorBalanceAdjust.Tone.HIGHLIGHTS.toInt()]);
+            setToEffect(Tone.SHADOWS, mApplied[Tone.SHADOWS.toInt()]);
+            setToEffect(Tone.MIDTONES, mApplied[Tone.MIDTONES.toInt()]);
+            setToEffect(Tone.HIGHLIGHTS, mApplied[Tone.HIGHLIGHTS.toInt()]);
             mSliderView.setValue(mApplied[mTone.toInt()]);
         }
 
         @Override
         public void reset() {
-            setToEffect(ColorBalanceAdjust.Tone.SHADOWS,
-                        mInit[ColorBalanceAdjust.Tone.SHADOWS.toInt()]);
-            setToEffect(ColorBalanceAdjust.Tone.MIDTONES,
-                        mInit[ColorBalanceAdjust.Tone.MIDTONES.toInt()]);
-            setToEffect(ColorBalanceAdjust.Tone.HIGHLIGHTS,
-                        mInit[ColorBalanceAdjust.Tone.HIGHLIGHTS.toInt()]);
+            setToEffect(Tone.SHADOWS, mInit[Tone.SHADOWS.toInt()]);
+            setToEffect(Tone.MIDTONES, mInit[Tone.MIDTONES.toInt()]);
+            setToEffect(Tone.HIGHLIGHTS, mInit[Tone.HIGHLIGHTS.toInt()]);
             mSliderView.setValue(mInit[mTone.toInt()]);
         }
 
