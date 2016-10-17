@@ -4,6 +4,7 @@
     <string name="contrast">Contrast</string>
     <string name="sharpen">Sharpen</string>
     <string name="curves">Curves</string>
+    <string name="white_balance">White Balance</string>
 
     <string name="hls">HLS</string>
     <string name="hls_hue">Hue</string>

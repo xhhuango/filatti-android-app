@@ -15,6 +15,7 @@ import com.filatti.activities.adjust.items.SharpnessAdjustItem;
 import com.filatti.activities.adjust.items.TemperatureAdjustItem;
 import com.filatti.activities.adjust.items.TiltShiftAdjustItem;
 import com.filatti.activities.adjust.items.VignetteAdjustItem;
+import com.filatti.activities.adjust.items.WhiteBalanceAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
 import com.filatti.activities.share.ShareActivity;
 import com.filatti.effects.AdjustComposite;
@@ -27,6 +28,7 @@ import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.effects.adjusts.TiltShiftAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
+import com.filatti.effects.adjusts.WhiteBalanceAdjust;
 import com.filatti.managers.EffectManager;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.google.common.base.Preconditions;
@@ -102,6 +104,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private synchronized List<AdjustItem> getAdjustItemList() {
         if (mAdjustItemList == null) {
             mAdjustItemList = new ArrayList<>();
+
+            WhiteBalanceAdjustItem whiteBalanceAdjustItem =
+                    new WhiteBalanceAdjustItem(mAdjustComposite.getEffect(WhiteBalanceAdjust.class));
+            mAdjustItemList.add(whiteBalanceAdjustItem);
 
             CurvesAdjustItem curvesAdjustItem =
                     new CurvesAdjustItem(mAdjustComposite.getEffect(CurvesAdjust.class));
