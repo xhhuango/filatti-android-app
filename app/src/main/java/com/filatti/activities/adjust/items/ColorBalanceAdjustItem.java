@@ -140,12 +140,10 @@ public class ColorBalanceAdjustItem extends AdjustItem<ColorBalanceAdjust> {
 
     private void setTone(Tone tone) {
         Preconditions.checkNotNull(tone);
-        if (tone != mSelectedTone) {
-            mSelectedTone = tone;
-            mRedCyanSliderActionAdapter.setTone(mSelectedTone);
-            mGreenMagentaSliderActionAdapter.setTone(mSelectedTone);
-            mBlueYellowSliderActionAdapter.setTone(mSelectedTone);
-        }
+        mSelectedTone = tone;
+        mRedCyanSliderActionAdapter.setTone(mSelectedTone);
+        mGreenMagentaSliderActionAdapter.setTone(mSelectedTone);
+        mBlueYellowSliderActionAdapter.setTone(mSelectedTone);
     }
 
     private class RedCyanSliderActionAdapter extends ColorBalanceSliderActionAdapter {

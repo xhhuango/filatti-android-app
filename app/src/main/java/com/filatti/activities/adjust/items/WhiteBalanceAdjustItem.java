@@ -106,6 +106,5 @@ public class WhiteBalanceAdjustItem extends AdjustItem<WhiteBalanceAdjust> {
         protected OnAdjustListener getOnAdjustListener() {
             return mOnAdjustListener;
         }
-
     }
 }

@@ -69,10 +69,11 @@ public final class AdjustComposite implements Effect {
             long before = Millis.now();
             Mat dst = effect.apply(src);
             long after = Millis.now();
-            Timber.d("%s spent %d ms, native heap=%d KB",
+            Timber.d("%s spent %d ms, native heap=%d KB %s",
                      effect.getClass().getSimpleName(),
                      after - before,
-                     Debug.getNativeHeapAllocatedSize() / 1000);
+                     Debug.getNativeHeapAllocatedSize() / 1000,
+                     src == dst ? "SKIP" : "");
             Timber.d(effect.toString());
 
             if (src != dst) {
