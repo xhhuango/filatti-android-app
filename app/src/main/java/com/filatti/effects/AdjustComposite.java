@@ -10,6 +10,7 @@ import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.effects.adjusts.TiltShiftAdjust;
+import com.filatti.effects.adjusts.VibranceAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.effects.adjusts.WhiteBalanceAdjust;
 import com.filatti.utilities.Millis;
@@ -27,6 +28,7 @@ public final class AdjustComposite implements Effect {
 
     public AdjustComposite() {
         mEffectList.add(new WhiteBalanceAdjust());
+        mEffectList.add(new VibranceAdjust());
         mEffectList.add(new CurvesAdjust());
         mEffectList.add(new ColorBalanceAdjust());
         mEffectList.add(new HlsAdjust());

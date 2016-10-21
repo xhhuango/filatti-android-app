@@ -14,6 +14,7 @@ import com.filatti.activities.adjust.items.HlsAdjustItem;
 import com.filatti.activities.adjust.items.SharpnessAdjustItem;
 import com.filatti.activities.adjust.items.TemperatureAdjustItem;
 import com.filatti.activities.adjust.items.TiltShiftAdjustItem;
+import com.filatti.activities.adjust.items.VibranceAdjustItem;
 import com.filatti.activities.adjust.items.VignetteAdjustItem;
 import com.filatti.activities.adjust.items.WhiteBalanceAdjustItem;
 import com.filatti.activities.gallery.GalleryActivity;
@@ -27,6 +28,7 @@ import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
 import com.filatti.effects.adjusts.TemperatureAdjust;
 import com.filatti.effects.adjusts.TiltShiftAdjust;
+import com.filatti.effects.adjusts.VibranceAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.effects.adjusts.WhiteBalanceAdjust;
 import com.filatti.managers.EffectManager;
@@ -108,6 +110,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
             WhiteBalanceAdjustItem whiteBalanceAdjustItem =
                     new WhiteBalanceAdjustItem(mAdjustComposite.getEffect(WhiteBalanceAdjust.class));
             mAdjustItemList.add(whiteBalanceAdjustItem);
+
+            VibranceAdjustItem vibranceAdjustItem =
+                    new VibranceAdjustItem(mAdjustComposite.getEffect(VibranceAdjust.class));
+            mAdjustItemList.add(vibranceAdjustItem);
 
             CurvesAdjustItem curvesAdjustItem =
                     new CurvesAdjustItem(mAdjustComposite.getEffect(CurvesAdjust.class));
