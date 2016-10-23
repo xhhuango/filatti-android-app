@@ -9,7 +9,7 @@ import org.opencv.core.Mat;
 public class TemperatureAdjust extends Adjust {
     private final long mNativeObj;
 
-    private final double mInitTemperature;
+    private final float mInitTemperature;
 
     public TemperatureAdjust() {
         mNativeObj = nativeCreateObject();
@@ -23,15 +23,15 @@ public class TemperatureAdjust extends Adjust {
         super.finalize();
     }
 
-    public double getInitTemperature() {
+    public float getInitTemperature() {
         return mInitTemperature;
     }
 
-    public double getTemperature() {
+    public float getTemperature() {
         return nativeGetTemperature(mNativeObj);
     }
 
-    public void setTemperature(double temperature) throws EffectException {
+    public void setTemperature(float temperature) throws EffectException {
         if (!nativeSetTemperature(mNativeObj, temperature)) {
             throw new EffectException("Temperature isn't within range: " + temperature);
         }
@@ -58,9 +58,9 @@ public class TemperatureAdjust extends Adjust {
 
     private native void nativeDestroyObject(long self);
 
-    private native double nativeGetTemperature(long self);
+    private native float nativeGetTemperature(long self);
 
-    private native boolean nativeSetTemperature(long self, double temperature);
+    private native boolean nativeSetTemperature(long self, float temperature);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

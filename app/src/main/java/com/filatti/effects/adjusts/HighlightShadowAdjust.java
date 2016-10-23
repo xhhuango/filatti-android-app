@@ -9,10 +9,10 @@ import org.opencv.core.Mat;
 public class HighlightShadowAdjust extends Adjust {
     private final long mNativeObj;
 
-    private final double mInitHighlightAmount;
-    private final double mInitHighlightToneWidth;
-    private final double mInitShadowAmount;
-    private final double mInitShadowToneWidth;
+    private final float mInitHighlightAmount;
+    private final float mInitHighlightToneWidth;
+    private final float mInitShadowAmount;
+    private final float mInitShadowToneWidth;
 
     public HighlightShadowAdjust() {
         mNativeObj = nativeCreateObject();
@@ -29,36 +29,36 @@ public class HighlightShadowAdjust extends Adjust {
         super.finalize();
     }
 
-    public void setAmount(Tone tone, double amount) throws EffectException {
+    public void setAmount(Tone tone, float amount) throws EffectException {
         Preconditions.checkNotNull(tone);
         if (!nativeSetAmount(mNativeObj, tone.toInt(), amount)) {
             throw new EffectException("Setting illegal amount value: " + amount);
         }
     }
 
-    public double getAmount(Tone tone) {
+    public float getAmount(Tone tone) {
         Preconditions.checkNotNull(tone);
         return nativeGetAmount(mNativeObj, tone.toInt());
     }
 
-    public double getInitAmount(Tone tone) {
+    public float getInitAmount(Tone tone) {
         Preconditions.checkNotNull(tone);
         return tone == Tone.HIGHLIGHTS ? mInitHighlightAmount : mInitShadowAmount;
     }
 
-    public void setToneWidth(Tone tone, double width) throws EffectException {
+    public void setToneWidth(Tone tone, float width) throws EffectException {
         Preconditions.checkNotNull(tone);
         if (!nativeSetToneWidth(mNativeObj, tone.toInt(), width)) {
             throw new EffectException("Setting illegal tone width value: " + width);
         }
     }
 
-    public double getToneWidth(Tone tone) {
+    public float getToneWidth(Tone tone) {
         Preconditions.checkNotNull(tone);
         return nativeGetToneWidth(mNativeObj, tone.toInt());
     }
 
-    public double getInitToneWidth(Tone tone) {
+    public float getInitToneWidth(Tone tone) {
         Preconditions.checkNotNull(tone);
         return tone == Tone.HIGHLIGHTS ? mInitHighlightToneWidth : mInitShadowToneWidth;
     }
@@ -87,13 +87,13 @@ public class HighlightShadowAdjust extends Adjust {
 
     private native void nativeDestroyObject(long self);
 
-    private native double nativeGetAmount(long self, int tone);
+    private native float nativeGetAmount(long self, int tone);
 
-    private native boolean nativeSetAmount(long self, int tone, double amount);
+    private native boolean nativeSetAmount(long self, int tone, float amount);
 
-    private native double nativeGetToneWidth(long self, int tone);
+    private native float nativeGetToneWidth(long self, int tone);
 
-    private native boolean nativeSetToneWidth(long self, int tone, double toneWidth);
+    private native boolean nativeSetToneWidth(long self, int tone, float toneWidth);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

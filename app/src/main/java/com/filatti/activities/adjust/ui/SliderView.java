@@ -113,17 +113,17 @@ public class SliderView extends View {
     }
 
     private int valueToX(int value) {
-        double totalLength = mMaxValue - mMinValue;
-        double xLength = mEndX - mStartX;
-        double offset = value - mMinValue;
+        float totalLength = mMaxValue - mMinValue;
+        float xLength = mEndX - mStartX;
+        float offset = value - mMinValue;
         int x = (int) (xLength / totalLength * offset);
         return mStartX + x;
     }
 
     private int xToValue(int x) {
-        double totalLength = mMaxValue - mMinValue;
-        double xLength = mEndX - mStartX;
-        double offset = x - mStartX;
+        float totalLength = mMaxValue - mMinValue;
+        float xLength = mEndX - mStartX;
+        float offset = x - mStartX;
         int value = (int) (offset / (xLength / totalLength));
         return value + mMinValue;
     }

@@ -80,7 +80,7 @@ public class WhiteBalanceAdjustItem extends AdjustItem<WhiteBalanceAdjust> {
 
         @Override
         protected void setToEffect(int valueFromSlider) {
-            double percent = valueFromSlider / 100.0;
+            float percent = valueFromSlider / 100.0f;
             try {
                 mEffect.setPercent(percent);
             } catch (EffectException e) {
@@ -88,8 +88,8 @@ public class WhiteBalanceAdjustItem extends AdjustItem<WhiteBalanceAdjust> {
             }
         }
 
-        private int convertFromEffect(double valueFromEffect) {
-            return (int) (valueFromEffect * 100.0);
+        private int convertFromEffect(float valueFromEffect) {
+            return (int) (valueFromEffect * 100.0f);
         }
 
         @Override

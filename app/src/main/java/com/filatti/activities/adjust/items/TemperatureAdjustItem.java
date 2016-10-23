@@ -80,7 +80,7 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
 
         @Override
         protected void setToEffect(int barValue) {
-            double temperature = barValue / 200.0;
+            float temperature = barValue / 200.0f;
             try {
                 mEffect.setTemperature(temperature);
             } catch (EffectException e) {
@@ -88,8 +88,8 @@ public class TemperatureAdjustItem extends AdjustItem<TemperatureAdjust> {
             }
         }
 
-        private int convertFromEffect(double valueFromEffect) {
-            return (int) (valueFromEffect * 200.0);
+        private int convertFromEffect(float valueFromEffect) {
+            return (int) (valueFromEffect * 200.0f);
         }
 
         @Override

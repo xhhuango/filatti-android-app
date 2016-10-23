@@ -27,15 +27,15 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeDes
     delete obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeGetContrast
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeGetContrast
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Contrast* obj = (Contrast*) thiz;
-    return (jdouble) obj->get_contrast();
+    return (jfloat) obj->get_contrast();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_ContrastAdjust_nativeSetContrast
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble contrast)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat contrast)
 {
     try {
         ((Contrast*) thiz)->set_contrast(contrast);

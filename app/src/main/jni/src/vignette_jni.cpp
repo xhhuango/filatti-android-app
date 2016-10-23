@@ -28,21 +28,21 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeDes
 }
 
 JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetCenter
-(JNIEnv *env, jclass clazz, jlong thiz, jdoubleArray arr)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloatArray arr)
 {
     Vignette* obj = (Vignette*) thiz;
-    jdouble *center_arr = env->GetDoubleArrayElements(arr, JNI_FALSE);
-    cv::Point2d center = obj->get_center();
+    jfloat *center_arr = env->GetFloatArrayElements(arr, JNI_FALSE);
+    cv::Point2f center = obj->get_center();
     center_arr[0] = center.x;
     center_arr[1] = center.y;
-    env->ReleaseDoubleArrayElements(arr, center_arr, 0);
+    env->ReleaseFloatArrayElements(arr, center_arr, 0);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetCenter
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble x, jdouble y)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat x, jfloat y)
 {
     try {
-        ((Vignette*) thiz)->set_center(cv::Point2d{x, y});
+        ((Vignette*) thiz)->set_center(cv::Point2f{x, y});
         return true;
     } catch (libException& e) {
         LOGW(TAG, e.what());
@@ -50,15 +50,15 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativ
     }
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetRadius
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetRadius
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Vignette* obj = (Vignette*) thiz;
-    return (jdouble) obj->get_radius();
+    return (jfloat) obj->get_radius();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetRadius
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble radius)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat radius)
 {
     try {
         ((Vignette*) thiz)->set_radius(radius);
@@ -69,15 +69,15 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativ
     }
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetStrength
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetStrength
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Vignette* obj = (Vignette*) thiz;
-    return (jdouble) obj->get_strength();
+    return (jfloat) obj->get_strength();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetStrength
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble strength)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat strength)
 {
     try {
         ((Vignette*) thiz)->set_strength(strength);
@@ -88,15 +88,15 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativ
     }
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetFeathering
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeGetFeathering
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Vignette* obj = (Vignette*) thiz;
-    return (jdouble) obj->get_feathering();
+    return (jfloat) obj->get_feathering();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_VignetteAdjust_nativeSetFeathering
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble feathering)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat feathering)
 {
     try {
         ((Vignette*) thiz)->set_feathering(feathering);

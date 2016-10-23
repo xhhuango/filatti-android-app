@@ -9,7 +9,7 @@ import org.opencv.core.Mat;
 public class WhiteBalanceAdjust extends Adjust {
     private final long mNativeObj;
 
-    private final double mInitPercent;
+    private final float mInitPercent;
 
     public WhiteBalanceAdjust() {
         mNativeObj = nativeCreateObject();
@@ -23,17 +23,17 @@ public class WhiteBalanceAdjust extends Adjust {
         super.finalize();
     }
 
-    public void setPercent(double percent) throws EffectException {
+    public void setPercent(float percent) throws EffectException {
         if (!nativeSetPercent(mNativeObj, percent)) {
             throw new EffectException("Setting illegal percent value: " + percent);
         }
     }
 
-    public double getPercent() {
+    public float getPercent() {
         return nativeGetPercent(mNativeObj);
     }
 
-    public double getInitPercent() {
+    public float getInitPercent() {
         return mInitPercent;
     }
 
@@ -58,9 +58,9 @@ public class WhiteBalanceAdjust extends Adjust {
 
     private native void nativeDestroyObject(long self);
 
-    private native double nativeGetPercent(long self);
+    private native float nativeGetPercent(long self);
 
-    private native boolean nativeSetPercent(long self, double percent);
+    private native boolean nativeSetPercent(long self, float percent);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

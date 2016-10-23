@@ -34,21 +34,21 @@ public class TiltShiftAdjust extends Adjust {
 
     private final long mNativeObj;
 
-    private final double[] mInitCenter;
-    private final double mInitRadius;
-    private final double mInitFeathering;
-    private final double mInitStrength;
-    private final double mInitAngle;
+    private final float[] mInitCenter;
+    private final float mInitRadius;
+    private final float mInitFeathering;
+    private final float mInitStrength;
+    private final float mInitAngle;
     private final MaskType mInitMaskType;
 
     public TiltShiftAdjust() {
         mNativeObj = nativeCreateObject();
 
         try {
-            setRadius(0.5);
-            setFeathering(0.5);
+            setRadius(0.5f);
+            setFeathering(0.5f);
             setStrength(0);
-            setCenter(0.5, 0.5);
+            setCenter(0.5f, 0.5f);
             setAngle(0);
             setMaskType(MaskType.CIRCULAR);
         } catch (EffectException e) {
@@ -69,73 +69,73 @@ public class TiltShiftAdjust extends Adjust {
         super.finalize();
     }
 
-    public double[] getInitCenter() {
+    public float[] getInitCenter() {
         return Arrays.copyOf(mInitCenter, mInitCenter.length);
     }
 
-    public double[] getCenter() {
-        double[] center = new double[2];
+    public float[] getCenter() {
+        float[] center = new float[2];
         nativeGetCenter(mNativeObj, center);
         return center;
     }
 
-    public void setCenter(double x, double y) throws EffectException {
+    public void setCenter(float x, float y) throws EffectException {
         if (!nativeSetCenter(mNativeObj, x, y)) {
             throw new EffectException("Center isn't with range: x=" + x + ", y=" + y);
         }
     }
 
-    public double getInitRadius() {
+    public float getInitRadius() {
         return mInitRadius;
     }
 
-    public double getRadius() {
+    public float getRadius() {
         return nativeGetRadius(mNativeObj);
     }
 
-    public void setRadius(double radius) throws EffectException {
+    public void setRadius(float radius) throws EffectException {
         if (!nativeSetRadius(mNativeObj, radius)) {
             throw new EffectException("Radius isn't within range: " + radius);
         }
     }
 
-    public double getInitStrength() {
+    public float getInitStrength() {
         return mInitStrength;
     }
 
-    public double getStrength() {
+    public float getStrength() {
         return nativeGetStrength(mNativeObj);
     }
 
-    public void setStrength(double strength) throws EffectException {
+    public void setStrength(float strength) throws EffectException {
         if (!nativeSetStrength(mNativeObj, strength)) {
             throw new EffectException("Strength isn't within range: " + strength);
         }
     }
 
-    public double getInitFeathering() {
+    public float getInitFeathering() {
         return mInitFeathering;
     }
 
-    public double getFeathering() {
+    public float getFeathering() {
         return nativeGetFeathering(mNativeObj);
     }
 
-    public void setFeathering(double feathering) throws EffectException {
+    public void setFeathering(float feathering) throws EffectException {
         if (!nativeSetFeathering(mNativeObj, feathering)) {
             throw new EffectException("Feathering isn't within range: " + feathering);
         }
     }
 
-    public double getInitAngle() {
+    public float getInitAngle() {
         return mInitAngle;
     }
 
-    public double getAngle() {
+    public float getAngle() {
         return nativeGetAngle(mNativeObj);
     }
 
-    public void setAngle(double angle) throws EffectException {
+    public void setAngle(float angle) throws EffectException {
         if (!nativeSetAngle(mNativeObj, angle)) {
             throw new EffectException("Angle isn't within range: " + angle);
         }
@@ -171,7 +171,7 @@ public class TiltShiftAdjust extends Adjust {
 
     @Override
     public String toString() {
-        double[] center = getCenter();
+        float[] center = getCenter();
         return "TiltShiftAdjust: {\n"
                 + "\tcenter: {x: " + center[0] + ", y: " + center[1] + "}\n"
                 + "\tradius: " + getRadius() + "\n"
@@ -186,25 +186,25 @@ public class TiltShiftAdjust extends Adjust {
 
     private native void nativeDestroyObject(long self);
 
-    private native void nativeGetCenter(long self, double[] center);
+    private native void nativeGetCenter(long self, float[] center);
 
-    private native boolean nativeSetCenter(long self, double x, double y);
+    private native boolean nativeSetCenter(long self, float x, float y);
 
-    private native double nativeGetRadius(long self);
+    private native float nativeGetRadius(long self);
 
-    private native boolean nativeSetRadius(long self, double radius);
+    private native boolean nativeSetRadius(long self, float radius);
 
-    private native double nativeGetStrength(long self);
+    private native float nativeGetStrength(long self);
 
-    private native boolean nativeSetStrength(long self, double strength);
+    private native boolean nativeSetStrength(long self, float strength);
 
-    private native double nativeGetFeathering(long self);
+    private native float nativeGetFeathering(long self);
 
-    private native boolean nativeSetFeathering(long self, double feathering);
+    private native boolean nativeSetFeathering(long self, float feathering);
 
-    private native double nativeGetAngle(long self);
+    private native float nativeGetAngle(long self);
 
-    private native boolean nativeSetAngle(long self, double angle);
+    private native boolean nativeSetAngle(long self, float angle);
 
     private native int nativeGetMaskType(long self);
 

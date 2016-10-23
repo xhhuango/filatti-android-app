@@ -27,15 +27,15 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativ
     delete obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativeGetPercent
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativeGetPercent
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     WhiteBalance* obj = (WhiteBalance*) thiz;
-    return (jdouble) obj->get_percent();
+    return (jfloat) obj->get_percent();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativeSetPercent
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble percent)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat percent)
 {
     try {
         ((WhiteBalance*) thiz)->set_percent(percent);

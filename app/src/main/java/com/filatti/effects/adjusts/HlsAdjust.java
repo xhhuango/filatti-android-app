@@ -10,8 +10,8 @@ public class HlsAdjust extends Adjust {
     private final long mNativeObj;
 
     private final int mInitHue;
-    private final double mInitLightness;
-    private final double mInitSaturation;
+    private final float mInitLightness;
+    private final float mInitSaturation;
 
     public HlsAdjust() {
         mNativeObj = nativeCreateObject();
@@ -41,31 +41,31 @@ public class HlsAdjust extends Adjust {
         return mInitHue;
     }
 
-    public void setLightness(double lightness) throws EffectException {
+    public void setLightness(float lightness) throws EffectException {
         if (!nativeSetLightness(mNativeObj, lightness)) {
             throw new EffectException("Lightness isn't within range: " + lightness);
         }
     }
 
-    public double getLightness() {
+    public float getLightness() {
         return nativeGetLightness(mNativeObj);
     }
 
-    public double getInitLightness() {
+    public float getInitLightness() {
         return mInitLightness;
     }
 
-    public void setSaturation(double saturation) throws EffectException {
+    public void setSaturation(float saturation) throws EffectException {
         if (!nativeSetSaturation(mNativeObj, saturation)) {
             throw new EffectException("Saturation isn't within range: " + saturation);
         }
     }
 
-    public double getSaturation() {
+    public float getSaturation() {
         return nativeGetSaturation(mNativeObj);
     }
 
-    public double getInitSaturation() {
+    public float getInitSaturation() {
         return mInitSaturation;
     }
 
@@ -96,13 +96,13 @@ public class HlsAdjust extends Adjust {
 
     private native boolean nativeSetHue(long self, int hue);
 
-    private native double nativeGetLightness(long self);
+    private native float nativeGetLightness(long self);
 
-    private native boolean nativeSetLightness(long self, double lightness);
+    private native boolean nativeSetLightness(long self, float lightness);
 
-    private native double nativeGetSaturation(long self);
+    private native float nativeGetSaturation(long self);
 
-    private native boolean nativeSetSaturation(long self, double saturation);
+    private native boolean nativeSetSaturation(long self, float saturation);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

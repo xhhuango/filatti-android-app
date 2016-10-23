@@ -147,7 +147,7 @@ public class HighlightShadowAdjustItem extends AdjustItem<HighlightShadowAdjust>
 
         @Override
         protected void setToEffect(int value) {
-            double amount = value / 100.0;
+            float amount = value / 100.0f;
             try {
                 mEffect.setAmount(getTone(), amount);
             } catch (EffectException e) {
@@ -155,8 +155,8 @@ public class HighlightShadowAdjustItem extends AdjustItem<HighlightShadowAdjust>
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 100.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 100.0f);
         }
 
         @Override
@@ -187,7 +187,7 @@ public class HighlightShadowAdjustItem extends AdjustItem<HighlightShadowAdjust>
 
         @Override
         protected void setToEffect(int value) {
-            double width = value / 100.0 / 2.0;
+            float width = value / 100.0f / 2.0f;
             try {
                 mEffect.setToneWidth(getTone(), width);
             } catch (EffectException e) {
@@ -195,8 +195,8 @@ public class HighlightShadowAdjustItem extends AdjustItem<HighlightShadowAdjust>
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 2.0 * 100.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 2.0f * 100.0f);
         }
 
         @Override

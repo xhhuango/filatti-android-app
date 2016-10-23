@@ -32,8 +32,8 @@ public class XyPlotView extends View {
     private int mAvailableHeight;
     private int mMaxX = DEFAULT_MAX;
     private int mMaxY = DEFAULT_MAX;
-    private double mIntervalSizeX;
-    private double mIntervalSizeY;
+    private float mIntervalSizeX;
+    private float mIntervalSizeY;
 
     private final Paint mPlotPaint = new Paint();
 
@@ -83,8 +83,8 @@ public class XyPlotView extends View {
         mStartY = getPaddingTop() + mPointRadius;
         int availableWidth = width - mStartX - (getPaddingEnd() + mPointRadius);
         mAvailableHeight = height - mStartY - (getPaddingBottom() + mPointRadius);
-        mIntervalSizeX = (double) availableWidth / (double) mMaxX;
-        mIntervalSizeY = (double) mAvailableHeight / (double) mMaxY;
+        mIntervalSizeX = (float) availableWidth / (float) mMaxX;
+        mIntervalSizeY = (float) mAvailableHeight / (float) mMaxY;
     }
 
     private int plotToViewX(int x) {

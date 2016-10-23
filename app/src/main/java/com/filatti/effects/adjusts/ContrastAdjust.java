@@ -9,7 +9,7 @@ import org.opencv.core.Mat;
 public class ContrastAdjust extends Adjust {
     private final long mNativeObj;
 
-    private final double mInitContrast;
+    private final float mInitContrast;
 
     public ContrastAdjust() {
         mNativeObj = nativeCreateObject();
@@ -23,17 +23,17 @@ public class ContrastAdjust extends Adjust {
         super.finalize();
     }
 
-    public void setContrast(double contrast) throws EffectException {
+    public void setContrast(float contrast) throws EffectException {
         if (!nativeSetContrast(mNativeObj, contrast)) {
             throw new EffectException("Setting illegal contrast value: " + contrast);
         }
     }
 
-    public double getContrast() {
+    public float getContrast() {
         return nativeGetContrast(mNativeObj);
     }
 
-    public double getInitContrast() {
+    public float getInitContrast() {
         return mInitContrast;
     }
 
@@ -58,9 +58,9 @@ public class ContrastAdjust extends Adjust {
 
     private native void nativeDestroyObject(long self);
 
-    private native double nativeGetContrast(long self);
+    private native float nativeGetContrast(long self);
 
-    private native boolean nativeSetContrast(long self, double contrast);
+    private native boolean nativeSetContrast(long self, float contrast);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 }

@@ -143,7 +143,7 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
 
         @Override
         protected void setToEffect(int value) {
-            double brightness = value / 200.0;
+            float brightness = value / 200.0f;
             try {
                 mEffect.setLightness(brightness);
             } catch (EffectException e) {
@@ -151,8 +151,8 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 200.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 200.0f);
         }
 
         @Override
@@ -181,7 +181,7 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
 
         @Override
         protected void setToEffect(int value) {
-            double saturation = value / 100.0;
+            float saturation = value / 100.0f;
             try {
                 mEffect.setSaturation(saturation);
             } catch (EffectException e) {
@@ -189,8 +189,8 @@ public class HlsAdjustItem extends AdjustItem<HlsAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 100.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 100.0f);
         }
 
         @Override

@@ -181,9 +181,9 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
 
         @Override
         protected void setToEffect(int value) {
-            double strength = value / 100.0;
-            mRadialPinchMaskView.setStrength((float) strength);
-            mLinearPinchMaskView.setStrength((float) strength);
+            float strength = value / 100.0f;
+            mRadialPinchMaskView.setStrength(strength);
+            mLinearPinchMaskView.setStrength(strength);
             try {
                 mEffect.setStrength(strength);
             } catch (EffectException e) {
@@ -191,8 +191,8 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 100.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 100.0f);
         }
 
         @Override
@@ -240,9 +240,9 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
 
         @Override
         protected void setToEffect(int value) {
-            double feathering = value / 100.0;
-            mRadialPinchMaskView.setInnerRadius((float) (1.0 - feathering));
-            mLinearPinchMaskView.setInnerRadius((float) (1.0 - feathering));
+            float feathering = value / 100.0f;
+            mRadialPinchMaskView.setInnerRadius(1.0f - feathering);
+            mLinearPinchMaskView.setInnerRadius(1.0f - feathering);
             try {
                 mEffect.setFeathering(feathering);
             } catch (EffectException e) {
@@ -250,8 +250,8 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 100.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 100.0f);
         }
 
         @Override
@@ -366,9 +366,9 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
         private float mAppliedRadius;
         private float mTemporaryRadius;
 
-        private double[] mInitCenter;
-        private double[] mAppliedCenter;
-        private double[] mTemporaryCenter;
+        private float[] mInitCenter;
+        private float[] mAppliedCenter;
+        private float[] mTemporaryCenter;
 
         PinchMaskAdapter() {
             mInitRadius = getInitRadiusFromEffect();
@@ -389,11 +389,11 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
         }
 
         private float getRadiusFromEffect() {
-            return (float) mEffect.getRadius();
+            return mEffect.getRadius();
         }
 
         private float getInitRadiusFromEffect() {
-            return (float) mEffect.getInitRadius();
+            return mEffect.getInitRadius();
         }
 
         private void setRadiusToEffect(float radius) {
@@ -404,15 +404,15 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
             }
         }
 
-        private double[] getCenterFromEffect() {
+        private float[] getCenterFromEffect() {
             return mEffect.getCenter();
         }
 
-        private double[] getInitCenterFromEffect() {
+        private float[] getInitCenterFromEffect() {
             return mEffect.getInitCenter();
         }
 
-        private void setCenterToEffect(double x, double y) {
+        private void setCenterToEffect(float x, float y) {
             try {
                 mTemporaryCenter[0] = x;
                 mTemporaryCenter[1] = y;
@@ -497,8 +497,8 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
         @Override
         public void reset() {
             setCenterToEffect(mInitCenter[0], mInitCenter[1]);
-            mRadialPinchMaskView.setCenter((float) mInitCenter[0], (float) mInitCenter[1]);
-            mLinearPinchMaskView.setCenter((float) mInitCenter[0], (float) mInitCenter[1]);
+            mRadialPinchMaskView.setCenter(mInitCenter[0], mInitCenter[1]);
+            mLinearPinchMaskView.setCenter(mInitCenter[0], mInitCenter[1]);
 
             setRadiusToEffect(mInitRadius);
             mRadialPinchMaskView.setOuterRadius(mInitRadius);

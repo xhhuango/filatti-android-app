@@ -80,7 +80,7 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
 
         @Override
         protected void setToEffect(int valueFromSlider) {
-            double contrast = (valueFromSlider / 2.0 + 100.0) / 100.0;
+            float contrast = (valueFromSlider / 2.0f + 100.0f) / 100.0f;
             try {
                 mEffect.setContrast(contrast);
             } catch (EffectException e) {
@@ -88,8 +88,8 @@ public class ContrastAdjustItem extends AdjustItem<ContrastAdjust> {
             }
         }
 
-        private int convertFromEffect(double valueFromEffect) {
-            return (int) (((valueFromEffect * 100.0) - 100.0) * 2.0);
+        private int convertFromEffect(float valueFromEffect) {
+            return (int) (((valueFromEffect * 100.0f) - 100.0f) * 2.0f);
         }
 
         @Override

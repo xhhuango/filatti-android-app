@@ -27,15 +27,15 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_native
     delete obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeGetTemperature
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeGetTemperature
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Temperature* obj = (Temperature*) thiz;
-    return (jdouble) obj->get_temperature();
+    return (jfloat) obj->get_temperature();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeSetTemperature
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble temperature)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat temperature)
 {
     try {
         ((Temperature*) thiz)->set_temperature(temperature);

@@ -80,7 +80,7 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
 
         @Override
         protected void setToEffect(int barValue) {
-            double sharpness = barValue / 20.0;
+            float sharpness = barValue / 20.0f;
             try {
                 mEffect.setSharpness(sharpness);
             } catch (EffectException e) {
@@ -88,8 +88,8 @@ public class SharpnessAdjustItem extends AdjustItem<SharpnessAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 10.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 10.0f);
         }
 
         @Override

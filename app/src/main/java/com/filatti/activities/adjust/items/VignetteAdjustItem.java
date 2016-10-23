@@ -140,8 +140,8 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
 
         @Override
         protected void setToEffect(int value) {
-            double strength = value / 100.0;
-            mRadialPinchMaskView.setStrength((float) strength);
+            float strength = value / 100.0f;
+            mRadialPinchMaskView.setStrength(strength);
             try {
                 mEffect.setStrength(strength);
             } catch (EffectException e) {
@@ -149,8 +149,8 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
-            return (int) (value * 100.0);
+        private int convertFromEffect(float value) {
+            return (int) (value * 100.0f);
         }
 
         @Override
@@ -198,8 +198,8 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
 
         @Override
         protected void setToEffect(int value) {
-            double feathering = value / 100.0;
-            mRadialPinchMaskView.setInnerRadius((float) (1.0 - feathering));
+            float feathering = value / 100.0f;
+            mRadialPinchMaskView.setInnerRadius(1.0f - feathering);
             try {
                 mEffect.setFeathering(feathering);
             } catch (EffectException e) {
@@ -207,7 +207,7 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
             }
         }
 
-        private int convertFromEffect(double value) {
+        private int convertFromEffect(float value) {
             return (int) (value * 100.0);
         }
 
@@ -260,11 +260,11 @@ public class VignetteAdjustItem extends AdjustItem<VignetteAdjust> {
         }
 
         private float getFromEffect() {
-            return (float) mEffect.getRadius();
+            return mEffect.getRadius();
         }
 
         private float getInitFromEffect() {
-            return (float) mEffect.getInitRadius();
+            return mEffect.getInitRadius();
         }
 
         private void setToEffect(float value) {

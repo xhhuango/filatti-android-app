@@ -46,15 +46,15 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetH
     }
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetLightness
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetLightness
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Hls* obj = (Hls*) thiz;
-    return (jdouble) obj->get_lightness();
+    return (jfloat) obj->get_lightness();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetLightness
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble lightness)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat lightness)
 {
     try {
         ((Hls*) thiz)->set_lightness(lightness);
@@ -65,15 +65,15 @@ JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetL
     }
 }
 
-JNIEXPORT jdouble JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetSaturation
+JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetSaturation
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
     Hls* obj = (Hls*) thiz;
-    return (jdouble) obj->get_saturation();
+    return (jfloat) obj->get_saturation();
 }
 
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeSetSaturation
-(JNIEnv *env, jclass clazz, jlong thiz, jdouble saturation)
+(JNIEnv *env, jclass clazz, jlong thiz, jfloat saturation)
 {
     try {
         ((Hls*) thiz)->set_saturation(saturation);
