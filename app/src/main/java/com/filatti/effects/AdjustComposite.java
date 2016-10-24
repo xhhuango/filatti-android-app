@@ -5,6 +5,7 @@ import android.os.Debug;
 import com.filatti.effects.adjusts.ColorBalanceAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
+import com.filatti.effects.adjusts.ExposureAdjust;
 import com.filatti.effects.adjusts.HighlightShadowAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
@@ -28,6 +29,7 @@ public final class AdjustComposite implements Effect {
 
     public AdjustComposite() {
         mEffectList.add(new WhiteBalanceAdjust());
+        mEffectList.add(new ExposureAdjust());
         mEffectList.add(new VibranceAdjust());
         mEffectList.add(new CurvesAdjust());
         mEffectList.add(new ColorBalanceAdjust());

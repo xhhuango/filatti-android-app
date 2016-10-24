@@ -6,6 +6,7 @@
     <string name="curves">Curves</string>
     <string name="white_balance">White Balance</string>
     <string name="vibrance">Vibrance</string>
+    <string name="exposure">Exposure</string>
 
     <string name="hls">HLS</string>
     <string name="hls_hue">Hue</string>
