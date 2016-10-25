@@ -6,6 +6,7 @@ import com.filatti.effects.adjusts.ColorBalanceAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.ExposureAdjust;
+import com.filatti.effects.adjusts.GrayscaleAdjust;
 import com.filatti.effects.adjusts.HighlightShadowAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
@@ -28,6 +29,7 @@ public final class AdjustComposite implements Effect {
     private List<Effect> mEffectList = new ArrayList<>();
 
     public AdjustComposite() {
+        mEffectList.add(new GrayscaleAdjust());
         mEffectList.add(new WhiteBalanceAdjust());
         mEffectList.add(new ExposureAdjust());
         mEffectList.add(new VibranceAdjust());

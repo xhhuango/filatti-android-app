@@ -289,7 +289,7 @@ public class TiltShiftAdjustItem extends AdjustItem<TiltShiftAdjust> {
     }
 
     private class MaskTypeButtonAdapter implements AdjustAction {
-        private TiltShiftAdjust.MaskType mInitMaskType;
+        private final TiltShiftAdjust.MaskType mInitMaskType;
         private TiltShiftAdjust.MaskType mAppliedMaskType;
         private TiltShiftAdjust.MaskType mTemporaryMaskType;
 

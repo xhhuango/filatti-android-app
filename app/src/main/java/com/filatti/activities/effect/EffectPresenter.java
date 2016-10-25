@@ -10,6 +10,7 @@ import com.filatti.activities.adjust.items.ColorBalanceAdjustItem;
 import com.filatti.activities.adjust.items.ContrastAdjustItem;
 import com.filatti.activities.adjust.items.CurvesAdjustItem;
 import com.filatti.activities.adjust.items.ExposureAdjustItem;
+import com.filatti.activities.adjust.items.GrayscaleAdjustItem;
 import com.filatti.activities.adjust.items.HighlightShadowAdjustItem;
 import com.filatti.activities.adjust.items.HlsAdjustItem;
 import com.filatti.activities.adjust.items.SharpnessAdjustItem;
@@ -25,6 +26,7 @@ import com.filatti.effects.adjusts.ColorBalanceAdjust;
 import com.filatti.effects.adjusts.ContrastAdjust;
 import com.filatti.effects.adjusts.CurvesAdjust;
 import com.filatti.effects.adjusts.ExposureAdjust;
+import com.filatti.effects.adjusts.GrayscaleAdjust;
 import com.filatti.effects.adjusts.HighlightShadowAdjust;
 import com.filatti.effects.adjusts.HlsAdjust;
 import com.filatti.effects.adjusts.SharpnessAdjust;
@@ -108,6 +110,10 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
     private synchronized List<AdjustItem> getAdjustItemList() {
         if (mAdjustItemList == null) {
             mAdjustItemList = new ArrayList<>();
+
+            GrayscaleAdjustItem grayscaleAdjustItem =
+                    new GrayscaleAdjustItem(mAdjustComposite.getEffect(GrayscaleAdjust.class));
+            mAdjustItemList.add(grayscaleAdjustItem);
 
             WhiteBalanceAdjustItem whiteBalanceAdjustItem =
                     new WhiteBalanceAdjustItem(mAdjustComposite.getEffect(WhiteBalanceAdjust.class));

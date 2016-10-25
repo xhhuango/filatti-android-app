@@ -131,13 +131,13 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TiltShiftAdjust_nativeSe
 JNIEXPORT jint JNICALL Java_com_filatti_effects_adjusts_TiltShiftAdjust_nativeGetMaskType
 (JNIEnv *env, jclass clazz, jlong thiz)
 {
-    return static_cast<unsigned int>(((TiltShift*) thiz)->get_mask_type());
+    return static_cast<TiltShift::MaskRawType>(((TiltShift*) thiz)->get_mask_type());
 }
 
 JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TiltShiftAdjust_nativeSetMaskType
 (JNIEnv *env, jclass clazz, jlong thiz, jint mask_type)
 {
-    TiltShift::MaskType type = static_cast<TiltShift::MaskType>((unsigned int) mask_type);
+    TiltShift::Mask type = static_cast<TiltShift::Mask>((TiltShift::MaskRawType) mask_type);
     ((TiltShift*) thiz)->set_mask_type(type);
 }
 

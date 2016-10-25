@@ -45,4 +45,6 @@
     <string name="highlight_shadow_highlight_tone_width">Highlight Tone Width</string>
     <string name="highlight_shadow_shadow_amount">Shadow Amount</string>
     <string name="highlight_shadow_shadow_tone_width">Shadow Tone Width</string>
+
+    <string name="grayscale">Grayscale</string>
 </resources>
