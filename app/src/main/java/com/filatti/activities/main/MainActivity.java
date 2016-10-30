@@ -10,8 +10,6 @@ import com.filatti.activities.FilattiActivity;
 import com.filatti.activities.gallery.GalleryActivity;
 
 public class MainActivity extends FilattiActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

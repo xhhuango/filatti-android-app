@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "903095340388",
+    "firebase_url": "https://filatti-b3f82.firebaseio.com",
+    "project_id": "filatti-b3f82",
+    "storage_bucket": "filatti-b3f82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903095340388:android:8835ffe9b7ab0131",
+        "android_client_info": {
+          "package_name": "com.filatti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903095340388-ggjchb28oiic7jtsor59bgehoq9507g4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.filatti",
+            "certificate_hash": "373A7FF7268E968EA1C727BCB8A1FFEF66D23612"
+          }
+        },
+        {
+          "client_id": "903095340388-56ct10133qudlvd09gahqfu7pam1ce6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM7w99u04sV1JRsDKrJSpkVt5DvT5ALwA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903095340388-56ct10133qudlvd09gahqfu7pam1ce6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

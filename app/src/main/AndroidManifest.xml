@@ -28,8 +28,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name="com.filatti.activities.main.MainActivity"
+            android:name="com.filatti.activities.login.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -37,6 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.filatti.activities.main.MainActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.filatti.activities.gallery.GalleryActivity"
@@ -49,6 +54,7 @@
         <activity
             android:name=".activities.adjust.AdjustActivity"
             android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
