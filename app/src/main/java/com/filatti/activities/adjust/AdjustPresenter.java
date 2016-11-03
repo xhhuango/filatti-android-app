@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.filatti.activities.adjust.items.AdjustItem;
 import com.filatti.activities.mvp.AbstractPresenter;
-import com.filatti.managers.EffectManager;
+import com.filatti.effects.EffectManager;
 import com.filatti.utilities.photo.BitmapUtils;
 
 import org.opencv.core.Mat;

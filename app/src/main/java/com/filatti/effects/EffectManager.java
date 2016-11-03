@@ -1,10 +1,9 @@
-package com.filatti.managers;
+package com.filatti.effects;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.filatti.activities.adjust.items.AdjustItem;
-import com.filatti.effects.AdjustComposite;
 import com.filatti.utilities.photo.BitmapUtils;
 import com.filatti.utilities.photo.AspectRatio;
 import com.google.common.base.Preconditions;

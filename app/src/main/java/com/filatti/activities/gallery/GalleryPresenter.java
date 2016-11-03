@@ -9,7 +9,7 @@ import android.provider.MediaStore;
 import com.filatti.activities.effect.EffectActivity;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.filatti.utilities.photo.AspectRatio;
-import com.filatti.managers.EffectManager;
+import com.filatti.effects.EffectManager;
 import com.filatti.utilities.ThreadPool;
 
 import java.io.File;

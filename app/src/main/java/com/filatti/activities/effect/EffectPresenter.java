@@ -35,7 +35,7 @@ import com.filatti.effects.adjusts.TiltShiftAdjust;
 import com.filatti.effects.adjusts.VibranceAdjust;
 import com.filatti.effects.adjusts.VignetteAdjust;
 import com.filatti.effects.adjusts.WhiteBalanceAdjust;
-import com.filatti.managers.EffectManager;
+import com.filatti.effects.EffectManager;
 import com.filatti.activities.mvp.AbstractPresenter;
 import com.google.common.base.Preconditions;
 

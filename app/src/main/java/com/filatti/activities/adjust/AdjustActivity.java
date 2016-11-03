@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.filatti.R;
 import com.filatti.activities.FilattiActivity;
-import com.filatti.managers.EffectManager;
+import com.filatti.effects.EffectManager;
 import com.filatti.utilities.photo.DisplayUtils;
 
 public class AdjustActivity extends FilattiActivity {

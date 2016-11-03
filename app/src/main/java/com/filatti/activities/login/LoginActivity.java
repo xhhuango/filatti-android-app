@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.filatti.R;
 import com.filatti.activities.FilattiActivity;
 import com.filatti.activities.main.MainActivity;
+import com.filatti.user.UserManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,7 +28,7 @@ import timber.log.Timber;
 
 public class LoginActivity extends FilattiActivity
         implements GoogleApiClient.OnConnectionFailedListener {
-    private static final int SIGN_IN_REQUEST_CODE = 9001;
+    private static final int SIGN_IN_REQUEST_CODE = 900;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mFirebaseAuthStateListener;
@@ -63,10 +64,8 @@ public class LoginActivity extends FilattiActivity
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Timber.d("Signed in Firebase, uid=%s, name=%s, email=%s",
-                             user.getUid(),
-                             user.getDisplayName(),
-                             user.getEmail());
+                    UserManager.getInstance().setFirebaseUser(user);
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -98,7 +97,7 @@ public class LoginActivity extends FilattiActivity
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                Timber.d("Google sign in is success");
+                Timber.d("Google sign in is successful");
                 GoogleSignInAccount account = result.getSignInAccount();
                 signInFirebaseAuthWithGoogle(account);
             } else {
@@ -119,9 +118,9 @@ public class LoginActivity extends FilattiActivity
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Timber.d("Signed in Firebase succeeded");
+                            Timber.d("Successfully signed in Firebase");
                         } else {
-                            Timber.e("Signed in Firebase failed");
+                            Timber.e("Unsuccessfully signed in Firebase");
                         }
 
                     }
@@ -130,7 +129,7 @@ public class LoginActivity extends FilattiActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Timber.e("onConnectionFailed(): %s", connectionResult);
+        Timber.e("onConnectionFailed() is called: %s", connectionResult);
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 }
