@@ -1,13 +1,18 @@
 <resources>
+    <!-- Translation is not needed -->
+    
     <string name="app_name">Filatti</string>
     <string name="server_client_id">903095340388-56ct10133qudlvd09gahqfu7pam1ce6l.apps.googleusercontent.com</string>
 
+    <!-- Translation is needed -->
+    
     <string name="contrast">Contrast</string>
     <string name="sharpen">Sharpen</string>
     <string name="curves">Curves</string>
     <string name="white_balance">White Balance</string>
     <string name="vibrance">Vibrance</string>
     <string name="exposure">Exposure</string>
+    <string name="grayscale">Grayscale</string>
 
     <string name="hls">HLS</string>
     <string name="hls_hue">Hue</string>
@@ -46,6 +51,4 @@
     <string name="highlight_shadow_highlight_tone_width">Highlight Tone Width</string>
     <string name="highlight_shadow_shadow_amount">Shadow Amount</string>
     <string name="highlight_shadow_shadow_tone_width">Shadow Tone Width</string>
-
-    <string name="grayscale">Grayscale</string>
 </resources>
