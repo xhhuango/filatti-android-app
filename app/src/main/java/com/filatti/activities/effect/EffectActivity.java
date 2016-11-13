@@ -25,7 +25,6 @@ public class EffectActivity extends FilattiActivity {
     private EffectItemListAdapter mEffectItemListAdapter;
 
     private List<AdjustItem> mEffectItemList = new ArrayList<>();
-    private Bitmap mPhotoBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +129,6 @@ public class EffectActivity extends FilattiActivity {
     }
 
     void setPhoto(Bitmap bitmap) {
-        mPhotoBitmap = bitmap;
         if (mImageView != null) {
             mImageView.setImageBitmap(bitmap);
         }

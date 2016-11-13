@@ -46,14 +46,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import timber.log.Timber;
 
 class EffectPresenter extends AbstractPresenter<EffectActivity> {
-    private AdjustComposite mAdjustComposite = new AdjustComposite();
     private List<AdjustItem> mAdjustItemList;
 
     private AtomicBoolean mLock = new AtomicBoolean(false);
 
     EffectPresenter(EffectActivity activity) {
         super(activity);
-        EffectManager.getInstance().setAdjustComposite(mAdjustComposite);
     }
 
     @Override
@@ -109,58 +107,59 @@ class EffectPresenter extends AbstractPresenter<EffectActivity> {
 
     private synchronized List<AdjustItem> getAdjustItemList() {
         if (mAdjustItemList == null) {
+            AdjustComposite adjustComposite = EffectManager.getInstance().getAdjustComposite();
             mAdjustItemList = new ArrayList<>();
 
             GrayscaleAdjustItem grayscaleAdjustItem =
-                    new GrayscaleAdjustItem(mAdjustComposite.getEffect(GrayscaleAdjust.class));
+                    new GrayscaleAdjustItem(adjustComposite.getEffect(GrayscaleAdjust.class));
             mAdjustItemList.add(grayscaleAdjustItem);
 
             WhiteBalanceAdjustItem whiteBalanceAdjustItem =
-                    new WhiteBalanceAdjustItem(mAdjustComposite.getEffect(WhiteBalanceAdjust.class));
+                    new WhiteBalanceAdjustItem(adjustComposite.getEffect(WhiteBalanceAdjust.class));
             mAdjustItemList.add(whiteBalanceAdjustItem);
 
             ExposureAdjustItem exposureAdjustItem =
-                    new ExposureAdjustItem(mAdjustComposite.getEffect(ExposureAdjust.class));
+                    new ExposureAdjustItem(adjustComposite.getEffect(ExposureAdjust.class));
             mAdjustItemList.add(exposureAdjustItem);
 
             VibranceAdjustItem vibranceAdjustItem =
-                    new VibranceAdjustItem(mAdjustComposite.getEffect(VibranceAdjust.class));
+                    new VibranceAdjustItem(adjustComposite.getEffect(VibranceAdjust.class));
             mAdjustItemList.add(vibranceAdjustItem);
 
             CurvesAdjustItem curvesAdjustItem =
-                    new CurvesAdjustItem(mAdjustComposite.getEffect(CurvesAdjust.class));
+                    new CurvesAdjustItem(adjustComposite.getEffect(CurvesAdjust.class));
             mAdjustItemList.add(curvesAdjustItem);
 
             ColorBalanceAdjustItem colorBalanceAdjustItem =
-                    new ColorBalanceAdjustItem(mAdjustComposite.getEffect(ColorBalanceAdjust.class));
+                    new ColorBalanceAdjustItem(adjustComposite.getEffect(ColorBalanceAdjust.class));
             mAdjustItemList.add(colorBalanceAdjustItem);
 
             HlsAdjustItem hlsAdjustItem =
-                    new HlsAdjustItem(mAdjustComposite.getEffect(HlsAdjust.class));
+                    new HlsAdjustItem(adjustComposite.getEffect(HlsAdjust.class));
             mAdjustItemList.add(hlsAdjustItem);
 
             ContrastAdjustItem contrastAdjustItem =
-                    new ContrastAdjustItem(mAdjustComposite.getEffect(ContrastAdjust.class));
+                    new ContrastAdjustItem(adjustComposite.getEffect(ContrastAdjust.class));
             mAdjustItemList.add(contrastAdjustItem);
 
             HighlightShadowAdjustItem highlightShadowAdjustItem =
-                    new HighlightShadowAdjustItem(mAdjustComposite.getEffect(HighlightShadowAdjust.class));
+                    new HighlightShadowAdjustItem(adjustComposite.getEffect(HighlightShadowAdjust.class));
             mAdjustItemList.add(highlightShadowAdjustItem);
 
             TemperatureAdjustItem temperatureAdjustItem =
-                    new TemperatureAdjustItem(mAdjustComposite.getEffect(TemperatureAdjust.class));
+                    new TemperatureAdjustItem(adjustComposite.getEffect(TemperatureAdjust.class));
             mAdjustItemList.add(temperatureAdjustItem);
 
             SharpnessAdjustItem sharpnessAdjustItem =
-                    new SharpnessAdjustItem(mAdjustComposite.getEffect(SharpnessAdjust.class));
+                    new SharpnessAdjustItem(adjustComposite.getEffect(SharpnessAdjust.class));
             mAdjustItemList.add(sharpnessAdjustItem);
 
             VignetteAdjustItem vignetteAdjustItem =
-                    new VignetteAdjustItem(mAdjustComposite.getEffect(VignetteAdjust.class));
+                    new VignetteAdjustItem(adjustComposite.getEffect(VignetteAdjust.class));
             mAdjustItemList.add(vignetteAdjustItem);
 
             TiltShiftAdjustItem tiltShiftAdjustItem =
-                    new TiltShiftAdjustItem(mAdjustComposite.getEffect(TiltShiftAdjust.class));
+                    new TiltShiftAdjustItem(adjustComposite.getEffect(TiltShiftAdjust.class));
             mAdjustItemList.add(tiltShiftAdjustItem);
         }
         return mAdjustItemList;

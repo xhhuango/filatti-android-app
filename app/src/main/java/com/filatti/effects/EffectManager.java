@@ -22,10 +22,14 @@ public final class EffectManager {
 
     private static EffectManager sEffectManager;
 
+    public static synchronized EffectManager initInstance(Bitmap bitmap, AspectRatio aspectRatio) {
+        destroyInstance();
+        sEffectManager = new EffectManager(bitmap, aspectRatio);
+        return sEffectManager;
+    }
+
     public static synchronized EffectManager getInstance() {
-        if (sEffectManager == null) {
-            sEffectManager = new EffectManager();
-        }
+        Preconditions.checkNotNull(sEffectManager);
         return sEffectManager;
     }
 
@@ -42,7 +46,10 @@ public final class EffectManager {
     private AdjustComposite mAdjustComposite;
     private AdjustItem mSelectedAdjustItem;
 
-    private EffectManager() {
+    private EffectManager(Bitmap bitmap, AspectRatio aspectRatio) {
+        mOriginalBitmap =
+                BitmapUtils.resizeBitmap(bitmap, aspectRatio.getWidth(), aspectRatio.getHeight());
+        mAdjustComposite = new AdjustComposite();
     }
 
     private void clear() {
@@ -55,12 +62,6 @@ public final class EffectManager {
             mAppliedBitmap.recycle();
             mAppliedBitmap = null;
         }
-    }
-
-    public void setOriginalBitmap(Bitmap bitmap, AspectRatio aspectRatio) {
-        clear();
-        mOriginalBitmap =
-                BitmapUtils.resizeBitmap(bitmap, aspectRatio.getWidth(), aspectRatio.getHeight());
     }
 
     public Bitmap getOriginalBitmap() {
@@ -118,8 +119,8 @@ public final class EffectManager {
                                 + PICTURE_PREFIX + timestamp + PICTURE_EXTENSION);
     }
 
-    public void setAdjustComposite(AdjustComposite adjustComposite) {
-        mAdjustComposite = adjustComposite;
+    public AdjustComposite getAdjustComposite() {
+        return mAdjustComposite;
     }
 
     public void setSelectedAdjustItem(AdjustItem adjustItem) {

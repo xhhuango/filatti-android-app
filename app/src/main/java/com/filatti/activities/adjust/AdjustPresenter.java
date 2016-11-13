@@ -98,7 +98,7 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
         return mAdjustItem.getView(mActivity, viewGroup);
     }
 
-    void applyPhoto() {
+    private void applyPhoto() {
         Mat appliedMat = mAdjustItem.getEffect().apply(mMat);
         BitmapUtils.convertMatToBitmap(appliedMat, mBitmap);
         if (appliedMat != mMat) {
@@ -106,7 +106,7 @@ class AdjustPresenter extends AbstractPresenter<AdjustActivity> {
         }
     }
 
-    void showPhoto(Bitmap bitmap) {
+    private void showPhoto(Bitmap bitmap) {
         mActivity.setPhoto(bitmap);
     }
 

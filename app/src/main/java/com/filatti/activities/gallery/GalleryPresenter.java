@@ -94,7 +94,7 @@ class GalleryPresenter extends AbstractPresenter<GalleryActivity> {
     }
 
     void onNextClick() {
-        EffectManager.getInstance().setOriginalBitmap(mActivity.crop(), mActivity.getAspectRatio());
+        EffectManager.initInstance(mActivity.crop(), mActivity.getAspectRatio());
 
         Intent intent = new Intent(mActivity, EffectActivity.class);
         mActivity.startActivity(intent);
