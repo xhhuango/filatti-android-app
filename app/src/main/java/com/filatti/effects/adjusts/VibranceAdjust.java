@@ -23,6 +23,11 @@ public class VibranceAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setVibrance(float vibrance) throws EffectException {
         if (!nativeSetVibrance(mNativeObj, vibrance)) {
             throw new EffectException("Setting illegal vibrance value: " + vibrance);
@@ -57,6 +62,8 @@ public class VibranceAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetVibrance(long self);
 

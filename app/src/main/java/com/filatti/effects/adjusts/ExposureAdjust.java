@@ -23,6 +23,11 @@ public class ExposureAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setExposure(float exposure) throws EffectException {
         if (!nativeSetExposure(mNativeObj, exposure)) {
             throw new EffectException("Setting illegal exposure value: " + exposure);
@@ -57,6 +62,8 @@ public class ExposureAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetExposure(long self);
 

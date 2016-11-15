@@ -27,6 +27,11 @@ public class HlsAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setHue(int hue) throws EffectException {
         if (!nativeSetHue(mNativeObj, hue)) {
             throw new EffectException("Hue isn't within range: " + hue);
@@ -91,6 +96,8 @@ public class HlsAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native int nativeGetHue(long self);
 

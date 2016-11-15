@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TiltShiftAdjust_nativeDe
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TiltShiftAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((TiltShift*) thiz)->has_effect();
+}
+
 JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TiltShiftAdjust_nativeGetCenter
 (JNIEnv *env, jclass clazz, jlong thiz, jfloatArray arr)
 {

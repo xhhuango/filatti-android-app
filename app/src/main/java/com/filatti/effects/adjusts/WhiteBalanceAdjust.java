@@ -23,6 +23,11 @@ public class WhiteBalanceAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setPercent(float percent) throws EffectException {
         if (!nativeSetPercent(mNativeObj, percent)) {
             throw new EffectException("Setting illegal percent value: " + percent);
@@ -57,6 +62,8 @@ public class WhiteBalanceAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetPercent(long self);
 

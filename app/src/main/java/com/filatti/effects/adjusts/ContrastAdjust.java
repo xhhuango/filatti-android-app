@@ -23,6 +23,11 @@ public class ContrastAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setContrast(float contrast) throws EffectException {
         if (!nativeSetContrast(mNativeObj, contrast)) {
             throw new EffectException("Setting illegal contrast value: " + contrast);
@@ -57,6 +62,8 @@ public class ContrastAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetContrast(long self);
 

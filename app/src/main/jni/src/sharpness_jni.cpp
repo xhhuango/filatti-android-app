@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeDe
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Sharpness*) thiz)->has_effect();
+}
+
 JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_SharpnessAdjust_nativeGetSharpness
 (JNIEnv *env, jclass clazz, jlong thiz)
 {

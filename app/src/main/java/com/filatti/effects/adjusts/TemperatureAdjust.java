@@ -23,6 +23,11 @@ public class TemperatureAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public float getInitTemperature() {
         return mInitTemperature;
     }
@@ -57,6 +62,8 @@ public class TemperatureAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetTemperature(long self);
 

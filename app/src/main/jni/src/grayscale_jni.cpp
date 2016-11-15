@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_GrayscaleAdjust_nativeDe
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_GrayscaleAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Grayscale*) thiz)->has_effect();
+}
+
 JNIEXPORT jint JNICALL Java_com_filatti_effects_adjusts_GrayscaleAdjust_nativeGetMode
 (JNIEnv *env, jclass clazz, jlong thiz)
 {

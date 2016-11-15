@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativ
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((WhiteBalance*) thiz)->has_effect();
+}
+
 JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_WhiteBalanceAdjust_nativeGetPercent
 (JNIEnv *env, jclass clazz, jlong thiz)
 {

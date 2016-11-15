@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeDestr
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Curves*) thiz)->has_effect();
+}
+
 JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_CurvesAdjust_nativeApply
 (JNIEnv *env, jclass clazz, jlong thiz, jlong src, jlong dst)
 {

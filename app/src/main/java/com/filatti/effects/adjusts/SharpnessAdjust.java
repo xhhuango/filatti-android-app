@@ -23,6 +23,11 @@ public class SharpnessAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setSharpness(float sharpness) throws EffectException {
         if (!nativeSetSharpness(mNativeObj, sharpness))
             throw new EffectException("Sharpness isn't within the range: " + sharpness);
@@ -60,6 +65,8 @@ public class SharpnessAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetSharpness(long self);
 

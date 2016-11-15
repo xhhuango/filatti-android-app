@@ -31,6 +31,11 @@ public class CurvesAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     /**
      * Value
      */
@@ -150,6 +155,8 @@ public class CurvesAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native boolean nativeApply(long self, long nativeSrcMat, long nativeDstMat);
 

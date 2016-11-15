@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_HighlightShadowAdjust_na
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HighlightShadowAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((HighlightShadow*) thiz)->has_effect();
+}
+
 JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_HighlightShadowAdjust_nativeGetAmount
 (JNIEnv *env, jclass clazz, jlong thiz, jint tone)
 {

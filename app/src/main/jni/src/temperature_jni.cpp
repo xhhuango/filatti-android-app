@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_native
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Temperature*) thiz)->has_effect();
+}
+
 JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_TemperatureAdjust_nativeGetTemperature
 (JNIEnv *env, jclass clazz, jlong thiz)
 {

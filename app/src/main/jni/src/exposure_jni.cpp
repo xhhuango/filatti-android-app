@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_ExposureAdjust_nativeDes
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_ExposureAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Exposure*) thiz)->has_effect();
+}
+
 JNIEXPORT jfloat JNICALL Java_com_filatti_effects_adjusts_ExposureAdjust_nativeGetExposure
 (JNIEnv *env, jclass clazz, jlong thiz)
 {

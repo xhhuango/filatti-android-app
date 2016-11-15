@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_ColorBalanceAdjust_nativ
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_ColorBalanceAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((ColorBalance*) thiz)->has_effect();
+}
+
 JNIEXPORT jint JNICALL Java_com_filatti_effects_adjusts_ColorBalanceAdjust_nativeGetRedCyan
 (JNIEnv *env, jclass clazz, jlong thiz, jint tone)
 {

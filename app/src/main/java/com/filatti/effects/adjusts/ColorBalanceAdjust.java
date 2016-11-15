@@ -40,6 +40,11 @@ public class ColorBalanceAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public int getInitRedCyan(Tone tone) {
         Preconditions.checkNotNull(tone);
         return mInitRedCyan[tone.toInt()];
@@ -128,6 +133,8 @@ public class ColorBalanceAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native int nativeGetRedCyan(long self, int tone);
 

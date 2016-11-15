@@ -27,6 +27,12 @@ JNIEXPORT void JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeDestroyO
     delete obj;
 }
 
+JNIEXPORT jboolean JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeHasEffect
+(JNIEnv *env, jclass clazz, jlong thiz)
+{
+    return ((Hls*) thiz)->has_effect();
+}
+
 JNIEXPORT jint JNICALL Java_com_filatti_effects_adjusts_HlsAdjust_nativeGetHue
 (JNIEnv *env, jclass clazz, jlong thiz)
 {

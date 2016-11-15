@@ -47,6 +47,11 @@ public class GrayscaleAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setMode(Mode mode) {
         Preconditions.checkNotNull(mode);
         nativeSetMode(mNativeObj, mode.mValue);
@@ -96,6 +101,8 @@ public class GrayscaleAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native int nativeGetMode(long self);
 

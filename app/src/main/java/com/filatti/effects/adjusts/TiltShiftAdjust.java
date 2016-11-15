@@ -69,6 +69,11 @@ public class TiltShiftAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public float[] getInitCenter() {
         return Arrays.copyOf(mInitCenter, mInitCenter.length);
     }
@@ -185,6 +190,8 @@ public class TiltShiftAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native void nativeGetCenter(long self, float[] center);
 

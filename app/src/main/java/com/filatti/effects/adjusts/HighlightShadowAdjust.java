@@ -29,6 +29,11 @@ public class HighlightShadowAdjust extends Adjust {
         super.finalize();
     }
 
+    @Override
+    public boolean hasEffect() {
+        return nativeHasEffect(mNativeObj);
+    }
+
     public void setAmount(Tone tone, float amount) throws EffectException {
         Preconditions.checkNotNull(tone);
         if (!nativeSetAmount(mNativeObj, tone.toInt(), amount)) {
@@ -86,6 +91,8 @@ public class HighlightShadowAdjust extends Adjust {
     private native long nativeCreateObject();
 
     private native void nativeDestroyObject(long self);
+
+    private native boolean nativeHasEffect(long self);
 
     private native float nativeGetAmount(long self, int tone);
 
